@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:orientation="vertical"
+	android:weightSum="6"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:paddingBottom="@dimen/activity_vertical_margin"
+	android:paddingLeft="@dimen/activity_horizontal_margin"
+	android:paddingRight="@dimen/activity_horizontal_margin"
+	android:paddingTop="@dimen/activity_vertical_margin"
+	tools:context="us.keithirwin.tracman.LoginActivity"
+	android:clickable="true">
+
+	<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+				  xmlns:tools="http://schemas.android.com/tools"
+				  android:orientation="vertical"
+				  android:layout_weight="1"
+				  android:layout_width="match_parent"
+				  android:layout_height="wrap_content">
+		<ImageView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:contentDescription="@string/logo_description"
+			android:padding="5dp"
+			android:src="@drawable/logo_by"
+			android:layout_alignParentLeft="true"
+			android:layout_alignParentStart="true"/>
+		<TextView
+			android:id="@+id/login_title"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_marginLeft="60dp"
+			android:layout_marginStart="60dp"
+			android:gravity="center"
+			android:text="@string/app_name"
+			android:textSize="50sp"
+			android:textColor="@color/Yellow"
+			android:layout_alignParentRight="true"
+			android:layout_alignParentEnd="true" />
+	</RelativeLayout>
+
+	<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+				  xmlns:tools="http://schemas.android.com/tools"
+				  android:orientation="vertical"
+				  android:layout_weight="3"
+				  android:layout_width="match_parent"
+				  android:layout_height="wrap_content">
+		<TextView
+			android:id="@+id/login_description"
+			android:text="@string/login_description"
+			android:textSize="24sp"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"/>
+
+	</LinearLayout>
+
+	<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+				  xmlns:tools="http://schemas.android.com/tools"
+				  android:layout_width="match_parent"
+				  android:layout_weight="1"
+				  android:layout_height="wrap_content">
+		<com.google.android.gms.common.SignInButton
+			android:id="@+id/google_sign_in_button"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:layout_gravity="center"/>
+
+	</LinearLayout>
+
+	<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+				  xmlns:tools="http://schemas.android.com/tools"
+				  android:layout_height="wrap_content"
+				  android:layout_width="match_parent"
+				  android:layout_weight="1">
+		<TextView
+		android:id="@+id/login_error"
+		android:layout_width="wrap_content"
+		android:layout_height="match_parent"
+		android:gravity="center"
+		android:textColor="@color/Red"
+		android:textSize="22sp" />
+
+	</LinearLayout>
+
+</LinearLayout>

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="about_back_button">Atras</string>
+	<string name="about_name">Info</string>
+	<string name="connecting">conectando…</string>
+	<string name="welcome">Bienvenido</string>
+	<string name="named_welcome">Hola%1$s!  \n</string>
+	<string name="about_license"><a href="https://tracman.org/license/">Mostrar licensia en el navegador (inglés)</a></string>
+	<string name="loading">Cargando…</string>
+	<string name="disconnected">Conexión perdida</string>
+	<string name="connected">Conexión establecida</string>
+	<string name="bugs_name">Informe de error</string>
+	<string name="pref_header_general">Configuración principales</string>
+	<string name="settings_name">Configuración</string>
+	<string name="view_trac_button">Mostrar mapa</string>
+	<string name="suggestions_name">Sugerencias</string>
+	<string name="server_connection_error">ERROR: No se puede conectar al servidor de Tracman. </string>
+	<string name="occasional_updates">Se actualiza a veces</string>
+	<string name="realtime_updates">Se actualiza en tiempo real</string>
+	<string name="broadcast_disabled">Transmisiónes apagado</string>
+	<string name="google_connection_error">ERROR: No se puede conectar al Google API servidor. </string>
+	<string name="help_name">Ayuda</string>
+	<string name="login_description">Haga clic en el botón abajo para iniciar una sesión. Se necisita una cuenta de Tracman. Si no tiene uno, puede <a href="https://tracman.org/#get"> solicitar una invitación </a>. </string>
+	<string name="login_name">Iniciar sesión</string>
+	<string name="login_no_user_error">ERROR: Usario no encontrado</string>
+	<string name="logout_name">Cerrar sesión</string>
+	<string name="main_name">Vida principal</string>
+	<string name="navigation_drawer_close">Cerrar navegación</string>
+	<string name="navigation_drawer_open">Abrir navegación</string>
+	<string name="pref_app_category_title">Configuración de la aplicación</string>
+	<string name="pref_start_boot">Iniciar el servicio al encender</string>
+	<string name="pref_title_broadcast_frequency">Intervalo de actualización</string>
+	<string name="pref_title_broadcast_priority">Prioridad de actualización</string>
+	<string-array name="pref_broadcast_frequency_list_titles">
+		<item>1 segundo</item>
+		<item>2 segundos</item>
+		<item>3 segundos</item>
+		<item>5 segundos</item>
+		<item>10 segundos</item>
+		<item>20 segundos</item>
+		<item>30 segundos</item>
+		<item>1 minuto</item>
+		<item>5 minutos</item>
+		<item>10 minutos</item>
+		<item>15 minutos</item>
+		<item>20 minutos</item>
+		<item>30 minutos</item>
+		<item>1 hora</item>
+	</string-array>
+	<string-array name="pref_broadcast_priority_list_titles">
+		<item>Exacto</item>
+		<item>Cuadra</item>
+		<item>Ciudad</item>
+		<item>Sin energía</item>
+	</string-array>
+	<string name="pref_title_gps_broadcast">Encender transmisiónes</string>
+	<string name="main_activity_description">Haga clic en el menú de hamburguesa para cambiar la configuración. \n\n Haga clic en el botón abajo para ver su ubicación en su navegador. </string>
+	<string name="pref_broadcast_category_title">Actualizaciones de ubicación</string>
+</resources>

@@ -1,0 +1,95 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+			 xmlns:tools="http://schemas.android.com/tools"
+			 android:layout_width="match_parent"
+			 android:layout_height="match_parent"
+			 tools:context="values.AboutFragment">
+
+
+	<LinearLayout
+		android:id="@+id/main_layout"
+		android:orientation="vertical"
+		android:weightSum="6"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:paddingBottom="@dimen/activity_vertical_margin"
+		android:paddingLeft="@dimen/activity_horizontal_margin"
+		android:paddingRight="@dimen/activity_horizontal_margin"
+		android:paddingTop="@dimen/activity_vertical_margin"
+		tools:context="us.keithirwin.tracman.MainActivity"
+		android:clickable="true">
+
+		<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+						xmlns:tools="http://schemas.android.com/tools"
+						android:orientation="vertical"
+						android:layout_weight="1"
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content">
+			<ImageView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:contentDescription="@string/logo_description"
+				android:padding="5dp"
+				android:src="@drawable/logo_by"
+				android:layout_alignParentLeft="true"
+				android:layout_alignParentStart="true" />
+			<TextView
+				android:id="@+id/about_title"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_marginLeft="60dp"
+				android:layout_marginStart="60dp"
+				android:gravity="center"
+				android:text="@string/app_name"
+				android:textSize="46sp"
+				android:textColor="@color/Yellow"
+				android:layout_alignParentRight="true"
+				android:layout_alignParentEnd="true"/>
+		</RelativeLayout>
+
+		<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+					  xmlns:tools="http://schemas.android.com/tools"
+					  android:orientation="vertical"
+					  android:layout_weight="1"
+					  android:layout_width="match_parent"
+					  android:layout_height="wrap_content">
+			<TextView
+				android:id="@+id/about_version"
+				android:text="@string/version"
+				android:textSize="24sp"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:gravity="center"/>
+
+		</LinearLayout>
+
+		<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+					  xmlns:tools="http://schemas.android.com/tools"
+					  android:layout_width="match_parent"
+					  android:layout_weight="3"
+					  android:layout_height="wrap_content">
+			<TextView
+				android:id="@+id/about_license"
+				android:text="@string/about_license"
+				android:textSize="24sp"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:gravity="center"/>
+		</LinearLayout>
+		<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+					  xmlns:tools="http://schemas.android.com/tools"
+					  android:layout_width="match_parent"
+					  android:layout_weight="1"
+					  android:layout_height="wrap_content">
+			<Button
+				android:id="@+id/about_back_button"
+				android:layout_width="match_parent"
+				android:layout_height="match_parent"
+				android:gravity="center"
+				android:text="@string/about_back_button"
+				android:textColor="@color/Yellow"
+				android:textSize="36sp" />
+		</LinearLayout>
+
+	</LinearLayout>
+
+</FrameLayout>

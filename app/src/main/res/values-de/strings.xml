@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="about_back_button">Zurück</string>
+	<string name="about_license"><a href="https://tracman.org/license/">Lizenz im Browser zeigen (englisch)</a></string>
+	<string name="about_name">Über</string>
+	<string name="broadcast_disabled">Sendungen deaktiviert</string>
+	<string name="bugs_name">Problembericht</string>
+	<string name="connected">Verbindung festgestellt</string>
+	<string name="connecting">verbindet…</string>
+	<string name="disconnected">Verbindung unterbrochen</string>
+	<string name="google_connection_error">FEHLER: Könnte nicht zum Google API Server verbinden. </string>
+	<string name="help_name">Hilfe</string>
+	<string name="loading">Ladet…</string>
+	<string name="login_description">Auf dem Knopf klicken, einzuloggen.  Ein Tracman Konto ist erforderlich.  Falls Sie keiner haben, dürfen Sie <a href="https://tracman.org/#get">um eine Einladung bitten</a>.</string>
+	<string name="login_name">Einloggen</string>
+	<string name="login_no_user_error">FEHLER: Nutzer nicht gefunden. </string>
+	<string name="logout_name">Ausloggen</string>
+	<string name="main_name">Hauptsicht</string>
+	<string name="named_welcome">Hallo%1$s!  \n</string>
+	<string name="main_activity_description">Auf dem Hamburger klicken, Einstellungen zu ändern.  \n\nAuf dem Knopf darunter klicken, deine Standort im Broswer zu zeigen. </string>
+	<string name="navigation_drawer_close">Navigation schließen</string>
+	<string name="navigation_drawer_open">Navigation aufmachen</string>
+	<string name="occasional_updates">Aktualisiert gelegentlich</string>
+	<string name="realtime_updates">Aktualisiert realtime</string>
+	<string name="pref_app_category_title">App Einstellungen</string>
+	<string name="pref_broadcast_category_title">Ort Aktualisierungen</string>
+	<string name="pref_header_general">Haupteinstellungen</string>
+	<string name="pref_start_boot">Service beim Hochfahren starten</string>
+	<string name="settings_name">Einstellungen</string>
+	<string name="server_connection_error">FEHLER: Könnte nicht zum Tracman Server verbinden. </string>
+	<string name="suggestions_name">Vorschläge</string>
+	<string name="view_trac_button">Karte zeigen</string>
+	<string name="welcome">Wilkommen</string>
+	<string name="pref_title_broadcast_frequency">Aktualisierung Zwischenraum</string>
+	<string-array name="pref_broadcast_frequency_list_titles">
+		<item>1 Sekund</item>
+		<item>2 Sekunde</item>
+		<item>3 Sekunde</item>
+		<item>5 Sekunde</item>
+		<item>10 Sekunde</item>
+		<item>20 Sekunde</item>
+		<item>30 Sekunde</item>
+		<item>1 Minute</item>
+		<item>5 Minuten</item>
+		<item>10 Minuten</item>
+		<item>15 Minuten</item>
+		<item>20 Minuten</item>
+		<item>30 Minuten</item>
+		<item>1 Stunde</item>
+	</string-array>
+	<string-array name="pref_broadcast_priority_list_titles">
+		<item>Genau</item>
+		<item>Quadrat</item>
+		<item>Stadt</item>
+		<item>Kein Kraft</item>
+	</string-array>
+	<string name="pref_title_gps_broadcast">Sendungen einschalten</string>
+	<string name="pref_title_broadcast_priority">Aktualisierung Vorrang</string>
+</resources>

@@ -1,0 +1,108 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+				xmlns:tools="http://schemas.android.com/tools"
+				android:layout_width="match_parent"
+				android:layout_height="match_parent"
+				android:paddingBottom="@dimen/activity_vertical_margin"
+				android:paddingLeft="@dimen/activity_horizontal_margin"
+				android:paddingRight="@dimen/activity_horizontal_margin"
+				android:paddingTop="@dimen/activity_vertical_margin"
+				tools:context="us.keithirwin.tracman.MainActivity$PlaceholderFragment">
+
+	<LinearLayout android:id="@+id/main_layout"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:orientation="vertical"
+		android:weightSum="5"
+		tools:context="us.keithirwin.tracman.MainActivity"
+		android:clickable="true">
+
+		<RelativeLayout
+			xmlns:android="http://schemas.android.com/apk/res/android"
+			xmlns:tools="http://schemas.android.com/tools"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:orientation="vertical"
+			android:layout_weight="1">
+
+			<ImageView android:id="@+id/main_logo"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:contentDescription="@string/logo_description"
+				android:padding="5dp"
+				android:src="@drawable/logo_by"
+				android:layout_alignParentLeft="true"
+				android:layout_alignParentStart="true" />
+			<TextView android:id="@+id/main_activity_title"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_marginLeft="60dp"
+				android:layout_marginStart="60dp"
+				android:gravity="center"
+				android:text="@string/welcome"
+				android:textSize="46sp"
+				android:textColor="@color/Yellow"
+				android:layout_alignParentRight="true"
+				android:layout_alignParentEnd="true"/>
+
+		</RelativeLayout>
+
+		<LinearLayout
+			xmlns:android="http://schemas.android.com/apk/res/android"
+			xmlns:tools="http://schemas.android.com/tools"
+			android:orientation="vertical"
+			android:paddingLeft="@dimen/activity_horizontal_margin"
+			android:paddingRight="@dimen/activity_horizontal_margin"
+			android:layout_weight="2"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content">
+
+			<TextView android:id="@+id/named_welcome"
+				android:textSize="18sp"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"/>
+			<TextView android:id="@+id/main_description"
+				android:text="@string/main_activity_description"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:textSize="18sp"/>
+
+		</LinearLayout>
+
+		<LinearLayout
+			xmlns:android="http://schemas.android.com/apk/res/android"
+			xmlns:tools="http://schemas.android.com/tools"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:paddingLeft="@dimen/activity_horizontal_margin"
+			android:paddingRight="@dimen/activity_horizontal_margin"
+			android:layout_weight="1">
+			<Button android:id="@+id/tracpage_button"
+					android:layout_width="match_parent"
+					android:layout_height="match_parent"
+					android:gravity="center"
+					android:text="@string/view_trac_button"
+					android:textColor="@color/Yellow"
+					android:textSize="28sp" />
+		</LinearLayout>
+
+		<LinearLayout
+			xmlns:android="http://schemas.android.com/apk/res/android"
+			xmlns:tools="http://schemas.android.com/tools"
+			android:layout_height="wrap_content"
+			android:layout_width="match_parent"
+			android:paddingLeft="@dimen/activity_horizontal_margin"
+			android:paddingRight="@dimen/activity_horizontal_margin"
+			android:layout_weight="1">
+
+			<TextView android:id="@+id/main_error"
+					  android:layout_width="wrap_content"
+					  android:layout_height="match_parent"
+					  android:gravity="center"
+					  android:textColor="@color/Red"
+					  android:textSize="22sp" />
+
+		</LinearLayout>
+
+	</LinearLayout>
+
+</RelativeLayout>

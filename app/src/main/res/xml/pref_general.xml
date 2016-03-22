@@ -1,0 +1,48 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+	<PreferenceCategory
+		android:title="@string/pref_app_category_title"
+		android:key="pref_app_category">
+
+		<!-- Start on boot -->
+		<SwitchPreference
+			android:defaultValue="true"
+			android:key="start_on_boot"
+			android:title="@string/pref_start_boot"
+			/>
+
+	</PreferenceCategory>
+
+	<PreferenceCategory
+		android:title="@string/pref_broadcast_category_title"
+		android:key="pref_broadcast_category">
+
+		<!-- Broadcast -->
+		<SwitchPreference
+			android:defaultValue="false"
+			android:key="gps_switch"
+			android:title="@string/pref_title_gps_broadcast" />
+
+		<!-- Broadcast interval -->
+		<ListPreference
+			android:title="@string/pref_title_broadcast_frequency"
+			android:key="broadcast_frequency"
+			android:defaultValue="1"
+			android:entries="@array/pref_broadcast_frequency_list_titles"
+			android:entryValues="@array/pref_broadcast_frequency_list_values"
+			android:negativeButtonText="@null"
+			android:positiveButtonText="@null" />
+
+		<!-- Broadcast priority -->
+		<ListPreference
+			android:title="@string/pref_title_broadcast_priority"
+			android:key="broadcast_priority"
+			android:defaultValue="100"
+			android:entries="@array/pref_broadcast_priority_list_titles"
+			android:entryValues="@array/pref_broadcast_priority_list_values"
+			android:negativeButtonText="@null"
+			android:positiveButtonText="@null" />
+
+	</PreferenceCategory>
+
+</PreferenceScreen>

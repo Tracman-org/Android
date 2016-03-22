@@ -1,0 +1,112 @@
+<resources>
+	<string name="app_name" translatable="false">Tracman</string>
+	<string name="app_address" translatable="false">us.keithirwin.tracman</string>
+	<string name="version_code" translatable="false">7</string>
+	<string name="version" translatable="false">0.1.6</string>
+
+	<string name="loading">Loading…</string>
+	<string name="logo_description" translatable="false">[T]</string>
+	<string name="google_connection_error">ERROR: Unable to connect to Google API server.  </string>
+	<string name="login_no_user_error">ERROR: User not found.  </string>
+
+	<!-- Strings related to login -->
+	<string name="login_name">Login</string>
+	<string name="logout_name">Logout</string>
+	<string name="login_description">Click the button below to log in.  You will need a Tracman account.  If you don\'t have one, you can <a href="https://tracman.org/#get">request an invite</a>.  </string>
+	<string name="server_connection_error">ERROR: Unable to connect to Tracman server.  </string>
+
+	<!-- Strings related to notifications -->
+	<string name="connecting">Connecting… </string>
+	<string name="connected">Connection established</string>
+	<string name="disconnected">Disconnected</string>
+	<string name="realtime_updates">Sending realtime updates</string>
+	<string name="occasional_updates">Sending occasional updates</string>
+	<string name="broadcast_disabled">Broadcast disabled</string>
+
+	<!-- Strings related to drawer -->
+	<string name="navigation_drawer_open">Open navigation drawer</string>
+	<string name="navigation_drawer_close">Close navigation drawer</string>
+
+	<!-- Strings related to MainFragment -->
+	<string name="welcome">Welcome </string>
+	<string name="named_welcome">Hi%1$s!  \n</string>
+	<string name="main_activity_description">Tap on the hamburger menu to change settings.  \n\nTap on the button below to see your location in your browser. </string>
+	<string name="view_trac_button">View Map</string>
+
+	<!-- Strings related to Settings -->
+	<string name="settings_name">Settings</string>
+
+	<!-- General settings -->
+	<string name="pref_header_general">General Settings</string>
+	<string name="pref_start_boot">Start service on boot</string>
+	<string name="pref_app_category_title">App settings</string>
+	<string name="pref_broadcast_category_title">Location Updates</string>
+	<string name="pref_title_gps_broadcast">Enable updates</string>
+
+	<string name="pref_title_broadcast_frequency">Update interval</string>
+	<string-array name="pref_broadcast_frequency_list_titles">
+		<item>1 second</item>
+		<item>2 seconds</item>
+		<item>3 seconds</item>
+		<item>5 seconds</item>
+		<item>10 seconds</item>
+		<item>20 seconds</item>
+		<item>30 seconds</item>
+		<item>1 minute</item>
+		<item>5 minutes</item>
+		<item>10 minutes</item>
+		<item>15 minutes</item>
+		<item>20 minutes</item>
+		<item>30 minutes</item>
+		<item>1 hour</item>
+	</string-array>
+	<string name="pref_default_broadcast_frequency" translatable="false">1</string>
+	<string-array name="pref_broadcast_frequency_list_values" translatable="false">
+		<item>1</item>
+		<item>2</item>
+		<item>3</item>
+		<item>5</item>
+		<item>10</item>
+		<item>20</item>
+		<item>30</item>
+		<item>60</item>
+		<item>300</item>
+		<item>600</item>
+		<item>900</item>
+		<item>1200</item>
+		<item>1800</item>
+		<item>3600</item>
+	</string-array>
+
+	<string name="pref_title_broadcast_priority">Update priority</string>
+	<string-array name="pref_broadcast_priority_list_titles">
+		<item>Pinpoint</item>
+		<item>Block</item>
+		<item>City</item>
+		<item>No power</item>
+	</string-array>
+	<string-array name="pref_broadcast_priority_list_values" translatable="false">
+		<item>100</item>
+		<item>102</item>
+		<item>104</item>
+		<item>105</item>
+	</string-array>
+
+	<!--Strings related to main-->
+	<string name="main_name">Main screen</string>
+
+	<!--Strings related to help-->
+	<string name="help_name">Help</string>
+
+	<!--Strings related to about-->
+	<string name="about_name">About</string>
+	<string name="about_license"><a href="https://tracman.org/license/">View license online</a></string>
+	<string name="about_back_button">Back</string>
+
+	<!--Strings related to suggestions-->
+	<string name="suggestions_name">Suggestions</string>
+
+	<!--Strings related to bugs-->
+	<string name="bugs_name">Bug report</string>
+
+</resources>
