@@ -39,6 +39,7 @@ public class LocationService extends Service implements GoogleApiClient.Connecti
 
 	private Socket mSocket;
 	private String mUserID;
+	private String mUserSK;
 	private SharedPreferences sharedPref;
 	Location mLastLocation;
 	private GoogleApiClient mGoogleApiClient;
@@ -118,6 +119,7 @@ public class LocationService extends Service implements GoogleApiClient.Connecti
 		Log.d(TAG, "LowPowerReceiver activated");
 
 		mUserID = sharedPref.getString("loggedInUserId", null);
+		mUserSK = sharedPref.getString("loggedInUserId", null);
 		final String SERVER_ADDRESS = "https://tracman.org/";
 
 		// Connect to socket
@@ -209,6 +211,7 @@ public class LocationService extends Service implements GoogleApiClient.Connecti
 		JSONObject mLocationView = new JSONObject();
 		try {
 			mLocationView.put("usr", mUserID);
+			mLocationView.put("tok", mUserSK);
 			mLocationView.put("lat", String.valueOf(location.getLatitude()));
 			mLocationView.put("lon", String.valueOf(location.getLongitude()));
 			mLocationView.put("dir", String.valueOf(location.getBearing()));

@@ -143,20 +143,20 @@ public class LoginActivity extends AppCompatActivity implements
 					String userString = res.body().string();
 					System.out.println("Full response: " + userString);
 
-					String userID, userName;
+					String userID, userName, userSK;
 					try {
 						JSONObject user = new JSONObject(userString);
 						userID = user.getString("_id");
 						userName = user.getString("name");
+						userSK = user.getString("sk32");
 						Log.v(TAG, "User retrieved with ID: " + userID);
-
 					} catch (JSONException e) {
 						Log.e(TAG, "Unable to parse user JSON: ", e);
 						Log.e(TAG, "JSON String used: " + userString);
 						userID = null;
 						userName = null;
+						userSK = null;
 					}
-					Log.v(TAG, "UserID: " + userID);
 
 					// Save user as loggedInUser
 					SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
@@ -164,6 +164,7 @@ public class LoginActivity extends AppCompatActivity implements
 					editor.putString("loggedInUser", userString);
 					editor.putString("loggedInUserId", userID);
 					editor.putString("loggedInUserName", userName);
+					editor.putString("loggedInUserSk", userSK);
 					editor.commit();
 
 					startActivity(new Intent(getBaseContext(), MainActivity.class));
