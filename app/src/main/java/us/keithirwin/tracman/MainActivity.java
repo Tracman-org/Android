@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity implements
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
+		if (BuildConfig.DEBUG){ Log.d(TAG,"Started in debug mode"); }
 
 		NavigationDrawerFragment mNavigationDrawerFragment = (NavigationDrawerFragment)
 				getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
