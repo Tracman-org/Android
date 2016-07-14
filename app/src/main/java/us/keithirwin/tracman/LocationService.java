@@ -119,7 +119,7 @@ public class LocationService extends Service implements GoogleApiClient.Connecti
 		Log.d(TAG, "LowPowerReceiver activated");
 
 		mUserID = sharedPref.getString("loggedInUserId", null);
-		mUserSK = sharedPref.getString("loggedInUserId", null);
+		mUserSK = sharedPref.getString("loggedInUserSk", null);
 		final String SERVER_ADDRESS = "https://tracman.org/";
 
 		// Connect to socket

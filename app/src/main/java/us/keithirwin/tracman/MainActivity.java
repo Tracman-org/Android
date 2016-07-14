@@ -24,23 +24,25 @@ public class MainActivity extends AppCompatActivity implements
 		AboutFragment.OnBackButtonPressedListener {
 
 	private static final String TAG = "MainActivity";
-	private CharSequence mTitle;
+//	private CharSequence mTitle;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		if (BuildConfig.DEBUG){ Log.d(TAG,"Started in debug mode"); }
+		if (BuildConfig.DEBUG){ Log.d(TAG, "Created in debug mode"); }
 
 		NavigationDrawerFragment mNavigationDrawerFragment = (NavigationDrawerFragment)
 				getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
-		mTitle = getTitle();
+//		mTitle = getTitle();
 
 		// Set up the drawer.
+		Log.d(TAG, "Setting up drawer");
 		mNavigationDrawerFragment.setUp(
 			R.id.navigation_drawer,
 			(DrawerLayout) findViewById(R.id.drawer_layout));
 
 		// Check if gps enabled and start location service
+		Log.d(TAG, "Checking if gps enabled");
 		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
 		if (sharedPref.getBoolean("gps_switch", false)) {
 			Log.d(TAG, "Starting LocationService");
@@ -107,7 +109,7 @@ public class MainActivity extends AppCompatActivity implements
 	public void onSectionAttached(int number) {
 		switch (number) {
 			case 0:
-				mTitle = getString(R.string.main_name);
+//				mTitle = getString(R.string.main_name);
 //				Toast.makeText(this, "main", Toast.LENGTH_SHORT).show();
 				break;
 			case 1:
@@ -117,7 +119,7 @@ public class MainActivity extends AppCompatActivity implements
 //						.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP));
 				break;
 			case 2:
-				mTitle = getString(R.string.about_name);
+//				mTitle = getString(R.string.about_name);
 				break;
 //			case 3:
 //				break;

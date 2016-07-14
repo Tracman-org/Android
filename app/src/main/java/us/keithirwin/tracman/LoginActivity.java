@@ -34,7 +34,7 @@ import okhttp3.Response;
 public class LoginActivity extends AppCompatActivity implements
 		GoogleApiClient.OnConnectionFailedListener,
 		View.OnClickListener {
-	private static final String TAG = "SignInActivity";
+	private static final String TAG = "LoginActivity";
 	private static final int RC_SIGN_IN = 9001;
 	private final String SERVER_ADDRESS = "https://tracman.org/";
 	private static final String GOOGLE_WEB_CLIENT_ID = "483494341936-hrn0ms1tebgdtfs5f4i6ebmkt3qmo16o.apps.googleusercontent.com";
@@ -45,6 +45,7 @@ public class LoginActivity extends AppCompatActivity implements
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		Log.v(TAG, "Created...");
 
 		// Set up layout
 		setContentView(R.layout.activity_login);
@@ -75,13 +76,15 @@ public class LoginActivity extends AppCompatActivity implements
 	@Override
 	public void onStart() {
 		super.onStart();
+		Log.v(TAG, "Started. Checking for intent method");
 
 		if (getIntent().hasExtra("method")) {
+			Log.v(TAG, "Intent has method extra");
 			if (getIntent().getStringExtra("method").equals("signOut")) {
 				Log.d(TAG, "Got intent to sign out");
 			}
-
 		} else { // Try to sign in
+			Log.v(TAG, "Trying to sign in...");
 			OptionalPendingResult<GoogleSignInResult> opr = Auth.GoogleSignInApi.silentSignIn(mGoogleApiClient);
 			if (opr.isDone()) {
 				// If the user's cached credentials are valid, the OptionalPendingResult will be "done"
