@@ -30,6 +30,7 @@ public class MainActivity extends AppCompatActivity implements
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		if (BuildConfig.DEBUG){ Log.d(TAG, "Created in debug mode"); }
+		setContentView(R.layout.activity_main);
 
 		NavigationDrawerFragment mNavigationDrawerFragment = (NavigationDrawerFragment)
 				getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
@@ -39,7 +40,8 @@ public class MainActivity extends AppCompatActivity implements
 		Log.d(TAG, "Setting up drawer");
 		mNavigationDrawerFragment.setUp(
 			R.id.navigation_drawer,
-			(DrawerLayout) findViewById(R.id.drawer_layout));
+			(DrawerLayout) findViewById(R.id.drawer_layout)
+		);
 
 		// Check if gps enabled and start location service
 		Log.d(TAG, "Checking if gps enabled");
