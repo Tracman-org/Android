@@ -13,7 +13,7 @@ android {
 	buildToolsVersion "23.0.3"
 	defaultConfig {
 		applicationId "us.keithirwin.tracman"
-		minSdkVersion 14
+		minSdkVersion 16
 		targetSdkVersion 23
 		versionCode 9
 		versionName "0.1.8"
