@@ -1,8 +1,8 @@
 <resources>
 	<string name="app_name" translatable="false">Tracman</string>
 	<string name="app_address" translatable="false">us.keithirwin.tracman</string>
-	<string name="version_code" translatable="false">7</string>
-	<string name="version" translatable="false">0.1.7</string>
+	<string name="version_code" translatable="false">10</string>
+	<string name="version" translatable="false">0.2.0</string>
 
 	<string name="loading">Loading…</string>
 	<string name="logo_description" translatable="false">[T]</string>
