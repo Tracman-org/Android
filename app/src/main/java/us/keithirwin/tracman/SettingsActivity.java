@@ -102,7 +102,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setupActionBar();
-		Log.d(TAG, "activity onCreate called");
+//		Log.d(TAG, "activity onCreate called");
 
 		// Get User ID
 		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
@@ -124,7 +124,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 	@Override
 	protected void onStop() {
 
-		Log.d(TAG, "onStop called");
+//		Log.d(TAG, "onStop called");
 		super.onStop();
 
 		// Restart service so settings can take effect
@@ -136,7 +136,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 			showLocationPermissionDialog();
 
 			// Start location tracking service
-			Log.d(TAG, "Starting LocationService");
+//			Log.d(TAG, "Starting LocationService");
 			startService(new Intent(this, LocationService.class));
 
 		}

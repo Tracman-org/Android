@@ -101,31 +101,31 @@ public class LocationService extends Service implements GoogleApiClient.Connecti
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			connectLocationUpdates(300, LocationRequest.PRIORITY_NO_POWER);
-			Log.d(TAG, "Priority and interval lowered due to low power");
+//			Log.d(TAG, "Priority and interval lowered due to low power");
 		}
 	};
 
 	@Override
 	public void onCreate() {
 		super.onCreate();
-		Log.d(TAG, "onCreate called");
+//		Log.d(TAG, "onCreate called");
 
 		// Get preferences
 		sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
 
 		setupNotifications(true);
 		showNotification(getText(R.string.connecting), false);
-		Log.d(TAG, "Notification set up");
+//		Log.d(TAG, "Notification set up");
 
 		buildGoogleApiClient();
-		Log.d(TAG, "Google API Client built");
+//		Log.d(TAG, "Google API Client built");
 		mGoogleApiClient.connect();
-		Log.d(TAG, "Connected to Google API Client");
+//		Log.d(TAG, "Connected to Google API Client");
 
 		IntentFilter lowPowerFilter = new IntentFilter();
 		lowPowerFilter.addAction("android.intent.action.BATTERY_LOW");
 		registerReceiver(LowPowerReceiver, lowPowerFilter);
-		Log.d(TAG, "LowPowerReceiver activated");
+//		Log.d(TAG, "LowPowerReceiver activated");
 
 		mUserID = sharedPref.getString("loggedInUserId", null);
 		mUserSK = sharedPref.getString("loggedInUserSk", null);
@@ -137,10 +137,10 @@ public class LocationService extends Service implements GoogleApiClient.Connecti
 			mSocket.on("activate", onActivate);
 			mSocket.connect();
 			mSocket.emit("room", "app-"+mUserID);
-			Log.d(TAG, "Connected to socket.io server "+SERVER_ADDRESS);
+//			Log.d(TAG, "Connected to socket.io server "+SERVER_ADDRESS);
 		} catch (URISyntaxException e) {
 			showNotification(getText(R.string.server_connection_error), false);
-			Log.e(TAG, "Failed to connect to sockets server " + SERVER_ADDRESS, e);
+//			Log.e(TAG, "Failed to connect to sockets server " + SERVER_ADDRESS, e);
 		}
 		showNotification(getText(R.string.connected), false);
 	}
@@ -171,10 +171,11 @@ public class LocationService extends Service implements GoogleApiClient.Connecti
 
 		// Get permission
 		if (!checkLocationPermission(this)) {
-			Log.d(TAG, "Location permission denied");
+//			Log.d(TAG, "Location permission denied");
+			//TODO: Turn off location updates
 
 		} else {
-			Log.d(TAG, "Location permission granted");
+//			Log.d(TAG, "Location permission granted");
 
 			// Request location updates
 			if (mGoogleApiClient.isConnected()) {
@@ -190,14 +191,6 @@ public class LocationService extends Service implements GoogleApiClient.Connecti
 			mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
 
 		}
-//		if ( ContextCompat.checkSelfPermission( this, android.Manifest.permission.ACCESS_FINE_LOCATION ) != PackageManager.PERMISSION_GRANTED ) {
-//			ActivityCompat.requestPermissions( this, new String[] {  android.Manifest.permission.ACCESS_FINE_LOCATION  },
-//					LocationService.MY_FINE_LOCATION_PERMISSION );
-//		} else {
-//
-//
-//
-//		}
 
 		// Set location if there is one
 		if (mLastLocation != null) {
@@ -208,7 +201,7 @@ public class LocationService extends Service implements GoogleApiClient.Connecti
 
 	@Override
 	public void onConnected(Bundle bundle) {
-		Log.d(TAG, "onConnected called");
+//		Log.d(TAG, "onConnected called");
 
 		mLocationRequest = LocationRequest.create();
 		connectLocationUpdates(getIntervalSetting(), getPrioritySetting());
@@ -222,7 +215,7 @@ public class LocationService extends Service implements GoogleApiClient.Connecti
 
 	@Override
 	public void onConnectionFailed(ConnectionResult connectionResult) {
-		Log.e(TAG, "onConnectionFailed: " + connectionResult);
+//		Log.e(TAG, "onConnectionFailed: " + connectionResult);
 		showNotification(getText(R.string.google_connection_error), false);
 		buildGoogleApiClient();
 	}
@@ -231,11 +224,11 @@ public class LocationService extends Service implements GoogleApiClient.Connecti
 		@Override
 		public void call(final Object... args) {
 			if (args[0].toString().equals("true")) {
-				Log.d(TAG, "Activating realtime updates");
+//				Log.d(TAG, "Activating realtime updates");
 				connectLocationUpdates(getIntervalSetting(), getPrioritySetting());
 				showNotification(getString(R.string.realtime_updates), true);
 			} else {
-				Log.d(TAG, "Deactivating realtime updates");
+//				Log.d(TAG, "Deactivating realtime updates");
 				connectLocationUpdates(300, LocationRequest.PRIORITY_NO_POWER);
 				showNotification(getString(R.string.occasional_updates), false);
 			}
@@ -253,7 +246,7 @@ public class LocationService extends Service implements GoogleApiClient.Connecti
 			mLocationView.put("dir", String.valueOf(location.getBearing()));
 			mLocationView.put("spd", String.valueOf(location.getSpeed()));
 		} catch (JSONException e) {
-			Log.e(TAG, "Failed to put JSON data");
+//			Log.e(TAG, "Failed to put JSON data");
 		}
 		mSocket.emit("app", mLocationView);
 //		Log.v(TAG, "Location updated: " + mLocationView.toString());
@@ -261,26 +254,26 @@ public class LocationService extends Service implements GoogleApiClient.Connecti
 
 	@Override
 	public void onConnectionSuspended(int i) {
-		Log.d(TAG, "onConnectionSuspended called");
+//		Log.d(TAG, "onConnectionSuspended called");
 		showNotification(getText(R.string.google_connection_error), false);
 	}
 
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
-		Log.d(TAG, "onDestroy executed");
+//		Log.d(TAG, "onDestroy executed");
 
 		mSocket.disconnect();
-		Log.d(TAG, "Disconnected from sockets");
+//		Log.d(TAG, "Disconnected from sockets");
 
 		mGoogleApiClient.disconnect();
-		Log.d(TAG, "Google API disconnected");
+//		Log.d(TAG, "Google API disconnected");
 
 		unregisterReceiver(LowPowerReceiver);
-		Log.d(TAG, "LowPowerReceiver deactivated");
+//		Log.d(TAG, "LowPowerReceiver deactivated");
 
 		setupNotifications(false);
 		showNotification(getText(R.string.disconnected), false);
-		Log.d(TAG, "Notification changed");
+//		Log.d(TAG, "Notification changed");
 	}
 }

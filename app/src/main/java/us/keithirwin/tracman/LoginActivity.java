@@ -45,7 +45,7 @@ public class LoginActivity extends AppCompatActivity implements
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		Log.v(TAG, "Created...");
+//		Log.v(TAG, "Created...");
 
 		// Set up layout
 		setContentView(R.layout.activity_login);
@@ -77,20 +77,20 @@ public class LoginActivity extends AppCompatActivity implements
 	@Override
 	public void onStart() {
 		super.onStart();
-		Log.v(TAG, "Started. Checking for intent method");
+//		Log.v(TAG, "Started. Checking for intent method");
 
 		if (getIntent().hasExtra("method")) {
-			Log.v(TAG, "Intent has method extra");
+//			Log.v(TAG, "Intent has method extra");
 			if (getIntent().getStringExtra("method").equals("signOut")) {
-				Log.d(TAG, "Got intent to sign out");
+//				Log.d(TAG, "Got intent to sign out");
 			}
 		} else { // Try to sign in
-			Log.v(TAG, "Trying to sign in...");
+//			Log.v(TAG, "Trying to sign in...");
 			OptionalPendingResult<GoogleSignInResult> opr = Auth.GoogleSignInApi.silentSignIn(mGoogleApiClient);
 			if (opr.isDone()) {
 				// If the user's cached credentials are valid, the OptionalPendingResult will be "done"
 				// and the GoogleSignInResult will be available instantly.
-				Log.d(TAG, "Got cached sign-in");
+//				Log.d(TAG, "Got cached sign-in");
 				GoogleSignInResult result = opr.get();
 				handleSignInResult(result);
 			} else {
@@ -128,11 +128,11 @@ public class LoginActivity extends AppCompatActivity implements
 				.url(SERVER_ADDRESS+"auth/google/idtoken?id_token="+token)
 				.build();
 
-		Log.d(TAG, "Attempting Tracman signin with token: " + token);
+//		Log.d(TAG, "Attempting Tracman signin with token: " + token);
 		client.newCall(request).enqueue(new Callback() {
 			@Override
 			public void onFailure(Request request, IOException throwable) {
-				Log.e(TAG, "Failed to connect to server: " + SERVER_ADDRESS + "auth/google/idtoken?id_token=" + token);
+//				Log.e(TAG, "Failed to connect to server: " + SERVER_ADDRESS + "auth/google/idtoken?id_token=" + token);
 				showError(R.string.server_connection_error);
 				throwable.printStackTrace();
 			}
@@ -144,7 +144,7 @@ public class LoginActivity extends AppCompatActivity implements
 					res.body().close();
 					throw new IOException("Unexpected code: " + res);
 				} else {
-					Log.d(TAG, "Response code: " + res.code());
+//					Log.d(TAG, "Response code: " + res.code());
 					String userString = res.body().string();
 					System.out.println("Full response: " + userString);
 
@@ -154,10 +154,10 @@ public class LoginActivity extends AppCompatActivity implements
 						userID = user.getString("_id");
 						userName = user.getString("name");
 						userSK = user.getString("sk32");
-						Log.v(TAG, "User retrieved with ID: " + userID);
+//						Log.v(TAG, "User retrieved with ID: " + userID);
 					} catch (JSONException e) {
-						Log.e(TAG, "Unable to parse user JSON: ", e);
-						Log.e(TAG, "JSON String used: " + userString);
+//						Log.e(TAG, "Unable to parse user JSON: ", e);
+//						Log.e(TAG, "JSON String used: " + userString);
 						userID = null;
 						userName = null;
 						userSK = null;
@@ -179,18 +179,18 @@ public class LoginActivity extends AppCompatActivity implements
 	}
 
 	private void handleSignInResult(GoogleSignInResult result) {
-		Log.d(TAG, "handleSignInResult:" + result.isSuccess());
+//		Log.d(TAG, "handleSignInResult:" + result.isSuccess());
 		if (result.isSuccess()) { // Signed in successfully
 			GoogleSignInAccount acct = result.getSignInAccount();
 			String googleToken = acct.getIdToken();
-			Log.v(TAG, "Google token: " + googleToken);
+//			Log.v(TAG, "Google token: " + googleToken);
 			try {
 				AuthenticateGoogle(acct.getIdToken());
 			}  catch (Exception e) {
-				Log.e(TAG, "Error sending ID token to backend.", e);
+//				Log.e(TAG, "Error sending ID token to backend.", e);
 			}
 		} else {
-			Log.e(TAG, "Failed to log in: "+result.getStatus().getStatusCode());
+//			Log.e(TAG, "Failed to log in: "+result.getStatus().getStatusCode());
 			if (result.getStatus().getStatusCode()!=4) {
 				showError(R.string.google_connection_error);
 			}
@@ -205,7 +205,7 @@ public class LoginActivity extends AppCompatActivity implements
 	@Override
 	public void onConnectionFailed(ConnectionResult connectionResult) {
 		showError(R.string.disconnected);
-		Log.d(TAG, "onConnectionFailed:" + connectionResult);
+//		Log.d(TAG, "onConnectionFailed:" + connectionResult);
 	}
 
 	private void showProgressDialog() {
