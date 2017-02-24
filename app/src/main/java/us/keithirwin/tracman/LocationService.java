@@ -1,5 +1,7 @@
 package us.keithirwin.tracman;
 
+import android.Manifest;
+
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
@@ -8,13 +10,18 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.graphics.BitmapFactory;
+//import android.content.pm.PackageManager;
+import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
+//import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.NotificationCompat;
+//import android.support.v4.content.ContextCompat;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -32,6 +39,7 @@ import org.json.JSONObject;
 
 import java.net.URISyntaxException;
 
+
 public class LocationService extends Service implements GoogleApiClient.ConnectionCallbacks,
 		GoogleApiClient.OnConnectionFailedListener, LocationListener {
 	public LocationService() {}
@@ -44,6 +52,7 @@ public class LocationService extends Service implements GoogleApiClient.Connecti
 	Location mLastLocation;
 	private GoogleApiClient mGoogleApiClient;
 	private LocationRequest mLocationRequest;
+
 	synchronized void buildGoogleApiClient() {
 		mGoogleApiClient = new GoogleApiClient.Builder(this)
 				.addConnectionCallbacks(this)
@@ -139,14 +148,19 @@ public class LocationService extends Service implements GoogleApiClient.Connecti
 	private int getPrioritySetting() {
 		return Integer.parseInt(sharedPref.getString("broadcast_priority", "100"));
 	}
-
 	private int getIntervalSetting() {
 		return Integer.parseInt(
 				sharedPref.getString("broadcast_frequency",
 						getResources().getString(R.string.pref_default_broadcast_frequency)));
 	}
 
+	public static boolean checkLocationPermission(final Context context) {
+		return ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
+	}
+
 	void connectLocationUpdates(Integer interval, Integer priority) {
+
+		// Set update parameters
 		if (mLocationRequest != null) {
 			mLocationRequest.setPriority(priority);
 			mLocationRequest.setInterval(interval * 1000); // 1000 = 1 second
@@ -155,19 +169,41 @@ public class LocationService extends Service implements GoogleApiClient.Connecti
 			connectLocationUpdates(getIntervalSetting(), getPrioritySetting());
 		}
 
-		if (mGoogleApiClient.isConnected()) {
-			LocationServices.FusedLocationApi.requestLocationUpdates(
-					mGoogleApiClient,
-					mLocationRequest,
-					this);
-		} else {
-			mGoogleApiClient.connect();
-		}
-		mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+		// Get permission
+		if (!checkLocationPermission(this)) {
+			Log.d(TAG, "Location permission denied");
 
+		} else {
+			Log.d(TAG, "Location permission granted");
+
+			// Request location updates
+			if (mGoogleApiClient.isConnected()) {
+				LocationServices.FusedLocationApi.requestLocationUpdates(
+						mGoogleApiClient,
+						mLocationRequest,
+						this);
+			} else {
+				mGoogleApiClient.connect();
+			}
+
+			// Get last location
+			mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+
+		}
+//		if ( ContextCompat.checkSelfPermission( this, android.Manifest.permission.ACCESS_FINE_LOCATION ) != PackageManager.PERMISSION_GRANTED ) {
+//			ActivityCompat.requestPermissions( this, new String[] {  android.Manifest.permission.ACCESS_FINE_LOCATION  },
+//					LocationService.MY_FINE_LOCATION_PERMISSION );
+//		} else {
+//
+//
+//
+//		}
+
+		// Set location if there is one
 		if (mLastLocation != null) {
 			onLocationChanged(mLastLocation);
 		}
+
 	}
 
 	@Override

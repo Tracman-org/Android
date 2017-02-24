@@ -1,16 +1,20 @@
 package us.keithirwin.tracman;
 
+import android.Manifest;
 
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
@@ -18,6 +22,7 @@ import android.util.Log;
 import android.view.MenuItem;
 
 import java.util.List;
+
 
 /**
  * A {@link PreferenceActivity} that presents a set of application settings. On
@@ -32,6 +37,8 @@ import java.util.List;
  */
 public class SettingsActivity extends AppCompatPreferenceActivity {
 	private static final String TAG = "SettingsActivity";
+
+	private static int MY_FINE_LOCATION_PERMISSION = 425;
 
 	/**
 	 * A preference value change listener that updates the preference's summary
@@ -105,16 +112,33 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 		}
 	}
 
+	private void showLocationPermissionDialog() {
+		if (!LocationService.checkLocationPermission(this)) {
+			ActivityCompat.requestPermissions(
+					this,
+					new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+					MY_FINE_LOCATION_PERMISSION);
+		}
+	}
+
 	@Override
 	protected void onStop() {
+
 		Log.d(TAG, "onStop called");
 		super.onStop();
+
 		// Restart service so settings can take effect
 		stopService(new Intent(this, LocationService.class));
 		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
 		if (sharedPref.getBoolean("gps_switch", false)) {
+
+			// Ask for location permissions (can't be done in service, only activity)
+			showLocationPermissionDialog();
+
+			// Start location tracking service
 			Log.d(TAG, "Starting LocationService");
 			startService(new Intent(this, LocationService.class));
+
 		}
 	}
 

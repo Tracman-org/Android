@@ -1,0 +1,46 @@
+apply plugin: 'com.android.application'
+
+android {
+	signingConfigs {
+		config {
+			keyAlias 'TracmanKey'
+			keyPassword 'Gyt223qw!'
+			storeFile file('/home/keith/code/Android/Tracman/app/keystore.jks')
+			storePassword 'Gyt223qw!'
+		}
+	}
+	compileSdkVersion 23
+	buildToolsVersion "23.0.3"
+	defaultConfig {
+		applicationId "us.keithirwin.tracman"
+		minSdkVersion 14
+		targetSdkVersion 23
+		versionCode 9
+		versionName "0.1.8"
+	}
+	buildTypes {
+		release {
+			minifyEnabled false
+			proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+			signingConfig signingConfigs.config
+			zipAlignEnabled true
+		}
+	}
+}
+
+dependencies {
+	compile fileTree(dir: 'libs', include: ['*.jar'])
+	testCompile 'junit:junit:4.12'
+	compile 'com.android.support:appcompat-v7:23.2.0'
+	compile 'com.android.support:support-v4:23.2.0'
+	compile 'com.android.support:design:23.2.0'
+	compile 'com.google.android.gms:play-services-location:9.8.0'
+	compile 'com.google.android.gms:play-services-auth:9.8.0'
+	compile ('com.github.nkzawa:socket.io-client:0.4.1'){
+		exclude group: 'org.json', module: 'json'
+	}
+	compile 'com.squareup.retrofit2:retrofit:2.0.0-beta3'
+	compile 'com.squareup.retrofit2:converter-gson:2.0.0-beta3'
+}
+
+apply plugin: 'com.google.gms.google-services'

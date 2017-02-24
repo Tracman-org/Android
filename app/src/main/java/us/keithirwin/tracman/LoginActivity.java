@@ -56,11 +56,8 @@ public class LoginActivity extends AppCompatActivity implements
 		// Configure sign-in to request the user's ID and basic profile, included in DEFAULT_SIGN_IN.
 		GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
 				.requestIdToken(GOOGLE_WEB_CLIENT_ID)
+				.requestEmail()
 				.build();
-
-		// Set up buttons
-		SignInButton signInButton = (SignInButton) findViewById(R.id.google_sign_in_button);
-		signInButton.setStyle(SignInButton.SIZE_WIDE, SignInButton.COLOR_DARK, gso.getScopeArray());
 
 		// Build a GoogleApiClient with access to the Google Sign-In API and the
 		// options specified by gso.
@@ -68,6 +65,10 @@ public class LoginActivity extends AppCompatActivity implements
 				.enableAutoManage(this /* FragmentActivity */, this /* OnConnectionFailedListener */)
 				.addApi(Auth.GOOGLE_SIGN_IN_API, gso)
 				.build();
+
+		// Set up buttons
+		SignInButton signInButton = (SignInButton) findViewById(R.id.google_sign_in_button);
+		signInButton.setStyle(SignInButton.SIZE_WIDE, SignInButton.COLOR_AUTO);
 
 		// Button listeners
 		findViewById(R.id.google_sign_in_button).setOnClickListener(this);
@@ -127,6 +128,7 @@ public class LoginActivity extends AppCompatActivity implements
 				.url(SERVER_ADDRESS+"auth/google/idtoken?id_token="+token)
 				.build();
 
+		Log.d(TAG, "Attempting Tracman signin with token: " + token);
 		client.newCall(request).enqueue(new Callback() {
 			@Override
 			public void onFailure(Request request, IOException throwable) {
@@ -140,7 +142,7 @@ public class LoginActivity extends AppCompatActivity implements
 				if (!res.isSuccessful()) {
 					showError(R.string.login_no_user_error);
 					res.body().close();
-					throw new IOException("Unexpected code " + res);
+					throw new IOException("Unexpected code: " + res);
 				} else {
 					Log.d(TAG, "Response code: " + res.code());
 					String userString = res.body().string();
@@ -170,7 +172,7 @@ public class LoginActivity extends AppCompatActivity implements
 					editor.putString("loggedInUserSk", userSK);
 					editor.commit();
 
-					startActivity(new Intent(getBaseContext(), MainActivity.class));
+					startActivity(new Intent(getBaseContext(), SettingsActivity.class));
 				}
 			}
 		});
@@ -195,7 +197,7 @@ public class LoginActivity extends AppCompatActivity implements
 		}
 	}
 
-	private void googleSignIn() {
+	private void signIn() {
 		Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
 		startActivityForResult(signInIntent, RC_SIGN_IN);
 	}
@@ -235,7 +237,7 @@ public class LoginActivity extends AppCompatActivity implements
 	public void onClick(View v) {
 		switch (v.getId()) {
 			case R.id.google_sign_in_button:
-				googleSignIn();
+				signIn();
 				break;
 		}
 	}
