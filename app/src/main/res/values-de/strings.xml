@@ -16,10 +16,6 @@
 	<string name="login_no_user_error">FEHLER: Nutzer nicht gefunden. </string>
 	<string name="logout_name">Ausloggen</string>
 	<string name="main_name">Hauptsicht</string>
-	<string name="named_welcome">Hallo%1$s!  \n</string>
-	<string name="main_activity_description">Auf dem Hamburger klicken, Einstellungen zu ändern.  \n\nAuf dem Knopf darunter klicken, deine Standort im Broswer zu zeigen. </string>
-	<string name="navigation_drawer_close">Navigation schließen</string>
-	<string name="navigation_drawer_open">Navigation aufmachen</string>
 	<string name="occasional_updates">Aktualisiert gelegentlich</string>
 	<string name="realtime_updates">Aktualisiert realtime</string>
 	<string name="pref_app_category_title">App Einstellungen</string>
@@ -29,8 +25,6 @@
 	<string name="settings_name">Einstellungen</string>
 	<string name="server_connection_error">FEHLER: Könnte nicht zum Tracman Server verbinden. </string>
 	<string name="suggestions_name">Vorschläge</string>
-	<string name="view_trac_button">Karte zeigen</string>
-	<string name="welcome">Wilkommen</string>
 	<string name="pref_title_broadcast_frequency">Aktualisierung Zwischenraum</string>
 	<string-array name="pref_broadcast_frequency_list_titles">
 		<item>1 Sekund</item>
@@ -56,4 +50,5 @@
 	</string-array>
 	<string name="pref_title_gps_broadcast">Sendungen einschalten</string>
 	<string name="pref_title_broadcast_priority">Aktualisierung Vorrang</string>
+	<string name="not_connected">Kein Internet Zugang</string>
 </resources>

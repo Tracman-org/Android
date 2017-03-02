@@ -3,8 +3,6 @@
 	<string name="about_back_button">Atras</string>
 	<string name="about_name">Info</string>
 	<string name="connecting">conectando…</string>
-	<string name="welcome">Bienvenido</string>
-	<string name="named_welcome">Hola%1$s!  \n</string>
 	<string name="about_license"><a href="https://tracman.org/license/">Mostrar licensia en el navegador (inglés)</a></string>
 	<string name="loading">Cargando…</string>
 	<string name="disconnected">Conexión perdida</string>
@@ -12,7 +10,6 @@
 	<string name="bugs_name">Informe de error</string>
 	<string name="pref_header_general">Configuración principales</string>
 	<string name="settings_name">Configuración</string>
-	<string name="view_trac_button">Mostrar mapa</string>
 	<string name="suggestions_name">Sugerencias</string>
 	<string name="server_connection_error">ERROR: No se puede conectar al servidor de Tracman. </string>
 	<string name="occasional_updates">Se actualiza a veces</string>
@@ -25,8 +22,6 @@
 	<string name="login_no_user_error">ERROR: Usario no encontrado</string>
 	<string name="logout_name">Cerrar sesión</string>
 	<string name="main_name">Vida principal</string>
-	<string name="navigation_drawer_close">Cerrar navegación</string>
-	<string name="navigation_drawer_open">Abrir navegación</string>
 	<string name="pref_app_category_title">Configuración de la aplicación</string>
 	<string name="pref_start_boot">Iniciar el servicio al encender</string>
 	<string name="pref_title_broadcast_frequency">Intervalo de actualización</string>
@@ -53,7 +48,6 @@
 		<item>Ciudad</item>
 		<item>Sin energía</item>
 	</string-array>
-	<string name="pref_title_gps_broadcast">Encender transmisiónes</string>
-	<string name="main_activity_description">Haga clic en el menú de hamburguesa para cambiar la configuración. \n\n Haga clic en el botón abajo para ver su ubicación en su navegador. </string>
-	<string name="pref_broadcast_category_title">Actualizaciones de ubicación</string>
+	<string name="pref_title_gps_broadcast">Encender transmisiónes</string>	<string name="pref_broadcast_category_title">Actualizaciones de ubicación</string>
+	<string name="not_connected">"Sin conexión a Internet "</string>
 </resources>

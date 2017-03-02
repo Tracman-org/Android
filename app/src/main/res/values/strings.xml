@@ -22,16 +22,7 @@
 	<string name="realtime_updates">Sending realtime updates</string>
 	<string name="occasional_updates">Sending occasional updates</string>
 	<string name="broadcast_disabled">Broadcast disabled</string>
-
-	<!-- Strings related to drawer -->
-	<string name="navigation_drawer_open">Open navigation drawer</string>
-	<string name="navigation_drawer_close">Close navigation drawer</string>
-
-	<!-- Strings related to MainFragment -->
-	<string name="welcome">Welcome </string>
-	<string name="named_welcome">Hi%1$s!  \n</string>
-	<string name="main_activity_description">Tap on the hamburger menu to change settings.  \n\nTap on the button below to see your location in your browser. </string>
-	<string name="view_trac_button">View Map</string>
+	<string name="not_connected">No internet connection</string>
 
 	<!-- Strings related to Settings -->
 	<string name="settings_name">Settings</string>

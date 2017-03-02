@@ -10,17 +10,16 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
-//import android.content.pm.PackageManager;
 import android.content.pm.PackageManager;
 import android.location.Location;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
-//import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.NotificationCompat;
-//import android.support.v4.content.ContextCompat;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 
@@ -237,19 +236,33 @@ public class LocationService extends Service implements GoogleApiClient.Connecti
 
 	@Override
 	public void onLocationChanged(Location location) {
-		JSONObject mLocationView = new JSONObject();
-		try {
-			mLocationView.put("usr", mUserID);
-			mLocationView.put("tok", mUserSK);
-			mLocationView.put("lat", String.valueOf(location.getLatitude()));
-			mLocationView.put("lon", String.valueOf(location.getLongitude()));
-			mLocationView.put("dir", String.valueOf(location.getBearing()));
-			mLocationView.put("spd", String.valueOf(location.getSpeed()));
-		} catch (JSONException e) {
-//			Log.e(TAG, "Failed to put JSON data");
+
+		// Check for internet connectivity
+		ConnectivityManager cm =
+				(ConnectivityManager)this.getSystemService(Context.CONNECTIVITY_SERVICE);
+		NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+		boolean isConnected = activeNetwork != null &&
+				activeNetwork.isConnectedOrConnecting();
+
+		if (isConnected) {
+			JSONObject mLocationView = new JSONObject();
+			try {
+				mLocationView.put("usr", mUserID);
+				mLocationView.put("tok", mUserSK);
+				mLocationView.put("lat", String.valueOf(location.getLatitude()));
+				mLocationView.put("lon", String.valueOf(location.getLongitude()));
+				mLocationView.put("dir", String.valueOf(location.getBearing()));
+				mLocationView.put("spd", String.valueOf(location.getSpeed()));
+			} catch (JSONException e) {
+				//			Log.e(TAG, "Failed to put JSON data");
+			}
+			mSocket.emit("app", mLocationView);
+			//		Log.v(TAG, "Location updated: " + mLocationView.toString());
+
+		} else {
+			showNotification(getString(R.string.not_connected), false);
 		}
-		mSocket.emit("app", mLocationView);
-//		Log.v(TAG, "Location updated: " + mLocationView.toString());
+
 	}
 
 	@Override
