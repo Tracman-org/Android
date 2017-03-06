@@ -6,7 +6,6 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
@@ -14,7 +13,6 @@ import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
@@ -69,6 +67,37 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 	};
 
 	/**
+	 * A preference value change listener that restarts the location service
+	 * after something relevant is changed.
+	 */
+	private Preference.OnPreferenceChangeListener sRestartLocationServiceOnChangeListener = new Preference.OnPreferenceChangeListener() {
+
+		@Override
+		public boolean onPreferenceChange(Preference preference, Object obj) {
+			SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(SettingsActivity.this);
+
+			stopService(new Intent(SettingsActivity.this, LocationService.class));
+
+			if (sharedPref.getBoolean("gps_switch", false)) {
+
+				// Ask for location permissions (can't be done in service, only activity)
+				if (!LocationService.checkLocationPermission(SettingsActivity.this)) {
+					ActivityCompat.requestPermissions(
+							SettingsActivity.this,
+							new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+							MY_FINE_LOCATION_PERMISSION);
+				}
+
+//				Log.d(TAG, "Starting LocationService");
+				startService(new Intent(SettingsActivity.this, LocationService.class));
+
+			}
+
+			return true;
+		}
+	};
+
+	/**
 	 * Helper method to determine if the device has an extra-large screen. For
 	 * example, 10" tablets are extra-large.
 	 */
@@ -103,6 +132,9 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 		setupActionBar();
 //		Log.d(TAG, "activity onCreate called");
 
+		// Restart LocationService when any related preference is changed
+//		findPreference("gps_switch").setOnPreferenceChangeListener(sRestartLocationServiceOnChangeListener);
+
 		// Get User ID
 		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
 		String mUserID = sharedPref.getString("loggedInUserId", null);
@@ -111,34 +143,10 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 		}
 	}
 
-	private void showLocationPermissionDialog() {
-		if (!LocationService.checkLocationPermission(this)) {
-			ActivityCompat.requestPermissions(
-					this,
-					new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-					MY_FINE_LOCATION_PERMISSION);
-		}
-	}
-
 	@Override
 	protected void onStop() {
-
 //		Log.d(TAG, "onStop called");
 		super.onStop();
-
-		// Restart service so settings can take effect
-		stopService(new Intent(this, LocationService.class));
-		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
-		if (sharedPref.getBoolean("gps_switch", false)) {
-
-			// Ask for location permissions (can't be done in service, only activity)
-			showLocationPermissionDialog();
-
-			// Start location tracking service
-//			Log.d(TAG, "Starting LocationService");
-			startService(new Intent(this, LocationService.class));
-
-		}
 	}
 
 	/**
@@ -206,6 +214,9 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 			super.onCreate(savedInstanceState);
 			addPreferencesFromResource(R.xml.pref_general);
 			setHasOptionsMenu(true);
+
+//			// Restart LocationService when any related preference is changed
+//			findPreference("gps_switch").setOnPreferenceChangeListener(sRestartLocationServiceOnChangeListener);
 
 			// Bind the summary of preferences to their value
 			bindPreferenceSummaryToValue(findPreference("broadcast_frequency"));

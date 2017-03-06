@@ -42,7 +42,8 @@ import java.net.URISyntaxException;
 public class LocationService extends Service implements GoogleApiClient.ConnectionCallbacks,
 		GoogleApiClient.OnConnectionFailedListener, LocationListener {
 	public LocationService() {}
-	private String TAG = "LocationService";
+//	private String TAG = "LocationService";
+	final String SERVER_ADDRESS = "https://dev.tracman.org/";
 
 	private Socket mSocket;
 	private String mUserID;
@@ -128,7 +129,6 @@ public class LocationService extends Service implements GoogleApiClient.Connecti
 
 		mUserID = sharedPref.getString("loggedInUserId", null);
 		mUserSK = sharedPref.getString("loggedInUserSk", null);
-		final String SERVER_ADDRESS = "https://tracman.org/";
 
 		// Connect to socket
 		try {

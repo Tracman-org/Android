@@ -16,7 +16,7 @@ android {
 		}
 	}
 	compileSdkVersion 23
-	buildToolsVersion "23.0.3"
+	buildToolsVersion '25.0.0'
 	defaultConfig {
 		applicationId "us.keithirwin.tracman"
 		minSdkVersion 14
@@ -45,8 +45,10 @@ dependencies {
 	compile ('com.github.nkzawa:socket.io-client:0.4.1'){
 		exclude group: 'org.json', module: 'json'
 	}
-	compile 'com.squareup.retrofit2:retrofit:2.0.0-beta3'
-	compile 'com.squareup.retrofit2:converter-gson:2.0.0-beta3'
+	compile 'com.squareup.retrofit2:retrofit:2.2.0'
+//	compile 'com.squareup.retrofit2:converter-gson:2.2.0'
+//	compile 'com.squareup.retrofit2:retrofit:2.0.0-beta3'
+//	compile 'com.squareup.retrofit2:converter-gson:2.0.0-beta3'
 }
 
 apply plugin: 'com.google.gms.google-services'
