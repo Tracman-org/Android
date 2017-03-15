@@ -34,8 +34,8 @@ import java.util.List;
  * API Guide</a> for more information on developing a Settings UI.
  */
 public class SettingsActivity extends AppCompatPreferenceActivity {
-//	private static final String TAG = "SettingsActivity";
-	private static int MY_FINE_LOCATION_PERMISSION = 425;
+	private static final String TAG = "SettingsActivity";
+	private static final int MY_FINE_LOCATION_PERMISSION = 425;
 
 	/**
 	 * A preference value change listener that updates the preference's summary
@@ -145,8 +145,28 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 
 	@Override
 	protected void onStop() {
-//		Log.d(TAG, "onStop called");
+		Log.d(TAG, "onStop called");
 		super.onStop();
+
+		// Restart service so settings can take effect
+		stopService(new Intent(this, LocationService.class));
+		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+		if (sharedPref.getBoolean("gps_switch", false)) {
+
+			// Ask for location permissions (can't be done in service, only activity)
+			if (!LocationService.checkLocationPermission(this)) {
+				ActivityCompat.requestPermissions(
+						this,
+						new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+						MY_FINE_LOCATION_PERMISSION);
+			}
+
+			// Start location tracking service
+//			Log.d(TAG, "Starting LocationService");
+			startService(new Intent(this, LocationService.class));
+
+		}
+
 	}
 
 	/**
@@ -209,6 +229,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 	 */
 	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
 	public static class GeneralPreferenceFragment extends PreferenceFragment {
+
 		@Override
 		public void onCreate(Bundle savedInstanceState) {
 			super.onCreate(savedInstanceState);

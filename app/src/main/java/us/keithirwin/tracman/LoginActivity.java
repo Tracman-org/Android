@@ -47,10 +47,15 @@ import okhttp3.TlsVersion;
 public class LoginActivity extends AppCompatActivity implements
 		GoogleApiClient.OnConnectionFailedListener,
 		View.OnClickListener {
-	private static final String TAG = "LoginActivity";
+//	private static final String TAG = "LoginActivity";
 	private static final int RC_SIGN_IN = 9001;
+
+	// Development
 	private final String SERVER_ADDRESS = "https://dev.tracman.org/";
-	private static final String GOOGLE_WEB_CLIENT_ID = "483494341936-hrn0ms1tebgdtfs5f4i6ebmkt3qmo16o.apps.googleusercontent.com";
+	private static final String GOOGLE_WEB_CLIENT_ID = "483494341936-hps4p2pcu3ctshjvqm3pqdbg0t0q281o.apps.googleusercontent.com";
+	// Production
+//	private final String SERVER_ADDRESS = "https://tracman.org/";
+//	private static final String GOOGLE_WEB_CLIENT_ID = "483494341936-hrn0ms1tebgdtfs5f4i6ebmkt3qmo16o.apps.googleusercontent.com";
 
 	private GoogleApiClient mGoogleApiClient;
 	private ProgressDialog mProgressDialog;
@@ -158,7 +163,7 @@ public class LoginActivity extends AppCompatActivity implements
 		client.newCall(request).enqueue(new Callback() {
 			@Override
 			public void onFailure(Call call, IOException e) {
-				Log.e(TAG, "Failed to connect to server: " + SERVER_ADDRESS + "auth/google/idtoken?id_token=" + token);
+//				Log.e(TAG, "Failed to connect to server: " + SERVER_ADDRESS + "auth/google/idtoken?id_token=" + token);
 				showError(R.string.server_connection_error);
 				e.printStackTrace();
 			}
