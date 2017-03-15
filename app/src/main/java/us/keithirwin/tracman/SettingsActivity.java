@@ -34,7 +34,7 @@ import java.util.List;
  * API Guide</a> for more information on developing a Settings UI.
  */
 public class SettingsActivity extends AppCompatPreferenceActivity {
-	private static final String TAG = "SettingsActivity";
+	//private static final String TAG = "SettingsActivity";
 	private static final int MY_FINE_LOCATION_PERMISSION = 425;
 
 	/**
@@ -145,7 +145,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 
 	@Override
 	protected void onStop() {
-		Log.d(TAG, "onStop called");
+		//Log.d(TAG, "onStop called");
 		super.onStop();
 
 		// Restart service so settings can take effect
