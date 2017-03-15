@@ -27,35 +27,29 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.security.KeyStore;
 import java.util.Arrays;
-import java.util.Collections;
 
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.TrustManagerFactory;
 import javax.net.ssl.X509TrustManager;
 
 import okhttp3.Call;
-import okhttp3.CipherSuite;
-import okhttp3.ConnectionSpec;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Callback;
 import okhttp3.Response;
-import okhttp3.TlsVersion;
 
 public class LoginActivity extends AppCompatActivity implements
 		GoogleApiClient.OnConnectionFailedListener,
 		View.OnClickListener {
-//	private static final String TAG = "LoginActivity";
+	private static final String TAG = "LoginActivity";
 	private static final int RC_SIGN_IN = 9001;
 
 	// Development
-	//private final String SERVER_ADDRESS = "https://dev.tracman.org/";
-	//private static final String GOOGLE_WEB_CLIENT_ID = "483494341936-hps4p2pcu3ctshjvqm3pqdbg0t0q281o.apps.googleusercontent.com";
+	private final String SERVER_ADDRESS = "https://dev.tracman.org/";
+	private static final String GOOGLE_WEB_CLIENT_ID = "483494341936-hps4p2pcu3ctshjvqm3pqdbg0t0q281o.apps.googleusercontent.com";
 	// Production
-	private final String SERVER_ADDRESS = "https://tracman.org/";
-	private static final String GOOGLE_WEB_CLIENT_ID = "483494341936-hrn0ms1tebgdtfs5f4i6ebmkt3qmo16o.apps.googleusercontent.com";
+//	private final String SERVER_ADDRESS = "https://tracman.org/";
+//	private static final String GOOGLE_WEB_CLIENT_ID = "483494341936-hrn0ms1tebgdtfs5f4i6ebmkt3qmo16o.apps.googleusercontent.com";
 
 	private GoogleApiClient mGoogleApiClient;
 	private ProgressDialog mProgressDialog;
@@ -63,7 +57,7 @@ public class LoginActivity extends AppCompatActivity implements
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-//		Log.v(TAG, "Created...");
+		Log.v(TAG, "Created...");
 
 		// Set up layout
 		setContentView(R.layout.activity_login);
@@ -95,20 +89,20 @@ public class LoginActivity extends AppCompatActivity implements
 	@Override
 	public void onStart() {
 		super.onStart();
-//		Log.v(TAG, "Started. Checking for intent method");
+		Log.v(TAG, "Started. Checking for intent method");
 
 		if (getIntent().hasExtra("method")) {
-//			Log.v(TAG, "Intent has method extra");
+			Log.v(TAG, "Intent has method extra");
 			if (getIntent().getStringExtra("method").equals("signOut")) {
-//				Log.d(TAG, "Got intent to sign out");
+				Log.d(TAG, "Got intent to sign out");
 			}
 		} else { // Try to sign in
-//			Log.v(TAG, "Trying to sign in...");
+			Log.v(TAG, "Trying to sign in...");
 			OptionalPendingResult<GoogleSignInResult> opr = Auth.GoogleSignInApi.silentSignIn(mGoogleApiClient);
 			if (opr.isDone()) {
 				// If the user's cached credentials are valid, the OptionalPendingResult will be "done"
 				// and the GoogleSignInResult will be available instantly.
-//				Log.d(TAG, "Got cached sign-in");
+				Log.d(TAG, "Got cached sign-in");
 				GoogleSignInResult result = opr.get();
 				handleSignInResult(result);
 			} else {
@@ -163,7 +157,7 @@ public class LoginActivity extends AppCompatActivity implements
 		client.newCall(request).enqueue(new Callback() {
 			@Override
 			public void onFailure(Call call, IOException e) {
-//				Log.e(TAG, "Failed to connect to server: " + SERVER_ADDRESS + "auth/google/idtoken?id_token=" + token);
+				Log.e(TAG, "Failed to connect to server: " + SERVER_ADDRESS + "auth/google/idtoken?id_token=" + token);
 				showError(R.string.server_connection_error);
 				e.printStackTrace();
 			}
@@ -175,7 +169,7 @@ public class LoginActivity extends AppCompatActivity implements
 					res.body().close();
 					throw new IOException("Unexpected code: " + res);
 				} else {
-//					Log.d(TAG, "Response code: " + res.code());
+					Log.d(TAG, "Response code: " + res.code());
 					String userString = res.body().string();
 					System.out.println("Full response: " + userString);
 
@@ -185,10 +179,10 @@ public class LoginActivity extends AppCompatActivity implements
 						userID = user.getString("_id");
 						userName = user.getString("name");
 						userSK = user.getString("sk32");
-//						Log.v(TAG, "User retrieved with ID: " + userID);
+						Log.v(TAG, "User retrieved with ID: " + userID);
 					} catch (JSONException e) {
-//						Log.e(TAG, "Unable to parse user JSON: ", e);
-//						Log.e(TAG, "JSON String used: " + userString);
+						Log.e(TAG, "Unable to parse user JSON: ", e);
+						Log.e(TAG, "JSON String used: " + userString);
 						userID = null;
 						userName = null;
 						userSK = null;
