@@ -25,17 +25,35 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.security.KeyStore;
+import java.util.Arrays;
+import java.util.Collections;
 
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSocketFactory;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.TrustManagerFactory;
+import javax.net.ssl.X509TrustManager;
+
+import okhttp3.Call;
+import okhttp3.CipherSuite;
+import okhttp3.ConnectionSpec;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Callback;
 import okhttp3.Response;
+import okhttp3.TlsVersion;
 
 public class LoginActivity extends AppCompatActivity implements
 		GoogleApiClient.OnConnectionFailedListener,
 		View.OnClickListener {
-	private static final String TAG = "LoginActivity";
+//	private static final String TAG = "LoginActivity";
 	private static final int RC_SIGN_IN = 9001;
+
+	// Development
+	//private final String SERVER_ADDRESS = "https://dev.tracman.org/";
+	//private static final String GOOGLE_WEB_CLIENT_ID = "483494341936-hps4p2pcu3ctshjvqm3pqdbg0t0q281o.apps.googleusercontent.com";
+	// Production
 	private final String SERVER_ADDRESS = "https://tracman.org/";
 	private static final String GOOGLE_WEB_CLIENT_ID = "483494341936-hrn0ms1tebgdtfs5f4i6ebmkt3qmo16o.apps.googleusercontent.com";
 
@@ -122,23 +140,36 @@ public class LoginActivity extends AppCompatActivity implements
 	}
 
 	private void AuthenticateGoogle(final String token) throws Exception {
-		final OkHttpClient client = new OkHttpClient();
+
+		// Needed to support TLS 1.1 and 1.2
+		TrustManagerFactory trustManagerFactory = TrustManagerFactory.getInstance(
+				TrustManagerFactory.getDefaultAlgorithm());
+		trustManagerFactory.init((KeyStore) null);
+		TrustManager[] trustManagers = trustManagerFactory.getTrustManagers();
+		if (trustManagers.length != 1 || !(trustManagers[0] instanceof X509TrustManager)) {
+			throw new IllegalStateException("Unexpected default trust managers:"
+					+ Arrays.toString(trustManagers));
+		}
+		X509TrustManager trustManager = (X509TrustManager) trustManagers[0];
+
+		OkHttpClient client = new OkHttpClient.Builder()
+				.sslSocketFactory(new TLSSocketFactory(), trustManager)
+				.build();
 
 		Request request = new Request.Builder()
 				.url(SERVER_ADDRESS+"auth/google/idtoken?id_token="+token)
 				.build();
 
-//		Log.d(TAG, "Attempting Tracman signin with token: " + token);
 		client.newCall(request).enqueue(new Callback() {
 			@Override
-			public void onFailure(Request request, IOException throwable) {
+			public void onFailure(Call call, IOException e) {
 //				Log.e(TAG, "Failed to connect to server: " + SERVER_ADDRESS + "auth/google/idtoken?id_token=" + token);
 				showError(R.string.server_connection_error);
-				throwable.printStackTrace();
+				e.printStackTrace();
 			}
 
 			@Override
-			public void onResponse(Response res) throws IOException {
+			public void onResponse(Call call, Response res) throws IOException {
 				if (!res.isSuccessful()) {
 					showError(R.string.login_no_user_error);
 					res.body().close();
@@ -173,9 +204,11 @@ public class LoginActivity extends AppCompatActivity implements
 					editor.commit();
 
 					startActivity(new Intent(getBaseContext(), SettingsActivity.class));
-				}
 			}
+		}
+
 		});
+
 	}
 
 	private void handleSignInResult(GoogleSignInResult result) {
