@@ -147,10 +147,16 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 	protected void onStop() {
 		Log.d(TAG, "onStop called");
 		super.onStop();
+		// Get updated preferences
+		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+
+		// Save updated preferences
+		SharedPreferences.Editor editor = sharedPref.edit();
+//		editor.putBoolean("pref_start_boot", );
+		editor.apply();
 
 		// Restart service so settings can take effect
 		stopService(new Intent(this, LocationService.class));
-		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
 		if (sharedPref.getBoolean("gps_switch", false)) {
 
 			// Ask for location permissions (can't be done in service, only activity)
@@ -219,8 +225,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 	protected boolean isValidFragment(String fragmentName) {
 		return PreferenceFragment.class.getName().equals(fragmentName)
 				|| GeneralPreferenceFragment.class.getName().equals(fragmentName);
-//				|| MapPreferenceFragment.class.getName().equals(fragmentName)
-//				|| NotificationPreferenceFragment.class.getName().equals(fragmentName);
 	}
 
 	/**
@@ -242,7 +246,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 			// Bind the summary of preferences to their value
 			bindPreferenceSummaryToValue(findPreference("broadcast_frequency"));
 			bindPreferenceSummaryToValue(findPreference("broadcast_priority"));
-		}
+
+        }
 	}
 
 	/**
