@@ -3,8 +3,7 @@
 	<string name="about_back_button">Atras</string>
 	<string name="about_name">Info</string>
 	<string name="connecting">conectando…</string>
-	<string name="about_license"><a href="https://tracman.org/license/">Mostrar licensia en el navegador (inglés)</a></string>
-	<string name="loading">Cargando…</string>
+    <string name="loading">Cargando…</string>
 	<string name="disconnected">Conexión perdida</string>
 	<string name="connected">Conexión establecida</string>
 	<string name="bugs_name">Informe de error</string>
@@ -17,7 +16,7 @@
 	<string name="broadcast_disabled">Transmisiónes apagado</string>
 	<string name="google_connection_error">ERROR: No se puede conectar al Google API servidor. </string>
 	<string name="help_name">Ayuda</string>
-	<string name="login_description">"Haga clic en el botón abajo para iniciar una sesión. Se necisita una cuenta de Tracman. Si no tiene uno, puede <a href="https://tracman.org/login">participar con sua cuenta Google</a>. "</string>
+	<string name="login_description">"Iniciar una sesión. Si no tiene una cuenta de Tracman, puede <a href="https://tracman.org/login">participar</a>. "</string>
 	<string name="login_name">Iniciar sesión</string>
 	<string name="login_no_user_error">ERROR: Usario no encontrado</string>
 	<string name="logout_name">Cerrar sesión</string>
@@ -49,5 +48,9 @@
 		<item>Sin energía</item>
 	</string-array>
 	<string name="pref_title_gps_broadcast">Encender transmisiónes</string>	<string name="pref_broadcast_category_title">Actualizaciones de ubicación</string>
-	<string name="not_connected">"Sin conexión a Internet "</string>
+	<string name="not_connected">Sin conexión a Internet</string>
+	<string name="login_forgot_password"><a href="https://tracman.org/login/forgot">Olividé su contrasena?</a></string>
+	<string name="login_button_text">Inciar session</string>
+    <string name="email">email</string>
+	<string name="password">contrasena</string>
 </resources>

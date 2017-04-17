@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 	<string name="about_back_button">Zurück</string>
-	<string name="about_license"><a href="https://tracman.org/license/">Lizenz im Browser zeigen (englisch)</a></string>
-	<string name="about_name">Über</string>
+    <string name="about_name">Über</string>
 	<string name="broadcast_disabled">Sendungen deaktiviert</string>
 	<string name="bugs_name">Problembericht</string>
 	<string name="connected">Verbindung festgestellt</string>
@@ -11,7 +10,7 @@
 	<string name="google_connection_error">FEHLER: Könnte nicht zum Google API Server verbinden. </string>
 	<string name="help_name">Hilfe</string>
 	<string name="loading">Ladet…</string>
-	<string name="login_description">Auf dem Knopf klicken, einzuloggen.  Ein Tracman Konto ist erforderlich.  Falls Sie keiner haben, dürfen Sie <a href="https://tracman.org/login">mit ihrer Googlekonto mitbewerben</a>.</string>
+	<string name="login_description">"Zu Tracman einloggen.  Wenn Sie kein Konto haben, können Sie <a href="https://tracman.org/login#join">einen neuen machen</a>.  "</string>
 	<string name="login_name">Einloggen</string>
 	<string name="login_no_user_error">FEHLER: Nutzer nicht gefunden. </string>
 	<string name="logout_name">Ausloggen</string>
@@ -51,4 +50,8 @@
 	<string name="pref_title_gps_broadcast">Sendungen einschalten</string>
 	<string name="pref_title_broadcast_priority">Aktualisierung Vorrang</string>
 	<string name="not_connected">Kein Internet Zugang</string>
+	<string name="login_forgot_password"><a href="https://tracman.org/login/forgot">Passwort vergessen?</a></string>
+	<string name="login_button_text">Einloggen</string>
+    <string name="email">Email</string>
+	<string name="password">Passwort</string>
 </resources>
