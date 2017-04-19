@@ -66,22 +66,22 @@
 		<ImageButton
 			android:layout_width="wrap_content"
 			android:layout_weight="1"
-			android:layout_height="match_parent"
-			android:src="@drawable/social_google" />
+			android:layout_height="match_parent" />
+			<!--android:src="@drawable/social_google" />-->
 
 		<!-- Facebook -->
 		<ImageButton
 			android:layout_width="wrap_content"
 			android:layout_weight="1"
-			android:layout_height="match_parent"
-			android:src="@drawable/social_facebook" />
+			android:layout_height="match_parent" />
+		<!--android:src="@drawable/social_facebook" />-->
 
 		<!-- Twitter -->
 		<ImageButton
 			android:layout_width="wrap_content"
 			android:layout_weight="1"
-			android:layout_height="match_parent"
-			android:src="@drawable/social_twitter" />
+			android:layout_height="match_parent" />
+			<!--android:src="@drawable/social_twitter" />-->
 
 	</LinearLayout>
 
