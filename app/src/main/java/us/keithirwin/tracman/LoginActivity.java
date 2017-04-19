@@ -151,13 +151,13 @@ public class LoginActivity extends AppCompatActivity implements
 				.build();
 
 		Request request = new Request.Builder()
-				.url(SERVER_ADDRESS+"auth/google/idtoken?id_token="+token)
+				.url(SERVER_ADDRESS+"login/android/google/idtoken?id_token="+token)
 				.build();
 
 		client.newCall(request).enqueue(new Callback() {
 			@Override
 			public void onFailure(Call call, IOException e) {
-				Log.e(TAG, "Failed to connect to server: " + SERVER_ADDRESS + "auth/google/idtoken?id_token=" + token);
+				Log.e(TAG, "Failed to connect to server: " + SERVER_ADDRESS + "login/android/google/idtoken?id_token=" + token);
 				showError(R.string.server_connection_error);
 				e.printStackTrace();
 			}
