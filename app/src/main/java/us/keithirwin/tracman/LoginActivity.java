@@ -57,7 +57,7 @@ public class LoginActivity extends AppCompatActivity implements
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		Log.v(TAG, "Created...");
+		Log.v(TAG, "created");
 
 		// Set up layout
 		setContentView(R.layout.activity_login);
@@ -81,11 +81,11 @@ public class LoginActivity extends AppCompatActivity implements
 				.build();
 
 		// Set up buttons
-		SignInButton signInButton = (SignInButton) findViewById(R.id.google_sign_in_button);
-		signInButton.setStyle(SignInButton.SIZE_WIDE, SignInButton.COLOR_AUTO);
+//		SignInButton signInButton = (SignInButton) findViewById(R.id.login_button_google);
+//		signInButton.setStyle(SignInButton.SIZE_WIDE, SignInButton.COLOR_AUTO);
 
 		// Button listeners
-		findViewById(R.id.google_sign_in_button).setOnClickListener(this);
+		findViewById(R.id.login_button_google).setOnClickListener(this);
 	}
 
 	@Override
@@ -265,7 +265,7 @@ public class LoginActivity extends AppCompatActivity implements
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
-			case R.id.google_sign_in_button:
+			case R.id.login_button_google:
 				signIn();
 				break;
 		}

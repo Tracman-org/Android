@@ -65,6 +65,7 @@
 
 		<!-- Google -->
 		<ImageButton
+			android:id="@+id/login_button_google"
 			android:layout_width="wrap_content"
 			android:layout_weight="1"
 			android:layout_height="match_parent"
@@ -75,6 +76,7 @@
 
 		<!-- Facebook -->
 		<ImageButton
+			android:id="@+id/login_button_facebook"
 			android:layout_width="wrap_content"
 			android:layout_weight="1"
 			android:layout_height="match_parent"
@@ -85,6 +87,7 @@
 
 		<!-- Twitter -->
 		<ImageButton
+			android:id="@+id/login_button_twitter"
 			android:layout_width="wrap_content"
 			android:layout_weight="1"
 			android:layout_height="match_parent"
