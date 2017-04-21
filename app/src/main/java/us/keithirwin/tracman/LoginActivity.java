@@ -93,12 +93,16 @@ public class LoginActivity extends AppCompatActivity implements
 		super.onStart();
 		Log.v(TAG, "Started. Checking for intent method");
 
+		// Just logged out - don't sign back in
 		if (getIntent().hasExtra("method")) {
 			Log.v(TAG, "Intent has method extra");
 			if (getIntent().getStringExtra("method").equals("signOut")) {
 				Log.d(TAG, "Got intent to sign out");
 			}
-		} else { // Try to sign in
+		}
+
+		// Try to sign in
+		else {
 			Log.v(TAG, "Trying to sign in...");
 			OptionalPendingResult<GoogleSignInResult> opr = Auth.GoogleSignInApi.silentSignIn(mGoogleApiClient);
 			if (opr.isDone()) {
