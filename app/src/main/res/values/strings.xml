@@ -12,7 +12,7 @@
 	<!-- Strings related to login -->
 	<string name="login_name">Login</string>
 	<string name="logout_name">Logout</string>
-	<string name="login_description">"Log in to Tracman.  If you don't have one an account, you can <a href="https://tracman.org/login#join">create one</a>.  "</string>
+	<string name="login_description">Log in to Tracman.  If you don\'t have an account, you can <a href="https://tracman.org/login#join">create one</a>.  </string>
 	<string name="server_connection_error">ERROR: Unable to connect to Tracman server.  </string>
 
 	<!-- Strings related to notifications -->

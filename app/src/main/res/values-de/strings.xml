@@ -10,7 +10,7 @@
 	<string name="google_connection_error">FEHLER: Könnte nicht zum Google API Server verbinden. </string>
 	<string name="help_name">Hilfe</string>
 	<string name="loading">Ladet…</string>
-	<string name="login_description">"Zu Tracman einloggen.  Wenn Sie kein Konto haben, können Sie <a href="https://tracman.org/login#join">einen neuen machen</a>.  "</string>
+	<string name="login_description">Zu Tracman einloggen.  Wenn Sie kein Konto haben, können Sie <a href="https://tracman.org/login#join">einen neuen machen</a>.  </string>
 	<string name="login_name">Einloggen</string>
 	<string name="login_no_user_error">FEHLER: Nutzer nicht gefunden. </string>
 	<string name="logout_name">Ausloggen</string>

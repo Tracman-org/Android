@@ -62,8 +62,10 @@ public class LoginActivity extends AppCompatActivity implements
 		// Set up layout
 		setContentView(R.layout.activity_login);
 		setTitle(R.string.login_name);
-		TextView tv = (TextView) findViewById(R.id.login_description);
-		tv.setMovementMethod(LinkMovementMethod.getInstance());
+		TextView loginDescription = (TextView) findViewById(R.id.login_description);
+        TextView forgotPassword = (TextView) findViewById(R.id.login_forgot_password);
+        loginDescription.setMovementMethod(LinkMovementMethod.getInstance());
+        forgotPassword.setMovementMethod(LinkMovementMethod.getInstance());
 
 		// Configure sign-in to request the user's ID and basic profile, included in DEFAULT_SIGN_IN.
 		GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)

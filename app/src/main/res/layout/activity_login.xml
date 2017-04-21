@@ -52,6 +52,7 @@
 			android:id="@+id/login_description"
 			android:text="@string/login_description"
 			android:textSize="20sp"
+			android:autoLink="web"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"/>
 	</LinearLayout>
@@ -59,30 +60,38 @@
 	<!-- Social login buttons -->
 	<LinearLayout android:layout_width="match_parent"
 				  android:layout_height="wrap_content"
-				  android:layout_weight="3"
+				  android:layout_weight="2"
 				  android:layout_marginBottom="30px" >
 
 		<!-- Google -->
 		<ImageButton
 			android:layout_width="wrap_content"
 			android:layout_weight="1"
-			android:layout_height="match_parent" />
-			<!--android:src="@drawable/social_google" />-->
+			android:layout_height="match_parent"
+			android:background="#ce4d39"
+			android:layout_marginLeft="30px"
+			android:layout_marginRight="30px"
+			android:src="@drawable/social_google" />
 
 		<!-- Facebook -->
 		<ImageButton
 			android:layout_width="wrap_content"
 			android:layout_weight="1"
-			android:layout_height="match_parent" />
-		<!--android:src="@drawable/social_facebook" />-->
+			android:layout_height="match_parent"
+			android:background="#305891"
+			android:layout_marginLeft="30px"
+			android:layout_marginRight="30px"
+			android:src="@drawable/social_facebook" />
 
 		<!-- Twitter -->
 		<ImageButton
 			android:layout_width="wrap_content"
 			android:layout_weight="1"
-			android:layout_height="match_parent" />
-			<!--android:src="@drawable/social_twitter" />-->
-
+			android:layout_height="match_parent"
+			android:background="#2ca8d2"
+			android:layout_marginLeft="30px"
+			android:layout_marginRight="30px"
+			android:src="@drawable/social_twitter" />
 	</LinearLayout>
 
 	<!-- Login form -->
@@ -121,11 +130,13 @@
 	<LinearLayout android:layout_height="wrap_content"
 				  android:layout_width="match_parent"
 				  android:orientation="vertical"
+				  android:layout_marginTop="20px"
 				  android:layout_weight="1">
 
 		<!-- Forgot password link -->
 		<TextView android:id="@+id/login_forgot_password"
 				  android:text="@string/login_forgot_password"
+				  android:autoLink="web"
 				  android:layout_width="match_parent"
 				  android:layout_height="wrap_content"
 				  android:textColor="@color/Yellow"
