@@ -205,7 +205,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 
 	@Override
 	public void onBackPressed() {
-//		super.onBackPressed();
+		super.onBackPressed();
 
 		//TODO: #8 Set intent to not log back in again
 		Intent signOutIntent = new Intent();

@@ -7,7 +7,7 @@
 		<!-- Start on boot -->
 		<SwitchPreference
 			android:defaultValue="true"
-			android:key="start_on_boot"
+			android:key="pref_start_boot"
 			android:title="@string/pref_start_boot"
 			/>
 
