@@ -207,11 +207,13 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 	public void onBackPressed() {
 //		super.onBackPressed();
 
-        // Return to LoginActivity and don't sign back in again
+		// Return to LoginActivity and don't sign back in again
 		Intent signOutIntent = new Intent();
 		signOutIntent.putExtra("method","signOut");
-        setResult(RESULT_OK, signOutIntent);
-        finish();
+		setResult(RESULT_OK, signOutIntent);
+
+		super.onBackPressed();
+//      finish();
 
 	}
 
@@ -254,7 +256,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 			bindPreferenceSummaryToValue(findPreference("broadcast_frequency"));
 			bindPreferenceSummaryToValue(findPreference("broadcast_priority"));
 
-        }
+		}
 	}
 
 	/**
