@@ -265,19 +265,25 @@ public class LocationService extends Service implements GoogleApiClient.Connecti
 	@Override
 	public void onLocationChanged(Location location) {
 
-		JSONObject mLocationView = new JSONObject();
-		try {
-			mLocationView.put("usr", mUserID);
-			mLocationView.put("tok", mUserSK);
-			mLocationView.put("lat", String.valueOf(location.getLatitude()));
-			mLocationView.put("lon", String.valueOf(location.getLongitude()));
-			mLocationView.put("dir", String.valueOf(location.getBearing()));
-			mLocationView.put("spd", String.valueOf(location.getSpeed()));
-		} catch (JSONException e) {
-			Log.e(TAG, "Failed to put JSON data");
+		// Make sure we're logged in...
+		if (mUserID!=null && mUserSK!=null) {
+			JSONObject mLocationView = new JSONObject();
+			try {
+				mLocationView.put("usr", mUserID);
+				mLocationView.put("tok", mUserSK);
+				mLocationView.put("lat", String.valueOf(location.getLatitude()));
+				mLocationView.put("lon", String.valueOf(location.getLongitude()));
+				mLocationView.put("dir", String.valueOf(location.getBearing()));
+				mLocationView.put("spd", String.valueOf(location.getSpeed()));
+			} catch (JSONException e) {
+				Log.e(TAG, "Failed to put JSON data");
+			}
+			socket.emit("set", mLocationView);
+			Log.v(TAG, "Location set: " + mLocationView.toString());
 		}
-		socket.emit("set", mLocationView);
-		Log.v(TAG, "Location updated: " + mLocationView.toString());
+		else {
+			Log.v(TAG, "Can't set location because user isn't logged in.");
+		}
 
 	}
 
