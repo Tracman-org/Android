@@ -21,6 +21,8 @@ import android.view.MenuItem;
 
 import java.util.List;
 
+import static us.keithirwin.tracman.LoginActivity.SIGN_OUT;
+
 
 /**
  * A {@link PreferenceActivity} that presents a set of application settings. On
@@ -205,15 +207,28 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 
 	@Override
 	public void onBackPressed() {
-//		super.onBackPressed();
+		Log.v(TAG, "onBackPressed() called");
+
+        // Stop LocationService
+		Log.v(TAG, "Stopping location service...");
+        stopService(new Intent(SettingsActivity.this, LocationService.class));
+
+		// Remove saved loggedInUser
+		Log.v(TAG, "Removing saved user...");
+		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+		SharedPreferences.Editor editor = sharedPref.edit();
+		editor.remove("loggedInUser");
+		editor.remove("loggedInUserId");
+		editor.remove("loggedInUserName");
+		editor.remove("loggedInUserSk");
+		editor.commit();
 
 		// Return to LoginActivity and don't sign back in again
-		Intent signOutIntent = new Intent();
-		signOutIntent.putExtra("method","signOut");
-		setResult(RESULT_OK, signOutIntent);
+		setResult(SIGN_OUT, new Intent());
 
+		// Finish the job
+//		finish();
 		super.onBackPressed();
-//      finish();
 
 	}
 

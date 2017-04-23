@@ -16,7 +16,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.OptionalPendingResult;
 import com.google.android.gms.common.api.ResultCallback;
@@ -43,6 +42,8 @@ public class LoginActivity extends AppCompatActivity implements
 		View.OnClickListener {
 	private static final String TAG = "LoginActivity";
 	private static final int RC_SIGN_IN = 9001;
+	static final int SIGN_OUT = 1;
+	private static boolean DONT_LOG_IN = false;
 
 	// Development
 	private final String SERVER_ADDRESS = "https://dev.tracman.org/";
@@ -91,18 +92,10 @@ public class LoginActivity extends AppCompatActivity implements
 	@Override
 	public void onStart() {
 		super.onStart();
-		Log.v(TAG, "Started. Checking for intent method");
-
-		// Just logged out - don't sign back in
-		if (getIntent().hasExtra("method")) {
-			Log.v(TAG, "Intent has method extra");
-			if (getIntent().getStringExtra("method").equals("signOut")) {
-				Log.d(TAG, "Got intent to sign out");
-			}
-		}
+		Log.v(TAG, "onStart() called");
 
 		// Try to sign in
-		else {
+		if (!DONT_LOG_IN) {
 			Log.v(TAG, "Trying to sign in...");
 			OptionalPendingResult<GoogleSignInResult> opr = Auth.GoogleSignInApi.silentSignIn(mGoogleApiClient);
 			if (opr.isDone()) {
@@ -131,11 +124,17 @@ public class LoginActivity extends AppCompatActivity implements
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
+		Log.v(TAG, "onActivityResult() called");
 
 		// Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
 		if (requestCode == RC_SIGN_IN) {
+			Log.v(TAG, "requestCode was RC_SIGN_IN");
 			GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
 			handleSignInResult(result);
+		}
+		else if (requestCode == SIGN_OUT) {
+			Log.v(TAG, "requestCode was SIGN_OUT");
+			DONT_LOG_IN = true;
 		}
 	}
 
@@ -203,7 +202,7 @@ public class LoginActivity extends AppCompatActivity implements
 					editor.putString("loggedInUserSk", userSK);
 					editor.commit();
 
-					startActivity(new Intent(getBaseContext(), SettingsActivity.class));
+					startActivityForResult(new Intent(LoginActivity.this, SettingsActivity.class), SIGN_OUT);
 			}
 		}
 
