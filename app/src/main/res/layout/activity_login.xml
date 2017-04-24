@@ -60,42 +60,51 @@
 	<!-- Social login buttons -->
 	<LinearLayout android:layout_width="match_parent"
 				  android:layout_height="wrap_content"
-				  android:layout_weight="2"
+				  android:layout_weight="1"
 				  android:layout_marginBottom="30px" >
 
-		<!-- Google -->
-		<ImageButton
+		<com.google.android.gms.common.SignInButton
 			android:id="@+id/login_button_google"
-			android:layout_width="wrap_content"
-			android:layout_weight="1"
+			android:layout_width="match_parent"
 			android:layout_height="match_parent"
-			android:background="#ce4d39"
-			android:layout_marginLeft="30px"
-			android:layout_marginRight="30px"
-			android:src="@drawable/social_google" />
+			android:layout_gravity="center" />
 
-		<!-- Facebook -->
-		<ImageButton
-			android:id="@+id/login_button_facebook"
-			android:layout_width="wrap_content"
-			android:layout_weight="1"
-			android:layout_height="match_parent"
-			android:background="#305891"
-			android:layout_marginLeft="30px"
-			android:layout_marginRight="30px"
-			android:src="@drawable/social_facebook" />
-
-		<!-- Twitter -->
-		<ImageButton
-			android:id="@+id/login_button_twitter"
-			android:layout_width="wrap_content"
-			android:layout_weight="1"
-			android:layout_height="match_parent"
-			android:background="#2ca8d2"
-			android:layout_marginLeft="30px"
-			android:layout_marginRight="30px"
-			android:src="@drawable/social_twitter" />
 	</LinearLayout>
+
+		<!--&lt;!&ndash; Google &ndash;&gt;-->
+		<!--<ImageButton-->
+			<!--android:id="@+id/login_button_google"-->
+			<!--android:layout_width="wrap_content"-->
+			<!--android:layout_weight="1"-->
+			<!--android:layout_height="match_parent"-->
+			<!--android:background="#ce4d39"-->
+			<!--android:layout_marginLeft="30px"-->
+			<!--android:layout_marginRight="30px"-->
+			<!--android:src="@drawable/social_google" />-->
+
+		<!--&lt;!&ndash; Facebook &ndash;&gt;-->
+		<!--<ImageButton-->
+			<!--android:id="@+id/login_button_facebook"-->
+			<!--android:layout_width="wrap_content"-->
+			<!--android:layout_weight="1"-->
+			<!--android:layout_height="match_parent"-->
+			<!--android:background="#305891"-->
+			<!--android:layout_marginLeft="30px"-->
+			<!--android:layout_marginRight="30px"-->
+			<!--android:src="@drawable/social_facebook" />-->
+
+		<!--&lt;!&ndash; Twitter &ndash;&gt;-->
+		<!--<ImageButton-->
+			<!--android:id="@+id/login_button_twitter"-->
+			<!--android:layout_width="wrap_content"-->
+			<!--android:layout_weight="1"-->
+			<!--android:layout_height="match_parent"-->
+			<!--android:background="#2ca8d2"-->
+			<!--android:layout_marginLeft="30px"-->
+			<!--android:layout_marginRight="30px"-->
+			<!--android:src="@drawable/social_twitter" />-->
+
+	<!--</LinearLayout>-->
 
 	<!-- Login form -->
 	<LinearLayout android:layout_width="match_parent"
@@ -108,7 +117,8 @@
 			android:id="@+id/login_email"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:text="@string/email"
+			android:hint="@string/email"
+			android:inputType="textEmailAddress"
 			android:textSize="24sp"/>
 
 		<!-- Password -->
@@ -116,16 +126,18 @@
 			android:id="@+id/login_password"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:text="@string/password"
+			android:inputType="textPassword"
+			android:hint="@string/password"
 			android:textSize="24sp"/>
 
 		<!-- Submit -->
 		<Button
+			android:id="@+id/login_button"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:layout_weight="3"
+			android:padding="15dp"
 			android:text="@string/login_button_text"
-			android:textSize="32sp" />
+			android:textSize="34sp" />
 
 	</LinearLayout>
 

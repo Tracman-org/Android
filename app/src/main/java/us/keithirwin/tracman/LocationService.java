@@ -283,6 +283,7 @@ public class LocationService extends Service implements GoogleApiClient.Connecti
 		}
 		else {
 			Log.v(TAG, "Can't set location because user isn't logged in.");
+      //TODO: So stop the damn service!
 		}
 
 	}

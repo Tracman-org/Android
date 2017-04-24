@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.google.android.gms.auth.api.Auth;
@@ -16,6 +17,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.OptionalPendingResult;
 import com.google.android.gms.common.api.ResultCallback;
@@ -32,9 +34,11 @@ import javax.net.ssl.TrustManagerFactory;
 import javax.net.ssl.X509TrustManager;
 
 import okhttp3.Call;
+import okhttp3.FormBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Callback;
+import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class LoginActivity extends AppCompatActivity implements
@@ -64,9 +68,9 @@ public class LoginActivity extends AppCompatActivity implements
 		setContentView(R.layout.activity_login);
 		setTitle(R.string.login_name);
 		TextView loginDescription = (TextView) findViewById(R.id.login_description);
-        TextView forgotPassword = (TextView) findViewById(R.id.login_forgot_password);
-        loginDescription.setMovementMethod(LinkMovementMethod.getInstance());
-        forgotPassword.setMovementMethod(LinkMovementMethod.getInstance());
+		TextView forgotPassword = (TextView) findViewById(R.id.login_forgot_password);
+		loginDescription.setMovementMethod(LinkMovementMethod.getInstance());
+		forgotPassword.setMovementMethod(LinkMovementMethod.getInstance());
 
 		// Configure sign-in to request the user's ID and basic profile, included in DEFAULT_SIGN_IN.
 		GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -82,11 +86,14 @@ public class LoginActivity extends AppCompatActivity implements
 				.build();
 
 		// Set up buttons
-//		SignInButton signInButton = (SignInButton) findViewById(R.id.login_button_google);
-//		signInButton.setStyle(SignInButton.SIZE_WIDE, SignInButton.COLOR_AUTO);
+		SignInButton signInButton = (SignInButton) findViewById(R.id.login_button_google);
+		signInButton.setStyle(SignInButton.SIZE_WIDE, SignInButton.COLOR_AUTO);
 
 		// Button listeners
+		findViewById(R.id.login_button).setOnClickListener(this);
 		findViewById(R.id.login_button_google).setOnClickListener(this);
+//		findViewById(R.id.login_button_facebook).setOnClickListener(this);
+//		findViewById(R.id.login_button_twitter).setOnClickListener(this);
 	}
 
 	@Override
@@ -103,7 +110,7 @@ public class LoginActivity extends AppCompatActivity implements
 				// and the GoogleSignInResult will be available instantly.
 				Log.d(TAG, "Got cached sign-in");
 				GoogleSignInResult result = opr.get();
-				handleSignInResult(result);
+				handleGoogleSignInResult(result);
 			} else {
 				// If the user has not previously signed in on this device or the sign-in has expired,
 				// this asynchronous branch will attempt to sign in the user silently.  Cross-device
@@ -112,8 +119,8 @@ public class LoginActivity extends AppCompatActivity implements
 				opr.setResultCallback(new ResultCallback<GoogleSignInResult>() {
 					@Override
 					public void onResult(GoogleSignInResult googleSignInResult) {
-						hideProgressDialog();
-						handleSignInResult(googleSignInResult);
+					hideProgressDialog();
+					handleGoogleSignInResult(googleSignInResult);
 					}
 				});
 			}
@@ -130,16 +137,17 @@ public class LoginActivity extends AppCompatActivity implements
 		if (requestCode == RC_SIGN_IN) {
 			Log.v(TAG, "requestCode was RC_SIGN_IN");
 			GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
-			handleSignInResult(result);
+			handleGoogleSignInResult(result);
 		}
+		// User just logged out.  Don't log in again, stupid
 		else if (requestCode == SIGN_OUT) {
 			Log.v(TAG, "requestCode was SIGN_OUT");
 			DONT_LOG_IN = true;
 		}
+
 	}
 
-	private void AuthenticateGoogle(final String token) throws Exception {
-
+	private void authenticateWithTracmanServer(final Request request) throws Exception {
 		// Needed to support TLS 1.1 and 1.2
 		TrustManagerFactory trustManagerFactory = TrustManagerFactory.getInstance(
 				TrustManagerFactory.getDefaultAlgorithm());
@@ -155,14 +163,10 @@ public class LoginActivity extends AppCompatActivity implements
 				.sslSocketFactory(new TLSSocketFactory(), trustManager)
 				.build();
 
-		Request request = new Request.Builder()
-				.url(SERVER_ADDRESS+"login/app/google?id_token="+token)
-				.build();
-
 		client.newCall(request).enqueue(new Callback() {
 			@Override
 			public void onFailure(Call call, IOException e) {
-				Log.e(TAG, "Failed to connect to server: " + SERVER_ADDRESS + "login/app/google?id_token=" + token);
+				Log.e(TAG, "Failed to connect to Tracman server!");
 				showError(R.string.server_connection_error);
 				e.printStackTrace();
 			}
@@ -203,23 +207,31 @@ public class LoginActivity extends AppCompatActivity implements
 					editor.commit();
 
 					startActivityForResult(new Intent(LoginActivity.this, SettingsActivity.class), SIGN_OUT);
+				}
+
+
 			}
-		}
 
 		});
-
 	}
 
-	private void handleSignInResult(GoogleSignInResult result) {
+	private void handleGoogleSignInResult(GoogleSignInResult result) {
 //		Log.d(TAG, "handleSignInResult:" + result.isSuccess());
 		if (result.isSuccess()) { // Signed in successfully
 			GoogleSignInAccount acct = result.getSignInAccount();
-			String googleToken = acct.getIdToken();
 //			Log.v(TAG, "Google token: " + googleToken);
 			try {
-				AuthenticateGoogle(acct.getIdToken());
-			}  catch (Exception e) {
-//				Log.e(TAG, "Error sending ID token to backend.", e);
+
+				// Build request
+				Request request = new Request.Builder()
+					.url(SERVER_ADDRESS+"login/app/google?id_token="+acct.getIdToken())
+					.build();
+
+				// Send to server
+				authenticateWithTracmanServer(request);
+
+			} catch (Exception e) {
+				Log.e(TAG, "Error sending ID token to backend.", e);
 			}
 		} else {
 //			Log.e(TAG, "Failed to log in: "+result.getStatus().getStatusCode());
@@ -229,10 +241,56 @@ public class LoginActivity extends AppCompatActivity implements
 		}
 	}
 
-	private void signIn() {
+	public void signInWithPassword() {
+		Log.d(TAG, "signInWithPassword() called");
+
+		// Get params from form
+		EditText emailText = (EditText)findViewById(R.id.login_email);
+		String email = emailText.getText().toString();
+		EditText passwordText = (EditText)findViewById(R.id.login_password);
+		String password = passwordText.getText().toString();
+
+		// Build formdata
+		RequestBody formData = new FormBody.Builder()
+			.add("email", email)
+			.add("password", password)
+			.build();
+
+		// Build request
+		Request request = new Request.Builder()
+			.url(SERVER_ADDRESS+"login/app")
+			.post(formData)
+			.build();
+
+		// Send formdata to endpoint
+		try {
+			Log.v(TAG, "Sending local login POST to server...");
+			authenticateWithTracmanServer(request);
+		} catch (Exception e) {
+			Log.e(TAG, "Error sending local login to backend:",e);
+		}
+
+	}
+
+	public void signInWithGoogle() {
+		Log.v(TAG, "signInWithGoogle() called");
 		Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
 		startActivityForResult(signInIntent, RC_SIGN_IN);
 	}
+
+//	private void signInWithFacebook() {
+//		Log.v(TAG, "signInWithFacebook() called");
+//
+//		//TODO: Facebook login to /login/app/facebook
+//
+//	}
+
+//	private void signInWithTwitter() {
+//		Log.v(TAG, "signInWithTwitter() called");
+//
+//		//TODO: Twitter login to /login/app/twitter
+//
+//	}
 
 	@Override
 	public void onConnectionFailed(ConnectionResult connectionResult) {
@@ -267,10 +325,24 @@ public class LoginActivity extends AppCompatActivity implements
 
 	@Override
 	public void onClick(View v) {
+		Log.v(TAG, "onClick() called");
 		switch (v.getId()) {
-			case R.id.login_button_google:
-				signIn();
+			case R.id.login_button:
+				Log.v(TAG, "Password login button pressed");
+				signInWithPassword();
 				break;
+			case R.id.login_button_google:
+				Log.v(TAG, "Google login button pressed");
+				signInWithGoogle();
+				break;
+//			case R.id.login_button_facebook:
+//				Log.v(TAG, "Facebook login button pressed");
+//				signInWithFacebook();
+//				break;
+//			case R.id.login_button_twitter:
+//				Log.v(TAG, "Twitter login button pressed");
+//				signInWithTwitter();
+//				break;
 		}
 	}
 

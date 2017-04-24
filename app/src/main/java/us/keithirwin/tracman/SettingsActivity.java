@@ -209,14 +209,17 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 	public void onBackPressed() {
 		Log.v(TAG, "onBackPressed() called");
 
+        // Get sharedPrefs
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        SharedPreferences.Editor editor = sharedPref.edit();
+
         // Stop LocationService
 		Log.v(TAG, "Stopping location service...");
         stopService(new Intent(SettingsActivity.this, LocationService.class));
+        editor.putBoolean("gps_switch",false);
 
 		// Remove saved loggedInUser
 		Log.v(TAG, "Removing saved user...");
-		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-		SharedPreferences.Editor editor = sharedPref.edit();
 		editor.remove("loggedInUser");
 		editor.remove("loggedInUserId");
 		editor.remove("loggedInUserName");
