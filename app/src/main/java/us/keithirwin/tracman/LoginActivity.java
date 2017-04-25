@@ -128,6 +128,33 @@ public class LoginActivity extends AppCompatActivity implements
 
 	}
 
+	/**
+	 * if onResume() is called, the user has returned from SettingsActivity.
+	 * Their user account must be disassociated and the LocationService must be stopped.
+	 */
+	@Override
+	public void onResume() {
+		super.onResume();
+
+		// Get sharedPrefs
+		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+		SharedPreferences.Editor editor = sharedPref.edit();
+
+		// Stop LocationService
+		Log.v(TAG, "Stopping location service...");
+		stopService(new Intent(LoginActivity.this, LocationService.class));
+		editor.putBoolean("gps_switch",false);
+
+		// Remove saved loggedInUser
+		Log.v(TAG, "Removing saved user...");
+		editor.remove("loggedInUser");
+		editor.remove("loggedInUserId");
+		editor.remove("loggedInUserName");
+		editor.remove("loggedInUserSk");
+		editor.apply();
+
+	}
+
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
