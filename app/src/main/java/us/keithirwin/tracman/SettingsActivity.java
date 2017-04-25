@@ -205,18 +205,17 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 		loadHeadersFromResource(R.xml.pref_headers, target);
 	}
 
-	@Override
-	public void onBackPressed() {
-		Log.v(TAG, "onBackPressed() called");
+	public void signOut() {
+		Log.v(TAG, "signOut() called");
 
-        // Get sharedPrefs
-        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        SharedPreferences.Editor editor = sharedPref.edit();
+		// Get sharedPrefs
+		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+		SharedPreferences.Editor editor = sharedPref.edit();
 
-        // Stop LocationService
+		// Stop LocationService
 		Log.v(TAG, "Stopping location service...");
-        stopService(new Intent(SettingsActivity.this, LocationService.class));
-        editor.putBoolean("gps_switch",false);
+		stopService(new Intent(SettingsActivity.this, LocationService.class));
+		editor.putBoolean("gps_switch",false);
 
 		// Remove saved loggedInUser
 		Log.v(TAG, "Removing saved user...");
@@ -228,11 +227,14 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 
 		// Return to LoginActivity and don't sign back in again
 		setResult(SIGN_OUT, new Intent());
+	}
 
-		// Finish the job
-//		finish();
+	@Override
+	public void onBackPressed() {
+		if (true) {
+			signOut();
+		}
 		super.onBackPressed();
-
 	}
 
 	@Override
@@ -275,6 +277,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 			bindPreferenceSummaryToValue(findPreference("broadcast_priority"));
 
 		}
+
+
 	}
 
 	/**

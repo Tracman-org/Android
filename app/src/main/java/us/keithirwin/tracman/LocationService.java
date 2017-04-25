@@ -199,7 +199,9 @@ public class LocationService extends Service implements GoogleApiClient.Connecti
 		// Get permission
 		if (!checkLocationPermission(this)) {
 			Log.d(TAG, "Location permission denied");
-			//TODO: Turn off location updates
+//			stopSelf();
+
+			//TODO: Ask the user to try again
 
 		} else {
 			Log.d(TAG, "Location permission granted");
@@ -283,7 +285,7 @@ public class LocationService extends Service implements GoogleApiClient.Connecti
 		}
 		else {
 			Log.v(TAG, "Can't set location because user isn't logged in.");
-      //TODO: So stop the damn service!
+      stopSelf();
 		}
 
 	}
