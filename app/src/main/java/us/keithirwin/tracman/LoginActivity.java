@@ -62,7 +62,7 @@ public class LoginActivity extends AppCompatActivity implements
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		Log.v(TAG, "created");
+		//Log.v(TAG, "created");
 
 		// Set up layout
 		setContentView(R.layout.activity_login);
@@ -99,16 +99,16 @@ public class LoginActivity extends AppCompatActivity implements
 	@Override
 	public void onStart() {
 		super.onStart();
-		Log.v(TAG, "onStart() called");
+		//Log.v(TAG, "onStart() called");
 
 		// Try to sign in
 		if (!DONT_LOG_IN) {
-			Log.v(TAG, "Trying to sign in...");
+			//Log.v(TAG, "Trying to sign in...");
 			OptionalPendingResult<GoogleSignInResult> opr = Auth.GoogleSignInApi.silentSignIn(mGoogleApiClient);
 			if (opr.isDone()) {
 				// If the user's cached credentials are valid, the OptionalPendingResult will be "done"
 				// and the GoogleSignInResult will be available instantly.
-				Log.d(TAG, "Got cached sign-in");
+				//Log.d(TAG, "Got cached sign-in");
 				GoogleSignInResult result = opr.get();
 				handleGoogleSignInResult(result);
 			} else {
@@ -141,12 +141,12 @@ public class LoginActivity extends AppCompatActivity implements
 		SharedPreferences.Editor editor = sharedPref.edit();
 
 		// Stop LocationService
-		Log.v(TAG, "Stopping location service...");
+		//Log.v(TAG, "Stopping location service...");
 		stopService(new Intent(LoginActivity.this, LocationService.class));
 		editor.putBoolean("gps_switch",false);
 
 		// Remove saved loggedInUser
-		Log.v(TAG, "Removing saved user...");
+		//Log.v(TAG, "Removing saved user...");
 		editor.remove("loggedInUser");
 		editor.remove("loggedInUserId");
 		editor.remove("loggedInUserName");
@@ -158,17 +158,17 @@ public class LoginActivity extends AppCompatActivity implements
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
-		Log.v(TAG, "onActivityResult() called");
+		//Log.v(TAG, "onActivityResult() called");
 
 		// Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
 		if (requestCode == RC_SIGN_IN) {
-			Log.v(TAG, "requestCode was RC_SIGN_IN");
+			//Log.v(TAG, "requestCode was RC_SIGN_IN");
 			GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
 			handleGoogleSignInResult(result);
 		}
 		// User just logged out.  Don't log in again, stupid
 		else if (requestCode == SIGN_OUT) {
-			Log.v(TAG, "requestCode was SIGN_OUT");
+			//Log.v(TAG, "requestCode was SIGN_OUT");
 			DONT_LOG_IN = true;
 		}
 
@@ -193,7 +193,7 @@ public class LoginActivity extends AppCompatActivity implements
 		client.newCall(request).enqueue(new Callback() {
 			@Override
 			public void onFailure(Call call, IOException e) {
-				Log.e(TAG, "Failed to connect to Tracman server!");
+				//Log.e(TAG, "Failed to connect to Tracman server!");
 				showError(R.string.server_connection_error);
 				e.printStackTrace();
 			}
@@ -205,7 +205,7 @@ public class LoginActivity extends AppCompatActivity implements
 					res.body().close();
 					throw new IOException("Unexpected code: " + res);
 				} else {
-					Log.d(TAG, "Response code: " + res.code());
+					//Log.d(TAG, "Response code: " + res.code());
 					String userString = res.body().string();
 					System.out.println("Full response: " + userString);
 
@@ -215,10 +215,10 @@ public class LoginActivity extends AppCompatActivity implements
 						userID = user.getString("_id");
 						userName = user.getString("name");
 						userSK = user.getString("sk32");
-						Log.v(TAG, "User retrieved with ID: " + userID);
+						//Log.v(TAG, "User retrieved with ID: " + userID);
 					} catch (JSONException e) {
-						Log.e(TAG, "Unable to parse user JSON: ", e);
-						Log.e(TAG, "JSON String used: " + userString);
+						//Log.e(TAG, "Unable to parse user JSON: ", e);
+						//Log.e(TAG, "JSON String used: " + userString);
 						userID = null;
 						userName = null;
 						userSK = null;
@@ -243,10 +243,9 @@ public class LoginActivity extends AppCompatActivity implements
 	}
 
 	private void handleGoogleSignInResult(GoogleSignInResult result) {
-//		Log.d(TAG, "handleSignInResult:" + result.isSuccess());
+		//Log.d(TAG, "handleSignInResult:" + result.isSuccess());
 		if (result.isSuccess()) { // Signed in successfully
 			GoogleSignInAccount acct = result.getSignInAccount();
-//			Log.v(TAG, "Google token: " + googleToken);
 			try {
 
 				// Build request
@@ -258,10 +257,10 @@ public class LoginActivity extends AppCompatActivity implements
 				authenticateWithTracmanServer(request);
 
 			} catch (Exception e) {
-				Log.e(TAG, "Error sending ID token to backend.", e);
+				//Log.e(TAG, "Error sending ID token to backend.", e);
 			}
 		} else {
-//			Log.e(TAG, "Failed to log in: "+result.getStatus().getStatusCode());
+			//Log.e(TAG, "Failed to log in: "+result.getStatus().getStatusCode());
 			if (result.getStatus().getStatusCode()!=4) {
 				showError(R.string.google_connection_error);
 			}
@@ -269,7 +268,7 @@ public class LoginActivity extends AppCompatActivity implements
 	}
 
 	public void signInWithPassword() {
-		Log.d(TAG, "signInWithPassword() called");
+		//Log.d(TAG, "signInWithPassword() called");
 
 		// Get params from form
 		EditText emailText = (EditText)findViewById(R.id.login_email);
@@ -291,16 +290,16 @@ public class LoginActivity extends AppCompatActivity implements
 
 		// Send formdata to endpoint
 		try {
-			Log.v(TAG, "Sending local login POST to server...");
+			//Log.v(TAG, "Sending local login POST to server...");
 			authenticateWithTracmanServer(request);
 		} catch (Exception e) {
-			Log.e(TAG, "Error sending local login to backend:",e);
+			//Log.e(TAG, "Error sending local login to backend:",e);
 		}
 
 	}
 
 	public void signInWithGoogle() {
-		Log.v(TAG, "signInWithGoogle() called");
+		//Log.v(TAG, "signInWithGoogle() called");
 		Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
 		startActivityForResult(signInIntent, RC_SIGN_IN);
 	}
@@ -322,7 +321,7 @@ public class LoginActivity extends AppCompatActivity implements
 	@Override
 	public void onConnectionFailed(ConnectionResult connectionResult) {
 		showError(R.string.disconnected);
-//		Log.d(TAG, "onConnectionFailed:" + connectionResult);
+		//Log.d(TAG, "onConnectionFailed:" + connectionResult);
 	}
 
 	private void showProgressDialog() {
@@ -352,14 +351,14 @@ public class LoginActivity extends AppCompatActivity implements
 
 	@Override
 	public void onClick(View v) {
-		Log.v(TAG, "onClick() called");
+		//Log.v(TAG, "onClick() called");
 		switch (v.getId()) {
 			case R.id.login_button:
-				Log.v(TAG, "Password login button pressed");
+				//Log.v(TAG, "Password login button pressed");
 				signInWithPassword();
 				break;
 			case R.id.login_button_google:
-				Log.v(TAG, "Google login button pressed");
+				//Log.v(TAG, "Google login button pressed");
 				signInWithGoogle();
 				break;
 //			case R.id.login_button_facebook:

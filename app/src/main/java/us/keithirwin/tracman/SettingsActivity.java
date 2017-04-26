@@ -207,7 +207,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 
 	@Override
 	public void onBackPressed() {
-		Log.v(TAG,"onBackPressed() called");
+		//Log.v(TAG,"onBackPressed() called");
 
 		// Return to LoginActivity and don't sign back in again
 		setResult(SIGN_OUT, new Intent());
