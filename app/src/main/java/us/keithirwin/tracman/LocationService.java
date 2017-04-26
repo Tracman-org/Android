@@ -42,6 +42,9 @@ public class LocationService extends Service implements GoogleApiClient.Connecti
 		GoogleApiClient.OnConnectionFailedListener, LocationListener {
 	public LocationService() {}
 	private String TAG = "LocationService";
+	final int ICON_ON = 2;
+	final int ICON_HALF = 1;
+	final int ICON_OFF = 0;
 	final String SERVER_ADDRESS = "https://dev.tracman.org";
 
 	private Socket socket;
@@ -64,6 +67,8 @@ public class LocationService extends Service implements GoogleApiClient.Connecti
 	private NotificationManager mNotificationManager;
 	private final NotificationCompat.Builder mNotificationBuilder = new NotificationCompat.Builder(this);
 	private void setupNotifications(Boolean persist) {
+		Log.d(TAG,"setupNotification() called");
+
 		if (mNotificationManager == null) {
 			mNotificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 		}
@@ -73,21 +78,28 @@ public class LocationService extends Service implements GoogleApiClient.Connecti
 				0);
 		mNotificationBuilder
 				.setPriority(-1)
-				.setSmallIcon(R.drawable.logo_white)
+				.setSmallIcon(R.drawable.logo_dark)
 				.setCategory(NotificationCompat.CATEGORY_SERVICE)
 				.setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
 				.setContentTitle(getText(R.string.app_name))
 				.setContentIntent(notificationIntent)
 				.setOngoing(persist);
 	}
-	private void showNotification(CharSequence text, Boolean active) {
+	private void showNotification(CharSequence text, int icon) {
+		Log.d(TAG,"showNotification() called");
 		mNotificationBuilder
 				.setTicker(text)
 				.setContentText(text);
-		if (active) {
-			mNotificationBuilder.setSmallIcon(R.drawable.logo_white);
-		} else {
-			mNotificationBuilder.setSmallIcon(R.drawable.logo_trans);
+		switch (icon) {
+			case ICON_ON:
+				mNotificationBuilder.setSmallIcon(R.drawable.logo_white);
+				break;
+			case ICON_HALF:
+				mNotificationBuilder.setSmallIcon(R.drawable.logo_trans);
+				break;
+			case ICON_OFF:
+				mNotificationBuilder.setSmallIcon(R.drawable.logo_dark);
+				break;
 		}
 		if (mNotificationManager != null) {
 			mNotificationManager.notify(1, mNotificationBuilder.build());
@@ -111,7 +123,7 @@ public class LocationService extends Service implements GoogleApiClient.Connecti
 		sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
 
 		setupNotifications(true);
-		showNotification(getText(R.string.connecting), false);
+		showNotification(getText(R.string.notify_connecting), ICON_OFF);
 		Log.d(TAG, "Notification set up");
 
 		buildGoogleApiClient();
@@ -134,7 +146,7 @@ public class LocationService extends Service implements GoogleApiClient.Connecti
 			opts.secure = true;
 			socket = IO.socket(SERVER_ADDRESS, opts);
 
-			showNotification(getText(R.string.connected), false);
+			showNotification(getText(R.string.notify_connected), ICON_HALF);
 
 			// Log errors
 			socket.io().on(Manager.EVENT_TRANSPORT, new Emitter.Listener() {
@@ -145,7 +157,7 @@ public class LocationService extends Service implements GoogleApiClient.Connecti
 						@Override
 						public void call(Object... args) {
 							Exception e = (Exception) args[0];
-							Log.e(TAG, "Transport error " + e);
+							Log.e(TAG, "Transport error: " + e);
 							e.printStackTrace();
 							e.getCause().printStackTrace();
 						}
@@ -166,7 +178,7 @@ public class LocationService extends Service implements GoogleApiClient.Connecti
 			socket.connect();
 
 		} catch (URISyntaxException e) {
-			showNotification(getText(R.string.server_connection_error), false);
+			showNotification(getText(R.string.server_connection_error), ICON_OFF);
 			Log.e(TAG, "Failed to connect to sockets server " + SERVER_ADDRESS, e);
 		}
 
@@ -234,7 +246,7 @@ public class LocationService extends Service implements GoogleApiClient.Connecti
 
 		mLocationRequest = LocationRequest.create();
 		connectLocationUpdates(getIntervalSetting(), getPrioritySetting());
-		showNotification(getString(R.string.realtime_updates), true);
+		showNotification(getString(R.string.occasional_updates), ICON_HALF);
 	}
 
 	@Override
@@ -245,7 +257,7 @@ public class LocationService extends Service implements GoogleApiClient.Connecti
 	@Override
 	public void onConnectionFailed(ConnectionResult connectionResult) {
 		Log.e(TAG, "onConnectionFailed: " + connectionResult);
-		showNotification(getText(R.string.google_connection_error), false);
+		showNotification(getText(R.string.google_connection_error), ICON_OFF);
 		buildGoogleApiClient();
 	}
 
@@ -255,11 +267,11 @@ public class LocationService extends Service implements GoogleApiClient.Connecti
 			if (args[0].toString().equals("true")) {
 				Log.d(TAG, "Activating realtime updates");
 				connectLocationUpdates(getIntervalSetting(), getPrioritySetting());
-				showNotification(getString(R.string.realtime_updates), true);
+				showNotification(getString(R.string.realtime_updates), ICON_ON);
 			} else {
 				Log.d(TAG, "Deactivating realtime updates");
 				connectLocationUpdates(300, LocationRequest.PRIORITY_NO_POWER);
-				showNotification(getString(R.string.occasional_updates), false);
+				showNotification(getString(R.string.occasional_updates), ICON_HALF);
 			}
 		}
 	};
@@ -293,7 +305,7 @@ public class LocationService extends Service implements GoogleApiClient.Connecti
 	@Override
 	public void onConnectionSuspended(int i) {
 		Log.d(TAG, "onConnectionSuspended called");
-		showNotification(getText(R.string.google_connection_error), false);
+		showNotification(getText(R.string.google_connection_error), ICON_OFF);
 	}
 
 	@Override
@@ -312,7 +324,7 @@ public class LocationService extends Service implements GoogleApiClient.Connecti
 		Log.d(TAG, "LowPowerReceiver deactivated");
 
 		setupNotifications(false);
-		showNotification(getText(R.string.disconnected), false);
+		showNotification(getText(R.string.disconnected), ICON_OFF);
 		Log.d(TAG, "Notification changed");
 	}
 }

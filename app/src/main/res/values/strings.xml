@@ -16,13 +16,10 @@
 	<string name="server_connection_error">ERROR: Unable to connect to Tracman server.  </string>
 
 	<!-- Strings related to notifications -->
-	<string name="connecting">Connecting… </string>
-	<string name="connected">Connection established</string>
 	<string name="disconnected">Disconnected</string>
 	<string name="realtime_updates">Sending realtime updates</string>
 	<string name="occasional_updates">Sending occasional updates</string>
 	<string name="broadcast_disabled">Broadcast disabled</string>
-	<string name="not_connected">No internet connection</string>
 
 	<!-- Strings related to Settings -->
 	<string name="settings_name">Settings</string>
@@ -102,5 +99,8 @@
 	<string name="login_button_text">Login</string>
     <string name="email">email</string>
 	<string name="password">password</string>
+	<string name="notify_disabled">Not sending updates</string>
+	<string name="notify_connecting">"Connecting… "</string>
+	<string name="notify_connected">Connection established</string>
 
 </resources>

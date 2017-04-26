@@ -2,10 +2,8 @@
 <resources>
 	<string name="about_back_button">Atras</string>
 	<string name="about_name">Info</string>
-	<string name="connecting">conectando…</string>
-    <string name="loading">Cargando…</string>
+	<string name="loading">Cargando…</string>
 	<string name="disconnected">Conexión perdida</string>
-	<string name="connected">Conexión establecida</string>
 	<string name="bugs_name">Informe de error</string>
 	<string name="pref_header_general">Configuración principales</string>
 	<string name="settings_name">Configuración</string>
@@ -47,10 +45,13 @@
 		<item>Ciudad</item>
 		<item>Sin energía</item>
 	</string-array>
-	<string name="pref_title_gps_broadcast">Encender transmisiónes</string>	<string name="pref_broadcast_category_title">Actualizaciones de ubicación</string>
-	<string name="not_connected">Sin conexión a Internet</string>
+	<string name="pref_title_gps_broadcast">Encender transmisiónes</string>
+	<string name="pref_broadcast_category_title">Actualizaciones de ubicación</string>
 	<string name="login_forgot_password"><a href="https://tracman.org/login/forgot">Olividé su contrasena?</a></string>
 	<string name="login_button_text">Inciar session</string>
-    <string name="email">email</string>
+	<string name="email">email</string>
 	<string name="password">contrasena</string>
+	<string name="notify_connecting">conectando…</string>
+	<string name="notify_disabled">No se actualiza</string>
+	<string name="notify_connected">Conexión establecida</string>
 </resources>
