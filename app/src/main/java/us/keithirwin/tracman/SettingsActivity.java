@@ -16,7 +16,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.ActionBar;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
-import android.util.Log;
+//import android.util.Log;
 import android.view.MenuItem;
 
 import java.util.List;
@@ -36,7 +36,7 @@ import static us.keithirwin.tracman.LoginActivity.SIGN_OUT;
  * API Guide</a> for more information on developing a Settings UI.
  */
 public class SettingsActivity extends AppCompatPreferenceActivity {
-	private static final String TAG = "SettingsActivity";
+	//private static final String TAG = "SettingsActivity";
 	private static final int MY_FINE_LOCATION_PERMISSION = 425;
 
 	/**
@@ -90,7 +90,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 							MY_FINE_LOCATION_PERMISSION);
 				}
 
-				Log.d(TAG, "Starting LocationService");
+				//Log.d(TAG, "Starting LocationService");
 				startService(new Intent(SettingsActivity.this, LocationService.class));
 
 			}
@@ -132,7 +132,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setupActionBar();
-		Log.d(TAG, "activity onCreate called");
+		//Log.d(TAG, "activity onCreate called");
 
 		// Restart LocationService when any related preference is changed
 //		findPreference("gps_switch").setOnPreferenceChangeListener(sRestartLocationServiceOnChangeListener);
@@ -147,7 +147,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 
 	@Override
 	protected void onStop() {
-		Log.d(TAG, "onStop called");
+		//Log.d(TAG, "onStop called");
 		super.onStop();
 		// Get updated preferences
 		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
@@ -170,7 +170,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 			}
 
 			// Start location tracking service
-			Log.d(TAG, "Starting LocationService");
+			//Log.d(TAG, "Starting LocationService");
 			startService(new Intent(this, LocationService.class));
 
 		}

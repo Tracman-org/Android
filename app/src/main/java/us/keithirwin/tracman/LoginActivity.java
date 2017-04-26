@@ -7,7 +7,7 @@ import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.method.LinkMovementMethod;
-import android.util.Log;
+//import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -44,7 +44,7 @@ import okhttp3.Response;
 public class LoginActivity extends AppCompatActivity implements
 		GoogleApiClient.OnConnectionFailedListener,
 		View.OnClickListener {
-	private static final String TAG = "LoginActivity";
+	//private static final String TAG = "LoginActivity";
 	private static final int RC_SIGN_IN = 9001;
 	static final int SIGN_OUT = 1;
 	private static boolean DONT_LOG_IN = false;

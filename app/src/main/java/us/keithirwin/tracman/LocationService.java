@@ -18,7 +18,7 @@ import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.NotificationCompat;
-import android.util.Log;
+//import android.util.Log;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -41,8 +41,8 @@ import java.net.URISyntaxException;
 public class LocationService extends Service implements GoogleApiClient.ConnectionCallbacks,
 		GoogleApiClient.OnConnectionFailedListener, LocationListener {
 	public LocationService() {}
-	private String TAG = "LocationService";
-	final int ICON_ON = 2;
+	//private String TAG = "LocationService";
+	final static private int ICON_ON = 2;
 	final int ICON_HALF = 1;
 	final int ICON_OFF = 0;
 	// Development
