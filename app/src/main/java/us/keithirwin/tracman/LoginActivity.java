@@ -26,12 +26,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.security.KeyStore;
-import java.util.Arrays;
+//import java.security.KeyStore;
+//import java.util.Arrays;
 
-import javax.net.ssl.TrustManager;
-import javax.net.ssl.TrustManagerFactory;
-import javax.net.ssl.X509TrustManager;
+//import javax.net.ssl.TrustManager;
+//import javax.net.ssl.TrustManagerFactory;
+//import javax.net.ssl.X509TrustManager;
 
 import okhttp3.Call;
 import okhttp3.FormBody;
@@ -176,18 +176,18 @@ public class LoginActivity extends AppCompatActivity implements
 
 	private void authenticateWithTracmanServer(final Request request) throws Exception {
 		// Needed to support TLS 1.1 and 1.2
-		TrustManagerFactory trustManagerFactory = TrustManagerFactory.getInstance(
-				TrustManagerFactory.getDefaultAlgorithm());
-		trustManagerFactory.init((KeyStore) null);
-		TrustManager[] trustManagers = trustManagerFactory.getTrustManagers();
-		if (trustManagers.length != 1 || !(trustManagers[0] instanceof X509TrustManager)) {
-			throw new IllegalStateException("Unexpected default trust managers:"
-					+ Arrays.toString(trustManagers));
-		}
-		X509TrustManager trustManager = (X509TrustManager) trustManagers[0];
+//		TrustManagerFactory trustManagerFactory = TrustManagerFactory.getInstance(
+//				TrustManagerFactory.getDefaultAlgorithm());
+//		trustManagerFactory.init((KeyStore) null);
+//		TrustManager[] trustManagers = trustManagerFactory.getTrustManagers();
+//		if (trustManagers.length != 1 || !(trustManagers[0] instanceof X509TrustManager)) {
+//			throw new IllegalStateException("Unexpected default trust managers:"
+//					+ Arrays.toString(trustManagers));
+//		}
+//		X509TrustManager trustManager = (X509TrustManager) trustManagers[0];
 
 		OkHttpClient client = new OkHttpClient.Builder()
-				.sslSocketFactory(new TLSSocketFactory(), trustManager)
+//				.sslSocketFactory(new TLSSocketFactory(), trustManager)
 				.build();
 
 		client.newCall(request).enqueue(new Callback() {
