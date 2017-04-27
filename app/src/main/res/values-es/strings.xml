@@ -14,7 +14,7 @@
 	<string name="broadcast_disabled">Transmisiónes apagado</string>
 	<string name="google_connection_error">ERROR: No se puede conectar al Google API servidor. </string>
 	<string name="help_name">Ayuda</string>
-	<string name="login_description">Iniciar una sesión. Si no tiene una cuenta de Tracman, puede <a href="https://tracman.org/login">participar</a>.  </string>
+	<string name="login_description">Iniciar una sesión o <a href="https://tracman.org/login">participar</a>. </string>
 	<string name="login_name">Iniciar sesión</string>
 	<string name="login_no_user_error">ERROR: Usario no encontrado</string>
 	<string name="logout_name">Cerrar sesión</string>
