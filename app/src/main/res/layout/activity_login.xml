@@ -52,7 +52,6 @@
 			android:id="@+id/login_description"
 			android:text="@string/login_description"
 			android:textSize="20sp"
-			android:autoLink="web"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"/>
 	</LinearLayout>
@@ -63,48 +62,47 @@
 				  android:layout_weight="1"
 				  android:layout_marginBottom="30px" >
 
+		<!-- Google -->
 		<com.google.android.gms.common.SignInButton
 			android:id="@+id/login_button_google"
 			android:layout_width="match_parent"
 			android:layout_height="match_parent"
 			android:layout_gravity="center" />
 
-	</LinearLayout>
-
 		<!--&lt;!&ndash; Google &ndash;&gt;-->
-		<!--<ImageButton-->
-			<!--android:id="@+id/login_button_google"-->
-			<!--android:layout_width="wrap_content"-->
-			<!--android:layout_weight="1"-->
-			<!--android:layout_height="match_parent"-->
-			<!--android:background="#ce4d39"-->
-			<!--android:layout_marginLeft="30px"-->
-			<!--android:layout_marginRight="30px"-->
-			<!--android:src="@drawable/social_google" />-->
+		<!--<ImageButton
+			android:id="@+id/login_button_google"
+			android:layout_width="wrap_content"
+			android:layout_weight="1"
+			android:layout_height="match_parent"
+			android:background="#ce4d39"
+			android:layout_marginLeft="30px"
+			android:layout_marginRight="30px"
+			android:src="@drawable/social_google" />-->
 
 		<!--&lt;!&ndash; Facebook &ndash;&gt;-->
-		<!--<ImageButton-->
-			<!--android:id="@+id/login_button_facebook"-->
-			<!--android:layout_width="wrap_content"-->
-			<!--android:layout_weight="1"-->
-			<!--android:layout_height="match_parent"-->
-			<!--android:background="#305891"-->
-			<!--android:layout_marginLeft="30px"-->
-			<!--android:layout_marginRight="30px"-->
-			<!--android:src="@drawable/social_facebook" />-->
+		<!--<ImageButton
+			android:id="@+id/login_button_facebook"
+			android:layout_width="wrap_content"
+			android:layout_weight="1"
+			android:layout_height="match_parent"
+			android:background="#305891"
+			android:layout_marginLeft="30px"
+			android:layout_marginRight="30px"
+			android:src="@drawable/social_facebook" />-->
 
 		<!--&lt;!&ndash; Twitter &ndash;&gt;-->
-		<!--<ImageButton-->
-			<!--android:id="@+id/login_button_twitter"-->
-			<!--android:layout_width="wrap_content"-->
-			<!--android:layout_weight="1"-->
-			<!--android:layout_height="match_parent"-->
-			<!--android:background="#2ca8d2"-->
-			<!--android:layout_marginLeft="30px"-->
-			<!--android:layout_marginRight="30px"-->
-			<!--android:src="@drawable/social_twitter" />-->
+		<!--<ImageButton
+			android:id="@+id/login_button_twitter"
+			android:layout_width="wrap_content"
+			android:layout_weight="1"
+			android:layout_height="match_parent"
+			android:background="#2ca8d2"
+			android:layout_marginLeft="30px"
+			android:layout_marginRight="30px"
+			android:src="@drawable/social_twitter" />-->
 
-	<!--</LinearLayout>-->
+	</LinearLayout>
 
 	<!-- Login form -->
 	<LinearLayout android:layout_width="match_parent"
@@ -142,20 +140,17 @@
 	</LinearLayout>
 
 	<!-- Extra text -->
-	<LinearLayout android:layout_height="wrap_content"
+	<LinearLayout android:layout_height="31dp"
 				  android:layout_width="match_parent"
 				  android:orientation="vertical"
-				  android:layout_marginTop="20px"
-				  android:layout_weight="1">
+				  android:layout_marginTop="20px" >
 
 		<!-- Forgot password link -->
 		<TextView android:id="@+id/login_forgot_password"
 				  android:text="@string/login_forgot_password"
-				  android:autoLink="web"
 				  android:layout_width="match_parent"
 				  android:layout_height="wrap_content"
-				  android:textColor="@color/Yellow"
-				  android:textSize="24sp" />
+				  android:textSize="20sp" />
 
 		<!-- Errors -->
 		<TextView
