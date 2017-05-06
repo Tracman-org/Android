@@ -18,7 +18,7 @@ import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.NotificationCompat;
-import android.util.Log;
+//import android.util.Log;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -42,6 +42,12 @@ public class LocationService extends Service implements GoogleApiClient.Connecti
 		GoogleApiClient.OnConnectionFailedListener, LocationListener {
 	public LocationService() {}
 	//private String TAG = "LocationService";
+	final static private int ICON_ON = 2;
+	final int ICON_HALF = 1;
+	final int ICON_OFF = 0;
+	// Development
+//	final String SERVER_ADDRESS = "https://dev.tracman.org";
+	// Production
 	final String SERVER_ADDRESS = "https://tracman.org";
 
 	private Socket socket;
@@ -64,6 +70,8 @@ public class LocationService extends Service implements GoogleApiClient.Connecti
 	private NotificationManager mNotificationManager;
 	private final NotificationCompat.Builder mNotificationBuilder = new NotificationCompat.Builder(this);
 	private void setupNotifications(Boolean persist) {
+		//Log.d(TAG,"setupNotification() called");
+
 		if (mNotificationManager == null) {
 			mNotificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 		}
@@ -73,23 +81,28 @@ public class LocationService extends Service implements GoogleApiClient.Connecti
 				0);
 		mNotificationBuilder
 				.setPriority(-1)
-				.setSmallIcon(R.drawable.logo_white)
-//				.setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.logo_by))
+				.setSmallIcon(R.drawable.logo_dark)
 				.setCategory(NotificationCompat.CATEGORY_SERVICE)
 				.setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
 				.setContentTitle(getText(R.string.app_name))
-//				.setWhen(System.currentTimeMillis())
 				.setContentIntent(notificationIntent)
 				.setOngoing(persist);
 	}
-	private void showNotification(CharSequence text, Boolean active) {
+	private void showNotification(CharSequence text, int icon) {
+		//Log.d(TAG,"showNotification() called");
 		mNotificationBuilder
 				.setTicker(text)
 				.setContentText(text);
-		if (active) {
-			mNotificationBuilder.setSmallIcon(R.drawable.logo_white);
-		} else {
-			mNotificationBuilder.setSmallIcon(R.drawable.logo_trans);
+		switch (icon) {
+			case ICON_ON:
+				mNotificationBuilder.setSmallIcon(R.drawable.logo_white);
+				break;
+			case ICON_HALF:
+				mNotificationBuilder.setSmallIcon(R.drawable.logo_trans);
+				break;
+			case ICON_OFF:
+				mNotificationBuilder.setSmallIcon(R.drawable.logo_dark);
+				break;
 		}
 		if (mNotificationManager != null) {
 			mNotificationManager.notify(1, mNotificationBuilder.build());
@@ -104,20 +117,6 @@ public class LocationService extends Service implements GoogleApiClient.Connecti
 		}
 	};
 
-//	private TrustManager[] trustAllCerts = new TrustManager[] { new X509TrustManager() {
-//		public java.security.cert.X509Certificate[] getAcceptedIssuers() {
-//			return new java.security.cert.X509Certificate[] {};
-//		}
-//
-//		public void checkClientTrusted(X509Certificate[] chain,
-//									   String authType) throws CertificateException {
-//		}
-//
-//		public void checkServerTrusted(X509Certificate[] chain,
-//									   String authType) throws CertificateException {
-//		}
-//	} };
-
 	@Override
 	public void onCreate() {
 		super.onCreate();
@@ -127,7 +126,7 @@ public class LocationService extends Service implements GoogleApiClient.Connecti
 		sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
 
 		setupNotifications(true);
-		showNotification(getText(R.string.connecting), false);
+		showNotification(getText(R.string.notify_connecting), ICON_OFF);
 		//Log.d(TAG, "Notification set up");
 
 		buildGoogleApiClient();
@@ -150,24 +149,24 @@ public class LocationService extends Service implements GoogleApiClient.Connecti
 			opts.secure = true;
 			socket = IO.socket(SERVER_ADDRESS, opts);
 
-			showNotification(getText(R.string.connected), false);
+			showNotification(getText(R.string.notify_connected), ICON_HALF);
 
 			// Log errors
-//			socket.io().on(Manager.EVENT_TRANSPORT, new Emitter.Listener() {
-//				@Override
-//				public void call(Object... args) {
-//					Transport transport = (Transport) args[0];
-//					transport.on(Transport.EVENT_ERROR, new Emitter.Listener() {
-//						@Override
-//						public void call(Object... args) {
-//							Exception e = (Exception) args[0];
-//							Log.e(TAG, "Transport error " + e);
-//							e.printStackTrace();
-//							e.getCause().printStackTrace();
-//						}
-//					});
-//				}
-//			});
+			socket.io().on(Manager.EVENT_TRANSPORT, new Emitter.Listener() {
+				@Override
+				public void call(Object... args) {
+					Transport transport = (Transport) args[0];
+					transport.on(Transport.EVENT_ERROR, new Emitter.Listener() {
+						@Override
+						public void call(Object... args) {
+							Exception e = (Exception) args[0];
+							//Log.e(TAG, "Transport error: " + e);
+							e.printStackTrace();
+							e.getCause().printStackTrace();
+						}
+					});
+				}
+			});
 
 			socket.on(Socket.EVENT_CONNECT, new Emitter.Listener() {
 				@Override
@@ -182,7 +181,7 @@ public class LocationService extends Service implements GoogleApiClient.Connecti
 			socket.connect();
 
 		} catch (URISyntaxException e) {
-			showNotification(getText(R.string.server_connection_error), false);
+			showNotification(getText(R.string.server_connection_error), ICON_OFF);
 			//Log.e(TAG, "Failed to connect to sockets server " + SERVER_ADDRESS, e);
 		}
 
@@ -215,8 +214,7 @@ public class LocationService extends Service implements GoogleApiClient.Connecti
 		// Get permission
 		if (!checkLocationPermission(this)) {
 			//Log.d(TAG, "Location permission denied");
-			//TODO: Turn off location updates
-
+			//TODO: Ask the user to try again
 		} else {
 			//Log.d(TAG, "Location permission granted");
 
@@ -248,7 +246,7 @@ public class LocationService extends Service implements GoogleApiClient.Connecti
 
 		mLocationRequest = LocationRequest.create();
 		connectLocationUpdates(getIntervalSetting(), getPrioritySetting());
-		showNotification(getString(R.string.realtime_updates), true);
+		showNotification(getString(R.string.occasional_updates), ICON_HALF);
 	}
 
 	@Override
@@ -259,7 +257,7 @@ public class LocationService extends Service implements GoogleApiClient.Connecti
 	@Override
 	public void onConnectionFailed(ConnectionResult connectionResult) {
 		//Log.e(TAG, "onConnectionFailed: " + connectionResult);
-		showNotification(getText(R.string.google_connection_error), false);
+		showNotification(getText(R.string.google_connection_error), ICON_OFF);
 		buildGoogleApiClient();
 	}
 
@@ -269,11 +267,11 @@ public class LocationService extends Service implements GoogleApiClient.Connecti
 			if (args[0].toString().equals("true")) {
 				//Log.d(TAG, "Activating realtime updates");
 				connectLocationUpdates(getIntervalSetting(), getPrioritySetting());
-				showNotification(getString(R.string.realtime_updates), true);
+				showNotification(getString(R.string.realtime_updates), ICON_ON);
 			} else {
 				//Log.d(TAG, "Deactivating realtime updates");
 				connectLocationUpdates(300, LocationRequest.PRIORITY_NO_POWER);
-				showNotification(getString(R.string.occasional_updates), false);
+				showNotification(getString(R.string.occasional_updates), ICON_HALF);
 			}
 		}
 	};
@@ -281,26 +279,33 @@ public class LocationService extends Service implements GoogleApiClient.Connecti
 	@Override
 	public void onLocationChanged(Location location) {
 
-		JSONObject mLocationView = new JSONObject();
-		try {
-			mLocationView.put("usr", mUserID);
-			mLocationView.put("tok", mUserSK);
-			mLocationView.put("lat", String.valueOf(location.getLatitude()));
-			mLocationView.put("lon", String.valueOf(location.getLongitude()));
-			mLocationView.put("dir", String.valueOf(location.getBearing()));
-			mLocationView.put("spd", String.valueOf(location.getSpeed()));
-		} catch (JSONException e) {
-			//Log.e(TAG, "Failed to put JSON data");
+		// Make sure we're logged in...
+		if (mUserID!=null && mUserSK!=null) {
+			JSONObject mLocationView = new JSONObject();
+			try {
+				mLocationView.put("usr", mUserID);
+				mLocationView.put("tok", mUserSK);
+				mLocationView.put("lat", String.valueOf(location.getLatitude()));
+				mLocationView.put("lon", String.valueOf(location.getLongitude()));
+				mLocationView.put("dir", String.valueOf(location.getBearing()));
+				mLocationView.put("spd", String.valueOf(location.getSpeed()));
+			} catch (JSONException e) {
+				//Log.e(TAG, "Failed to put JSON data");
+			}
+			socket.emit("set", mLocationView);
+			//Log.v(TAG, "Location set: " + mLocationView.toString());
 		}
-		socket.emit("set", mLocationView);
-		//Log.v(TAG, "Location updated: " + mLocationView.toString());
+		else {
+			//Log.v(TAG, "Can't set location because user isn't logged in.");
+      stopSelf();
+		}
 
 	}
 
 	@Override
 	public void onConnectionSuspended(int i) {
 		//Log.d(TAG, "onConnectionSuspended called");
-		showNotification(getText(R.string.google_connection_error), false);
+		showNotification(getText(R.string.google_connection_error), ICON_OFF);
 	}
 
 	@Override
@@ -319,7 +324,7 @@ public class LocationService extends Service implements GoogleApiClient.Connecti
 		//Log.d(TAG, "LowPowerReceiver deactivated");
 
 		setupNotifications(false);
-		showNotification(getText(R.string.disconnected), false);
+		showNotification(getText(R.string.disconnected), ICON_OFF);
 		//Log.d(TAG, "Notification changed");
 	}
 }

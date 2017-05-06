@@ -16,10 +16,12 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.ActionBar;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
-import android.util.Log;
+//import android.util.Log;
 import android.view.MenuItem;
 
 import java.util.List;
+
+import static us.keithirwin.tracman.LoginActivity.SIGN_OUT;
 
 
 /**
@@ -88,7 +90,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 							MY_FINE_LOCATION_PERMISSION);
 				}
 
-//				Log.d(TAG, "Starting LocationService");
+				//Log.d(TAG, "Starting LocationService");
 				startService(new Intent(SettingsActivity.this, LocationService.class));
 
 			}
@@ -130,7 +132,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setupActionBar();
-//		Log.d(TAG, "activity onCreate called");
+		//Log.d(TAG, "activity onCreate called");
 
 		// Restart LocationService when any related preference is changed
 //		findPreference("gps_switch").setOnPreferenceChangeListener(sRestartLocationServiceOnChangeListener);
@@ -147,10 +149,16 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 	protected void onStop() {
 		//Log.d(TAG, "onStop called");
 		super.onStop();
+		// Get updated preferences
+		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+
+		// Save updated preferences
+		SharedPreferences.Editor editor = sharedPref.edit();
+//		editor.putBoolean("pref_start_boot", );
+		editor.apply();
 
 		// Restart service so settings can take effect
 		stopService(new Intent(this, LocationService.class));
-		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
 		if (sharedPref.getBoolean("gps_switch", false)) {
 
 			// Ask for location permissions (can't be done in service, only activity)
@@ -162,7 +170,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 			}
 
 			// Start location tracking service
-//			Log.d(TAG, "Starting LocationService");
+			//Log.d(TAG, "Starting LocationService");
 			startService(new Intent(this, LocationService.class));
 
 		}
@@ -199,6 +207,11 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 
 	@Override
 	public void onBackPressed() {
+		//Log.v(TAG,"onBackPressed() called");
+
+		// Return to LoginActivity and don't sign back in again
+		setResult(SIGN_OUT, new Intent());
+
 		super.onBackPressed();
 	}
 
@@ -219,8 +232,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 	protected boolean isValidFragment(String fragmentName) {
 		return PreferenceFragment.class.getName().equals(fragmentName)
 				|| GeneralPreferenceFragment.class.getName().equals(fragmentName);
-//				|| MapPreferenceFragment.class.getName().equals(fragmentName)
-//				|| NotificationPreferenceFragment.class.getName().equals(fragmentName);
 	}
 
 	/**
@@ -242,7 +253,10 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 			// Bind the summary of preferences to their value
 			bindPreferenceSummaryToValue(findPreference("broadcast_frequency"));
 			bindPreferenceSummaryToValue(findPreference("broadcast_priority"));
+
 		}
+
+
 	}
 
 	/**

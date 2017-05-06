@@ -7,6 +7,7 @@
 	android:weightSum="6"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
+	android:background="#080808"
 	android:paddingBottom="@dimen/activity_vertical_margin"
 	android:paddingLeft="@dimen/activity_horizontal_margin"
 	android:paddingRight="@dimen/activity_horizontal_margin"
@@ -14,74 +15,151 @@
 	tools:context="us.keithirwin.tracman.LoginActivity"
 	android:clickable="true">
 
-	<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-				  xmlns:tools="http://schemas.android.com/tools"
-				  android:orientation="vertical"
-				  android:layout_weight="1"
-				  android:layout_width="match_parent"
-				  android:layout_height="wrap_content">
+	<!-- Header -->
+	<RelativeLayout android:orientation="vertical"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:layout_weight="1"
+					android:gravity="center" >
+
+		<!-- Logo -->
 		<ImageView
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:contentDescription="@string/logo_description"
 			android:padding="5dp"
-			android:src="@drawable/logo_by"
-			android:layout_alignParentLeft="true"
-			android:layout_alignParentStart="true"/>
+			android:src="@drawable/logo_by" />
+
+		<!-- Title -->
 		<TextView
 			android:id="@+id/login_title"
-			android:layout_width="match_parent"
+			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_marginLeft="60dp"
 			android:layout_marginStart="60dp"
-			android:gravity="center"
 			android:text="@string/app_name"
 			android:textSize="50sp"
-			android:textColor="@color/Yellow"
-			android:layout_alignParentRight="true"
-			android:layout_alignParentEnd="true" />
+			android:textColor="@color/Yellow"/>
+
 	</RelativeLayout>
 
-	<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-				  xmlns:tools="http://schemas.android.com/tools"
-				  android:orientation="vertical"
-				  android:layout_weight="3"
+	<!-- Description -->
+	<LinearLayout android:orientation="vertical"
+				  android:layout_weight="1"
 				  android:layout_width="match_parent"
-				  android:layout_height="wrap_content">
+				  android:layout_height="wrap_content" >
 		<TextView
 			android:id="@+id/login_description"
 			android:text="@string/login_description"
-			android:textSize="24sp"
+			android:textSize="20sp"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"/>
-
 	</LinearLayout>
 
-	<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-				  xmlns:tools="http://schemas.android.com/tools"
-				  android:layout_width="match_parent"
+	<!-- Social login buttons -->
+	<LinearLayout android:layout_width="match_parent"
+				  android:layout_height="wrap_content"
 				  android:layout_weight="1"
-				  android:layout_height="wrap_content">
+				  android:layout_marginBottom="30px" >
+
+		<!-- Google -->
 		<com.google.android.gms.common.SignInButton
-			android:id="@+id/google_sign_in_button"
+			android:id="@+id/login_button_google"
 			android:layout_width="match_parent"
 			android:layout_height="match_parent"
-			android:layout_gravity="center"/>
+			android:layout_gravity="center" />
+
+		<!--&lt;!&ndash; Google &ndash;&gt;-->
+		<!--<ImageButton
+			android:id="@+id/login_button_google"
+			android:layout_width="wrap_content"
+			android:layout_weight="1"
+			android:layout_height="match_parent"
+			android:background="#ce4d39"
+			android:layout_marginLeft="30px"
+			android:layout_marginRight="30px"
+			android:src="@drawable/social_google" />-->
+
+		<!--&lt;!&ndash; Facebook &ndash;&gt;-->
+		<!--<ImageButton
+			android:id="@+id/login_button_facebook"
+			android:layout_width="wrap_content"
+			android:layout_weight="1"
+			android:layout_height="match_parent"
+			android:background="#305891"
+			android:layout_marginLeft="30px"
+			android:layout_marginRight="30px"
+			android:src="@drawable/social_facebook" />-->
+
+		<!--&lt;!&ndash; Twitter &ndash;&gt;-->
+		<!--<ImageButton
+			android:id="@+id/login_button_twitter"
+			android:layout_width="wrap_content"
+			android:layout_weight="1"
+			android:layout_height="match_parent"
+			android:background="#2ca8d2"
+			android:layout_marginLeft="30px"
+			android:layout_marginRight="30px"
+			android:src="@drawable/social_twitter" />-->
 
 	</LinearLayout>
 
-	<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-				  xmlns:tools="http://schemas.android.com/tools"
+	<!-- Login form -->
+	<LinearLayout android:layout_width="match_parent"
 				  android:layout_height="wrap_content"
+				  android:layout_weight="1"
+				  android:orientation="vertical" >
+
+		<!-- Email -->
+		<EditText
+			android:id="@+id/login_email"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:hint="@string/email"
+			android:inputType="textEmailAddress"
+			android:textSize="24sp"/>
+
+		<!-- Password -->
+		<EditText
+			android:id="@+id/login_password"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:inputType="textPassword"
+			android:hint="@string/password"
+			android:textSize="24sp"/>
+
+		<!-- Submit -->
+		<Button
+			android:id="@+id/login_button"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:padding="15dp"
+			android:text="@string/login_button_text"
+			android:textSize="34sp" />
+
+	</LinearLayout>
+
+	<!-- Extra text -->
+	<LinearLayout android:layout_height="31dp"
 				  android:layout_width="match_parent"
-				  android:layout_weight="1">
+				  android:orientation="vertical"
+				  android:layout_marginTop="20px" >
+
+		<!-- Forgot password link -->
+		<TextView android:id="@+id/login_forgot_password"
+				  android:text="@string/login_forgot_password"
+				  android:layout_width="match_parent"
+				  android:layout_height="wrap_content"
+				  android:textSize="20sp" />
+
+		<!-- Errors -->
 		<TextView
-		android:id="@+id/login_error"
-		android:layout_width="wrap_content"
-		android:layout_height="match_parent"
-		android:gravity="center"
-		android:textColor="@color/Red"
-		android:textSize="22sp" />
+			android:id="@+id/login_error"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:gravity="center"
+			android:textColor="@color/Red"
+			android:textSize="22sp" />
 
 	</LinearLayout>
 
