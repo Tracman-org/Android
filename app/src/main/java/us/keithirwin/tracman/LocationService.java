@@ -36,6 +36,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.net.URISyntaxException;
+import java.util.Objects;
 
 
 public class LocationService extends Service implements GoogleApiClient.ConnectionCallbacks,
@@ -285,6 +286,7 @@ public class LocationService extends Service implements GoogleApiClient.Connecti
 			try {
 				mLocationView.put("usr", mUserID);
 				mLocationView.put("tok", mUserSK);
+				mLocationView.put("ts", String.valueOf(System.currentTimeMillis()));
 				mLocationView.put("lat", String.valueOf(location.getLatitude()));
 				mLocationView.put("lon", String.valueOf(location.getLongitude()));
 				mLocationView.put("dir", String.valueOf(location.getBearing()));
