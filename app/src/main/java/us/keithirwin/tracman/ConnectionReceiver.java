@@ -5,14 +5,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-//import android.util.Log;
+import android.util.Log;
 
 public class ConnectionReceiver extends BroadcastReceiver {
-	//private static final String TAG = "ConnectionReceiver";
+	private static final String TAG = "ConnectionReceiver";
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
-		//Log.d(TAG,"onReceive() called");
+		Log.d(TAG,"onReceive() called");
 
 		// Get connection information
 		ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -23,11 +23,11 @@ public class ConnectionReceiver extends BroadcastReceiver {
 
 		// Check connection
 		if (networkInfo!=null) {
-			//Log.d(TAG, "Connected");
+			Log.d(TAG, "Connected");
 			context.startService(locationServiceIntent);
 		}
 		else {
-			//Log.d(TAG,"Disconnected");
+			Log.d(TAG,"Disconnected");
 			context.stopService(locationServiceIntent);
 		}
 
