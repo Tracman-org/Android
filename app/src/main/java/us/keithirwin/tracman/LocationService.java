@@ -264,15 +264,15 @@ public class LocationService extends Service implements GoogleApiClient.Connecti
 	private Emitter.Listener onActivate = new Emitter.Listener() {
 		@Override
 		public void call(final Object... args) {
-			if (args[0].toString().equals("true")) {
+//			if (args[0].toString().equals("true")) {
 				//Log.d(TAG, "Activating realtime updates");
 				connectLocationUpdates(getIntervalSetting(), getPrioritySetting());
 				showNotification(getString(R.string.realtime_updates), ICON_ON);
-			} else {
-				//Log.d(TAG, "Deactivating realtime updates");
-				connectLocationUpdates(300, LocationRequest.PRIORITY_NO_POWER);
-				showNotification(getString(R.string.occasional_updates), ICON_HALF);
-			}
+//			} else {
+//				//Log.d(TAG, "Deactivating realtime updates");
+//				connectLocationUpdates(300, LocationRequest.PRIORITY_NO_POWER);
+//				showNotification(getString(R.string.occasional_updates), ICON_HALF);
+//			}
 		}
 	};
 
