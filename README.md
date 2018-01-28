@@ -17,9 +17,13 @@ More information is available on the [help page](https://www.tracman.org/help#an
 
 ## Contributing
 
-Tracman for Android is in perpetually poor condition.  I just don't know enough about android/java to create a top-quality app.  I think this project would benefit greatly from being torn down and rebuilt from scratch.  If you know anything about Android, you probably know more than me.  Feel free to check out the [issues marked help wanted](https://github.com/Tracman-org/Android/issues?q=is%3Aissue+is%3Aopen+label%3A%22help+wanted%22) (or [any issues](https://github.com/Tracman-org/Android/issues), really) or [contact me](https://www.keithirwin.us/contact) about getting involved.
+Tracman for Android is in perpetually poor condition.  I don't do much work with Android.  This project would benefit greatly from being torn down and rebuilt from scratch.  Feel free to check out the [issues marked help wanted](https://github.com/Tracman-org/Android/issues?q=is%3Aissue+is%3Aopen+label%3A%22help+wanted%22) (or [any issues](https://github.com/Tracman-org/Android/issues), really) or [contact me](https://www.keithirwin.us/contact) about getting involved.
 
 ## Changelog
+
+#### v0.6.1
+
+* Updated server URLs
 
 #### v0.6.0
 
