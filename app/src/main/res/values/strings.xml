@@ -12,7 +12,7 @@
 	<!-- Strings related to login -->
 	<string name="login_name">Login</string>
 	<string name="logout_name">Logout</string>
-	<string name="login_description">Log in or <a href="https://tracman.org/login#join">create an account</a>. </string>
+	<string name="login_description">Log in or <a href="https://www.tracman.org/login#join">create an account</a>. </string>
 	<string name="server_connection_error">ERROR: Unable to connect to Tracman server.  </string>
 
 	<!-- Strings related to notifications -->
@@ -95,7 +95,7 @@
 
 	<!--Strings related to bugs-->
 	<string name="bugs_name">Bug report</string>
-	<string name="login_forgot_password"><a href="https://tracman.org/login/forgot">Forgot your password?</a></string>
+	<string name="login_forgot_password"><a href="https://www.tracman.org/login/forgot">Forgot your password?</a></string>
 	<string name="login_button_text">Login</string>
 	<string name="email">email</string>
 	<string name="password">password</string>

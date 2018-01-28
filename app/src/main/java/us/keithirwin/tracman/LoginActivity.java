@@ -53,7 +53,7 @@ public class LoginActivity extends AppCompatActivity implements
 	private final String SERVER_ADDRESS = "https://dev.tracman.org/";
 	private static final String GOOGLE_WEB_CLIENT_ID = "483494341936-hps4p2pcu3ctshjvqm3pqdbg0t0q281o.apps.googleusercontent.com";
 	// Production
-//	private final String SERVER_ADDRESS = "https://tracman.org/";
+//	private final String SERVER_ADDRESS = "https://www.tracman.org/";
 //	private static final String GOOGLE_WEB_CLIENT_ID = "483494341936-hrn0ms1tebgdtfs5f4i6ebmkt3qmo16o.apps.googleusercontent.com";
 
 	private GoogleApiClient mGoogleApiClient;

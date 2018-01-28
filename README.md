@@ -1,4 +1,4 @@
-# <img align="left" src="https://tracman.org/static/img/icon/by/48.png" alt="[]" title="The Tracman Logo">Tracman for Android
+# <img align="left" src="https://www.tracman.org/static/img/icon/by/48.png" alt="[]" title="The Tracman Logo">Tracman for Android
 ###### v 0.6.0
 
 Android app to upload a user's GPS location to the [tracman server](https://github.com/tracman-org/Server). 
@@ -13,11 +13,11 @@ In order to apply changes to settings, you need to hit the back button and retur
 
 The app will switch between "realtime updates" (Every second, or whatever interval you set up in the settings) and "occasional updates", depending on if there are visitors to your map.  This prevents the app from draining your battery when nobody's looking at your location anyway. 
 
-More information is available on the [help page](https://tracman.org/help#android). 
+More information is available on the [help page](https://www.tracman.org/help#android).
 
 ## Contributing
 
-Tracman for Android is in perpetually poor condition.  I just don't know enough about android/java to create a top-quality app.  I think this project would benefit greatly from being torn down and rebuilt from scratch.  If you know anything about Android, you probably know more than me.  Feel free to check out the [issues marked help wanted](https://github.com/Tracman-org/Android/issues?q=is%3Aissue+is%3Aopen+label%3A%22help+wanted%22) (or [any issues](https://github.com/Tracman-org/Android/issues), really) or [contact me](https://keithirwin.us/contact) about getting involved. 
+Tracman for Android is in perpetually poor condition.  I just don't know enough about android/java to create a top-quality app.  I think this project would benefit greatly from being torn down and rebuilt from scratch.  If you know anything about Android, you probably know more than me.  Feel free to check out the [issues marked help wanted](https://github.com/Tracman-org/Android/issues?q=is%3Aissue+is%3Aopen+label%3A%22help+wanted%22) (or [any issues](https://github.com/Tracman-org/Android/issues), really) or [contact me](https://www.keithirwin.us/contact) about getting involved.
 
 ## Changelog
 
@@ -37,7 +37,7 @@ Tracman for Android is in perpetually poor condition.  I just don't know enough 
 ###### see [LICENSE.md](https://github.com/Tracman-org/Android/blob/master/LICENSE.md)
 
 Tracman: GPS tracking app for android
-Copyright © 2017 [Keith Irwin](https://keithirwin.us/)
+Copyright © 2017 [Keith Irwin](https://www.keithirwin.us/)
 
 This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
 
