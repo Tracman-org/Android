@@ -37,7 +37,7 @@ Tracman for Android is in perpetually poor condition.  I just don't know enough 
 ###### see [LICENSE.md](https://github.com/Tracman-org/Android/blob/master/LICENSE.md)
 
 Tracman: GPS tracking app for android
-Copyright © 2017 [Keith Irwin](https://www.keithirwin.us/)
+Copyright © 2018 [Keith Irwin](https://www.keithirwin.us/)
 
 This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
 
