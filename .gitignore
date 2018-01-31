@@ -1,7 +1,4 @@
-## VIM
-*.swp
-
-# Created by https://www.gitignore.io/api/android,linux
+# Created by https://www.gitignore.io/api/android
 
 ### Android ###
 # Built application files
@@ -41,11 +38,7 @@ captures/
 # Intellij
 /.idea/
 *.iml
-.idea/workspace.xml
-.idea/tasks.xml
-.idea/gradle.xml
-.idea/libraries
-.idea/misc.xml
+.idea/
 projectFilesBackup/
 
 # Keystore files
@@ -66,19 +59,6 @@ freeline_project_description.json
 ### Android Patch ###
 gen-external-apklibs
 
-### Linux ###
-*~
-
-# temporary files which can be created if a process still has a handle open of a deleted file
-.fuse_hidden*
-
-# KDE directory preferences
-.directory
-
-# Linux trash folder which might appear on any partition or disk
-.Trash-*
-
-# .nfs files are created when an open file is removed but is still being accessed
-.nfs*
-
-# End of https://www.gitignore.io/api/android,linux
+# For google play signing
+encrypted_private_key
+upload_certificate.pem

@@ -8,7 +8,7 @@
 	<string name="google_connection_error">FEHLER: Könnte nicht zum Google API Server verbinden. </string>
 	<string name="help_name">Hilfe</string>
 	<string name="loading">Ladet…</string>
-	<string name="login_description">Einloggen oder <a href="https://tracman.org/login#join">ein neues Konto erstellen</a>. </string>
+	<string name="login_description">Einloggen oder <a href="https://www.tracman.org/login#join">ein neues Konto erstellen</a>. </string>
 	<string name="login_name">Einloggen</string>
 	<string name="login_no_user_error">FEHLER: Nutzer nicht gefunden. </string>
 	<string name="logout_name">Ausloggen</string>
@@ -47,7 +47,7 @@
 	</string-array>
 	<string name="pref_title_gps_broadcast">Sendungen einschalten</string>
 	<string name="pref_title_broadcast_priority">Aktualisierung Vorrang</string>
-	<string name="login_forgot_password"><a href="https://tracman.org/login/forgot">Passwort vergessen?</a></string>
+	<string name="login_forgot_password"><a href="https://www.tracman.org/login/forgot">Passwort vergessen?</a></string>
 	<string name="login_button_text">Einloggen</string>
 	<string name="email">Email</string>
 	<string name="password">Passwort</string>

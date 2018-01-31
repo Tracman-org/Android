@@ -1,8 +1,8 @@
 <resources>
 	<string name="app_name" translatable="false">Tracman</string>
 	<string name="app_address" translatable="false">us.keithirwin.tracman</string>
-	<string name="version_code" translatable="false">10</string>
-	<string name="version" translatable="false">0.5.0</string>
+	<string name="version_code" translatable="false">13</string>
+	<string name="version" translatable="false">0.6.1</string>
 
 	<string name="loading">Loading…</string>
 	<string name="logo_description" translatable="false">[T]</string>
@@ -12,7 +12,7 @@
 	<!-- Strings related to login -->
 	<string name="login_name">Login</string>
 	<string name="logout_name">Logout</string>
-	<string name="login_description">Log in or <a href="https://tracman.org/login#join">create an account</a>. </string>
+	<string name="login_description">Log in or <a href="https://www.tracman.org/login#join">create an account</a>. </string>
 	<string name="server_connection_error">ERROR: Unable to connect to Tracman server.  </string>
 
 	<!-- Strings related to notifications -->
@@ -95,7 +95,7 @@
 
 	<!--Strings related to bugs-->
 	<string name="bugs_name">Bug report</string>
-	<string name="login_forgot_password"><a href="https://tracman.org/login/forgot">Forgot your password?</a></string>
+	<string name="login_forgot_password"><a href="https://www.tracman.org/login/forgot">Forgot your password?</a></string>
 	<string name="login_button_text">Login</string>
 	<string name="email">email</string>
 	<string name="password">password</string>

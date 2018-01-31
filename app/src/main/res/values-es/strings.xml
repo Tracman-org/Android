@@ -14,7 +14,7 @@
 	<string name="broadcast_disabled">Transmisiónes apagado</string>
 	<string name="google_connection_error">ERROR: No se puede conectar al Google API servidor. </string>
 	<string name="help_name">Ayuda</string>
-	<string name="login_description">Iniciar una sesión o <a href="https://tracman.org/login">participar</a>. </string>
+	<string name="login_description">Iniciar una sesión o <a href="https://www.tracman.org/login">participar</a>. </string>
 	<string name="login_name">Iniciar sesión</string>
 	<string name="login_no_user_error">ERROR: Usario no encontrado</string>
 	<string name="logout_name">Cerrar sesión</string>
@@ -47,7 +47,7 @@
 	</string-array>
 	<string name="pref_title_gps_broadcast">Encender transmisiónes</string>
 	<string name="pref_broadcast_category_title">Actualizaciones de ubicación</string>
-	<string name="login_forgot_password"><a href="https://tracman.org/login/forgot">Olividé su contrasena?</a></string>
+	<string name="login_forgot_password"><a href="https://www.tracman.org/login/forgot">Olividé su contrasena?</a></string>
 	<string name="login_button_text">Inciar session</string>
 	<string name="email">email</string>
 	<string name="password">contrasena</string>
