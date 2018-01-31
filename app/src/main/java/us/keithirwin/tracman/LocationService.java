@@ -47,9 +47,9 @@ public class LocationService extends Service implements GoogleApiClient.Connecti
 	final static private int ICON_HALF = 1;
 	final static private int ICON_OFF = 0;
 	// Development
-//	final String SERVER_ADDRESS = "https://dev.tracman.org";
+	final String SERVER_ADDRESS = "https://dev.tracman.org";
 	// Production
-	final String SERVER_ADDRESS = "https://www.tracman.org";
+//	final String SERVER_ADDRESS = "https://www.tracman.org";
 
 	private Socket socket;
 	private String mUserID;
