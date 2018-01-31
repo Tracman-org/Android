@@ -1,5 +1,5 @@
 # <img align="left" src="https://www.tracman.org/static/img/icon/by/48.png" alt="[]" title="The Tracman Logo">Tracman for Android
-###### v 0.6.0
+###### v 0.6.1
 
 Android app to upload a user's GPS location to the [tracman server](https://github.com/tracman-org/Server). 
 
