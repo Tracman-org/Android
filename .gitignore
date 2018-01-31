@@ -57,3 +57,7 @@ freeline_project_description.json
 
 ### Android Patch ###
 gen-external-apklibs
+
+# For google play signing
+encrypted_private_key
+upload_certificate.pem
