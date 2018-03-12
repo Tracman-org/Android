@@ -151,6 +151,7 @@ public class LoginActivity extends AppCompatActivity implements
 		editor.remove("loggedInUserId");
 		editor.remove("loggedInUserName");
 		editor.remove("loggedInUserSk");
+		editor.remove("loggedInUserVeh");
 		editor.apply();
 
 	}
@@ -209,17 +210,19 @@ public class LoginActivity extends AppCompatActivity implements
 					String userString = res.body().string();
 					System.out.println("Full response: " + userString);
 
-					String userID, userSK;
+					String userID, userSK, userVeh;
 					try {
 						JSONObject user = new JSONObject(userString);
 						userID = user.getString("_id");
 						userSK = user.getString("sk32");
+						userVeh = user.getString("setVehicle");
 						Log.v(TAG, "User retrieved with ID: " + userID);
 					} catch (JSONException e) {
 						Log.e(TAG, "Unable to parse user JSON: ", e);
 						Log.e(TAG, "JSON String used: " + userString);
 						userID = null;
 						userSK = null;
+						userVeh = null;
 					}
 
 					// Save user as loggedInUser
@@ -228,6 +231,7 @@ public class LoginActivity extends AppCompatActivity implements
 					editor.putString("loggedInUser", userString);
 					editor.putString("loggedInUserId", userID);
 					editor.putString("loggedInUserSk", userSK);
+					editor.putString("loggedInUserVeh", userVeh);
 					editor.commit();
 
 					startActivityForResult(new Intent(LoginActivity.this, SettingsActivity.class), SIGN_OUT);
