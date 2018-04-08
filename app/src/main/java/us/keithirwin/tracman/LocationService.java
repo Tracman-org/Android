@@ -141,7 +141,6 @@ public class LocationService extends Service implements GoogleApiClient.Connecti
 
 		mUserID = sharedPref.getString("loggedInUserId", null);
 		mUserSK = sharedPref.getString("loggedInUserSk", null);
-		mUserVeh = sharedPref.getString("loggedInUserVeh", null);
 
 		try {
 
@@ -172,7 +171,7 @@ public class LocationService extends Service implements GoogleApiClient.Connecti
 			socket.on(Socket.EVENT_CONNECT, new Emitter.Listener() {
 				@Override
 				public void call(Object... args) {
-					socket.emit("can-set", mUserID);
+					socket.emit("can-set", mUserID, mUserSK);
 				}
 			});
 
@@ -284,9 +283,6 @@ public class LocationService extends Service implements GoogleApiClient.Connecti
 		if (mUserID!=null && mUserSK!=null && mUserVeh!=null) {
 			JSONObject mLocationView = new JSONObject();
 			try {
-				mLocationView.put("usr", mUserID);
-				mLocationView.put("tok", mUserSK);
-				mLocationView.put("veh", mUserVeh);
 				mLocationView.put("ts", String.valueOf(System.currentTimeMillis()));
 				mLocationView.put("lat", String.valueOf(location.getLatitude()));
 				mLocationView.put("lon", String.valueOf(location.getLongitude()));
