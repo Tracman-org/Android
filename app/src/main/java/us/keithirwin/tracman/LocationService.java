@@ -47,13 +47,12 @@ public class LocationService extends Service implements GoogleApiClient.Connecti
 	final static private int ICON_HALF = 1;
 	final static private int ICON_OFF = 0;
 	// Development
-//	final String SERVER_ADDRESS = "https://dev.tracman.org";
+	final String SERVER_ADDRESS = "https://dev.tracman.org";
 	// Production
-	final String SERVER_ADDRESS = "https://www.tracman.org";
+//	final String SERVER_ADDRESS = "https://www.tracman.org";
 
 	private Socket socket;
-	private String mUserID;
-	private String mUserSK;
+	private String mUserID, mUserSK,  mUserVeh;
 	private SharedPreferences sharedPref;
 	Location mLastLocation;
 	private GoogleApiClient mGoogleApiClient;
@@ -172,7 +171,7 @@ public class LocationService extends Service implements GoogleApiClient.Connecti
 			socket.on(Socket.EVENT_CONNECT, new Emitter.Listener() {
 				@Override
 				public void call(Object... args) {
-					socket.emit("can-set", mUserID);
+					socket.emit("can-set", mUserID, mUserSK);
 				}
 			});
 
@@ -281,11 +280,9 @@ public class LocationService extends Service implements GoogleApiClient.Connecti
 	public void onLocationChanged(Location location) {
 
 		// Make sure we're logged in...
-		if (mUserID!=null && mUserSK!=null) {
+		if (mUserID!=null && mUserSK!=null && mUserVeh!=null) {
 			JSONObject mLocationView = new JSONObject();
 			try {
-				mLocationView.put("usr", mUserID);
-				mLocationView.put("tok", mUserSK);
 				mLocationView.put("ts", String.valueOf(System.currentTimeMillis()));
 				mLocationView.put("lat", String.valueOf(location.getLatitude()));
 				mLocationView.put("lon", String.valueOf(location.getLongitude()));
