@@ -201,3 +201,11 @@ keystore.properties
 # For google play signing
 encrypted_private_key
 upload_certificate.pem
+
+# from fs/android-base/master
+.gradletasknamecache
+
+crashlytics.properties
+crashlytics-build.properties
+com_crashlytics_export_strings.xml
+dagger-proguard-keepnames.cfg

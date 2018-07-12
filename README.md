@@ -1,7 +1,7 @@
 # <img align="left" src="https://www.tracman.org/static/img/icon/by/48.png" alt="[]" title="The Tracman Logo">Tracman for Android
 ###### v 0.6.1
 
-Android app to upload a user's GPS location to the [tracman server](https://github.com/tracman-org/Server). 
+Android app to upload a user's GPS location to the [tracman server](https://github.com/tracman-org/Server). Cloned from [fs/android-base](https://github.com/fs/android-base). 
 
 ## Installation
 
@@ -15,9 +15,25 @@ The app will switch between "realtime updates" (Every second, or whatever interv
 
 More information is available on the [help page](https://www.tracman.org/help#android).
 
-## Contributing
+## Development
 
-Tracman for Android is in perpetually poor condition.  I don't do much work with Android.  This project would benefit greatly from being torn down and rebuilt from scratch.  Feel free to check out the [issues marked help wanted](https://github.com/Tracman-org/Android/issues?q=is%3Aissue+is%3Aopen+label%3A%22help+wanted%22) (or [any issues](https://github.com/Tracman-org/Android/issues), really) or [contact me](https://www.keithirwin.us/contact) about getting involved.
+### Prerequisites
+* [Android Studio](https://developer.android.com/sdk/installing/studio.html) 3.x
+* JDK 8
+* Android SDK
+
+### Setup
+ 1. Clone application
+
+    	mkdir tracman-android && cd tracman-android
+    	git clone git@github.com:Tracman-Org/Android.git
+
+ 2. Import the project into your favourite IDE.
+Just select the root `build.gradle` and your IDE will do the rest.
+
+### Codestyles
+Project contains default codestyle scheme at `./idea/codestyleSettings.xml`. Make sure that you use default project scheme to avoid mess with codestyle with your collegues.
+Go to the Settings (`cmd + ,`) -> Editor -> Code Style look on top of right panel and select `Project` from `Scheme` dropdown. Apply -> Ok.
 
 ## Changelog
 
@@ -48,3 +64,10 @@ This program is free software: you can redistribute it and/or modify it under th
 This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License along with this program.  If not, see <[http://www.gnu.org/licenses/](http://www.gnu.org/licenses/)>.
+
+## Credits
+Android app skeleton is maintained by [Adel Nizamutdinov](http://github.com/adelnizamutdinov) and [Ilya Eremin](http://github.com/ilyaeremin).
+It was written by [Flatstack](http://www.flatstack.com) with the help of 
+[contributors](http://github.com/fs/android-base/contributors)
+
+[<img src="http://www.flatstack.com/logo.svg" width="100"/>](http://www.flatstack.com)
