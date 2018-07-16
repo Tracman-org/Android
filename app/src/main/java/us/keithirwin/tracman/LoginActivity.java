@@ -17,10 +17,13 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.OptionalPendingResult;
 import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.security.ProviderInstaller;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -32,6 +35,9 @@ import java.io.IOException;
 //import javax.net.ssl.TrustManager;
 //import javax.net.ssl.TrustManagerFactory;
 //import javax.net.ssl.X509TrustManager;
+
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLEngine;
 
 import okhttp3.Call;
 import okhttp3.FormBody;
@@ -63,6 +69,15 @@ public class LoginActivity extends AppCompatActivity implements
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		Log.v(TAG, "created");
+
+
+		try {
+			ProviderInstaller.installIfNeeded(getApplicationContext());
+		} catch (GooglePlayServicesRepairableException e) {
+			e.printStackTrace();
+		} catch (GooglePlayServicesNotAvailableException e) {
+			e.printStackTrace();
+		}
 
 		// Set up layout
 		setContentView(R.layout.activity_login);
@@ -186,7 +201,14 @@ public class LoginActivity extends AppCompatActivity implements
 //					+ Arrays.toString(trustManagers));
 //		}
 //		X509TrustManager trustManager = (X509TrustManager) trustManagers[0];
+//		SSLContext sslContext = SSLContext.getInstance("SSL");
+//		sslContext.init(null, new TrustManager[] { trustManager }, null);
+//		SSLSocketFactory sslSocketFactory = sslContext.getSocketFactory();
 
+//		SSLContext sslContext = SSLContext.getInstance("TLSv1.2");
+//		sslContext.init(null, null, null);
+//		SSLEngine engine = sslContext.createSSLEngine();
+//
 		OkHttpClient client = new OkHttpClient.Builder()
 //				.sslSocketFactory(new TLSSocketFactory(), trustManager)
 				.build();
@@ -215,7 +237,6 @@ public class LoginActivity extends AppCompatActivity implements
 						JSONObject user = new JSONObject(userString);
 						userID = user.getString("_id");
 						userSK = user.getString("sk32");
-						userVeh = user.getString("setVehicle");
 						Log.v(TAG, "User retrieved with ID: " + userID);
 					} catch (JSONException e) {
 						Log.e(TAG, "Unable to parse user JSON: ", e);
@@ -231,7 +252,6 @@ public class LoginActivity extends AppCompatActivity implements
 					editor.putString("loggedInUser", userString);
 					editor.putString("loggedInUserId", userID);
 					editor.putString("loggedInUserSk", userSK);
-					editor.putString("loggedInUserVeh", userVeh);
 					editor.commit();
 
 					startActivityForResult(new Intent(LoginActivity.this, SettingsActivity.class), SIGN_OUT);

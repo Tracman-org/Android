@@ -278,13 +278,14 @@ public class LocationService extends Service implements GoogleApiClient.Connecti
 
 	@Override
 	public void onLocationChanged(Location location) {
+		Log.v(TAG, "onLocationChanged() called");
 
 		// Make sure we're logged in...
 		if (mUserID!=null && mUserSK!=null && mUserVeh!=null) {
 			JSONObject mLocationView = new JSONObject();
 			try {
 				mLocationView.put("ts", String.valueOf(System.currentTimeMillis()));
-				mLocationView.put("lat", String.valueOf(location.getLatitude()));
+				mLocationView.put("`lat", String.valueOf(location.getLatitude()));
 				mLocationView.put("lon", String.valueOf(location.getLongitude()));
 				mLocationView.put("dir", String.valueOf(location.getBearing()));
 				mLocationView.put("spd", String.valueOf(location.getSpeed()));
