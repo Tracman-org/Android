@@ -19,6 +19,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -38,11 +39,19 @@ import static android.Manifest.permission.READ_CONTACTS;
  * A login screen that offers login via email/password.
  */
 public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<Cursor> {
+    private static final String TAG = "LoginActivity";
 
-    /**
-     * Id to identity READ_CONTACTS permission request.
-     */
+    // Id to identity READ_CONTACTS permission request
     private static final int REQUEST_READ_CONTACTS = 0;
+
+    /// Addresses, client IDs
+    // Development
+    private final String SERVER_ADDRESS = "https://dev.tracman.org/";
+    private static final String GOOGLE_WEB_CLIENT_ID = "483494341936-hps4p2pcu3ctshjvqm3pqdbg0t0q281o.apps.googleusercontent.com";
+    // Production
+//	private final String SERVER_ADDRESS = "https://www.tracman.org/";
+//	private static final String GOOGLE_WEB_CLIENT_ID = "483494341936-hrn0ms1tebgdtfs5f4i6ebmkt3qmo16o.apps.googleusercontent.com";
+
 
     /**
      * A dummy authentication store containing known user names and passwords.
@@ -65,8 +74,30 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.v(TAG, "created");
+
+        // Configure sign-in to request the user's ID and basic profile, included in DEFAULT_SIGN_IN.
+        //GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+        //        .requestIdToken(GOOGLE_WEB_CLIENT_ID)
+        //        .requestEmail()
+        //        .build();
+
+        // Build a GoogleApiClient with access to the Google Sign-In API and the
+        // options specified by gso.
+        //mGoogleApiClient = new GoogleApiClient.Builder(this)
+        //        .enableAutoManage(this /* FragmentActivity */, this /* OnConnectionFailedListener */)
+        //        .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+        //        .build();
+
+        // Set up layout
         setContentView(R.layout.activity_login);
-        // Set up the login form.
+        //setTitle(R.string.login_name);
+        //TextView loginDescription = (TextView) findViewById(R.id.login_description);
+        //TextView forgotPassword = (TextView) findViewById(R.id.login_forgot_password);
+        //loginDescription.setMovementMethod(LinkMovementMethod.getInstance());
+        //forgotPassword.setMovementMethod(LinkMovementMethod.getInstance());
+
+        // Set up form
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
         populateAutoComplete();
 
@@ -90,19 +121,31 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             }
         });
 
+        // Set up buttons
+        //SignInButton signInButton = (SignInButton) findViewById(R.id.login_button_google);
+        //signInButton.setStyle(SignInButton.SIZE_WIDE, SignInButton.COLOR_AUTO);
+
+        // Button listeners
+        //findViewById(R.id.login_button).setOnClickListener(this);
+        //findViewById(R.id.login_button_google).setOnClickListener(this);
+        //// TODO: Add fb, twitter logins
+		////findViewById(R.id.login_button_facebook).setOnClickListener(this);
+		////findViewById(R.id.login_button_twitter).setOnClickListener(this);
+
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
     }
 
     private void populateAutoComplete() {
-        if (!mayRequestContacts()) {
+        if (!mayRequestLocation()) {
             return;
         }
 
         getLoaderManager().initLoader(0, null, this);
     }
 
-    private boolean mayRequestContacts() {
+    // TODO: Location services here instead
+    private boolean mayRequestLocation() {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
             return true;
         }
@@ -127,6 +170,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     /**
      * Callback received when a permissions request has been completed.
      */
+    // TODO: Location services here instead
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
