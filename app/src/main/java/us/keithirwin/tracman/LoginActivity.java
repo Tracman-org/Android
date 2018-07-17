@@ -30,6 +30,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.SignInButton;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,7 +44,8 @@ import static android.Manifest.permission.READ_CONTACTS;
 /**
  * A login screen that offers login via email/password.
  */
-public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<Cursor> {
+public class LoginActivity extends AppCompatActivity implements
+        LoaderCallbacks<Cursor> {
     private static final String TAG = "LoginActivity";
 
     // Id to identity READ_CONTACTS permission request
@@ -53,17 +60,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 //	private static final String GOOGLE_WEB_CLIENT_ID = "483494341936-hrn0ms1tebgdtfs5f4i6ebmkt3qmo16o.apps.googleusercontent.com";
 
 
-    /**
-     * A dummy authentication store containing known user names and passwords.
-     * TODO: remove after connecting to a real authentication system.
-     */
-    private static final String[] DUMMY_CREDENTIALS = new String[]{
-            "foo@example.com:hello", "bar@example.com:world"
-    };
-    /**
-     * Keep track of the login task to ensure we can cancel it if requested.
-     */
-    private UserLoginTask mAuthTask = null;
+    // Keep track of the login tasks to ensure we can cancel it if requested.
+    private EmailLoginTask mEmailAuthTask = null;
+    private GoogleLoginTask mGoogleAuthTask = null;
 
     // UI references.
     private AutoCompleteTextView mEmailView;
@@ -77,13 +76,15 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         Log.v(TAG, "created");
 
         // Configure sign-in to request the user's ID and basic profile, included in DEFAULT_SIGN_IN.
-        //GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-        //        .requestIdToken(GOOGLE_WEB_CLIENT_ID)
-        //        .requestEmail()
-        //        .build();
+        // https://developers.google.com/identity/sign-in/android/sign-in#configure_google_sign-in_and_the_googlesigninclient_object
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                //.requestIdToken(GOOGLE_WEB_CLIENT_ID)
+                .requestEmail()
+                .build();
+        // Build a GoogleSignInClient with the options specified by gso.
+        GoogleSignInClient mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
-        // Build a GoogleApiClient with access to the Google Sign-In API and the
-        // options specified by gso.
+        // From backup version:
         //mGoogleApiClient = new GoogleApiClient.Builder(this)
         //        .enableAutoManage(this /* FragmentActivity */, this /* OnConnectionFailedListener */)
         //        .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
@@ -106,34 +107,51 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
                 if (id == EditorInfo.IME_ACTION_DONE || id == EditorInfo.IME_NULL) {
-                    attemptLogin();
+                    attemptEmailLogin();
                     return true;
                 }
                 return false;
             }
         });
 
+        // Set up Google sign-in button
+        SignInButton googleSignInButton = (SignInButton) findViewById(R.id.sign_in_button_google);
+        googleSignInButton.setStyle(SignInButton.SIZE_WIDE, SignInButton.COLOR_AUTO);
+
+        // Button listeners
         Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
         mEmailSignInButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                attemptLogin();
+                attemptEmailLogin();
             }
         });
-
-        // Set up buttons
-        //SignInButton signInButton = (SignInButton) findViewById(R.id.login_button_google);
-        //signInButton.setStyle(SignInButton.SIZE_WIDE, SignInButton.COLOR_AUTO);
-
-        // Button listeners
-        //findViewById(R.id.login_button).setOnClickListener(this);
-        //findViewById(R.id.login_button_google).setOnClickListener(this);
+        googleSignInButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                attemptGoogleLogin();
+            }
+        });
         //// TODO: Add fb, twitter logins
 		////findViewById(R.id.login_button_facebook).setOnClickListener(this);
 		////findViewById(R.id.login_button_twitter).setOnClickListener(this);
 
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Log.v(TAG, "onStart() called");
+
+        // Check for existing Google Sign In account, if the user is already signed in
+        // the GoogleSignInAccount will be non-null.
+        // https://developers.google.com/identity/sign-in/android/sign-in#check_for_an_existing_signed-in_user
+        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
+        // TODO: create updateUI()
+        // updateUI(account);
+
     }
 
     private void populateAutoComplete() {
@@ -181,14 +199,13 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         }
     }
 
-
     /**
      * Attempts to sign in or register the account specified by the login form.
      * If there are form errors (invalid email, missing fields, etc.), the
      * errors are presented and no actual login attempt is made.
      */
-    private void attemptLogin() {
-        if (mAuthTask != null) {
+    private void attemptEmailLogin() {
+        if (mEmailAuthTask != null) {
             return;
         }
 
@@ -203,21 +220,18 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         boolean cancel = false;
         View focusView = null;
 
-        // Check for a valid password, if the user entered one.
-        if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
-            mPasswordView.setError(getString(R.string.error_invalid_password));
-            focusView = mPasswordView;
-            cancel = true;
-        }
-
-        // Check for a valid email address.
-        if (TextUtils.isEmpty(email)) {
+        // Check if the user entered a valid email and password.
+        if (!TextUtils.isEmpty(email)) {
             mEmailView.setError(getString(R.string.error_field_required));
             focusView = mEmailView;
             cancel = true;
-        } else if (!isEmailValid(email)) {
+        } else if (!isValidEmail(email)) {
             mEmailView.setError(getString(R.string.error_invalid_email));
             focusView = mEmailView;
+            cancel = true;
+        } else if (!TextUtils.isEmpty(password)) {
+            mPasswordView.setError(getString(R.string.error_field_required));
+            focusView = mPasswordView;
             cancel = true;
         }
 
@@ -229,20 +243,42 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
             showProgress(true);
-            mAuthTask = new UserLoginTask(email, password);
-            mAuthTask.execute((Void) null);
+            mEmailAuthTask = new EmailLoginTask(email, password);
+            mEmailAuthTask.execute((Void) null);
         }
-    }
 
-    private boolean isEmailValid(String email) {
-        //TODO: Replace this with your own logic
+    }
+    private boolean isValidEmail(String email) {
+        // TODO: Better email validation
         return email.contains("@");
     }
 
-    private boolean isPasswordValid(String password) {
-        //TODO: Replace this with your own logic
-        return password.length() > 4;
+    /**
+     * Attempts to sign in or register using the current android
+     * google account
+     */
+    private void attemptGoogleLogin() {
+        if (mGoogleAuthTask != null) {
+            return;
+        }
+
+        boolean cancel = false;
+        View focusView = null;
+
+        if (cancel) {
+            // There was an error; don't attempt login and focus the first
+            // form field with an error.
+            focusView.requestFocus();
+        } else {
+            // Show a progress spinner, and kick off a background task to
+            // perform the user login attempt.
+            showProgress(true);
+            mGoogleAuthTask = new GoogleLoginTask();
+            mGoogleAuthTask.execute((Void) null);
+        }
+
     }
+
 
     /**
      * Shows the progress UI and hides the login form.
@@ -338,34 +374,22 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      * Represents an asynchronous login/registration task used to authenticate
      * the user.
      */
-    public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
+    public class EmailLoginTask extends AsyncTask<Void, Void, Boolean> {
 
         private final String mEmail;
         private final String mPassword;
 
-        UserLoginTask(String email, String password) {
+        EmailLoginTask(String email, String password) {
             mEmail = email;
             mPassword = password;
         }
 
         @Override
         protected Boolean doInBackground(Void... params) {
-            // TODO: attempt authentication against a network service.
 
-            try {
-                // Simulate network access.
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                return false;
-            }
+            // TODO: attempt API authentication
 
-            for (String credential : DUMMY_CREDENTIALS) {
-                String[] pieces = credential.split(":");
-                if (pieces[0].equals(mEmail)) {
-                    // Account exists, return true if the password matches.
-                    return pieces[1].equals(mPassword);
-                }
-            }
+            // TODO: Interpret response
 
             // TODO: register the new account here.
             return true;
@@ -373,7 +397,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         @Override
         protected void onPostExecute(final Boolean success) {
-            mAuthTask = null;
+            mEmailAuthTask = null;
             showProgress(false);
 
             if (success) {
@@ -386,7 +410,40 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         @Override
         protected void onCancelled() {
-            mAuthTask = null;
+            mEmailAuthTask = null;
+            showProgress(false);
+        }
+    }
+
+    /**
+     * Represents an asynchronous login/registration task used to authenticate
+     * the user.
+     */
+    public class GoogleLoginTask extends AsyncTask<Void, Void, Boolean> {
+
+        @Override
+        protected Boolean doInBackground(Void... params) {
+
+            // TODO: attempt authentication against a google servers servers.
+
+            // TODO: register the new account
+
+            return true;
+        }
+
+        @Override
+        protected void onPostExecute(final Boolean success) {
+            mGoogleAuthTask = null;
+            showProgress(false);
+
+            if (success) {
+                finish();
+            }
+        }
+
+        @Override
+        protected void onCancelled() {
+            mGoogleAuthTask = null;
             showProgress(false);
         }
     }
