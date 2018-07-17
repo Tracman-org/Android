@@ -1,5 +1,5 @@
 # <img align="left" src="https://www.tracman.org/static/img/icon/by/48.png" alt="[]" title="The Tracman Logo">Tracman for Android
-###### v 0.6.1
+###### v 0.7.0
 
 Android app to upload a user's GPS location to the [tracman server](https://github.com/tracman-org/Server). 
 
@@ -20,6 +20,10 @@ More information is available on the [help page](https://www.tracman.org/help#an
 Tracman for Android is in perpetually poor condition.  I don't do much work with Android.  This project would benefit greatly from being torn down and rebuilt from scratch.  Feel free to check out the [issues marked help wanted](https://github.com/Tracman-org/Android/issues?q=is%3Aissue+is%3Aopen+label%3A%22help+wanted%22) (or [any issues](https://github.com/Tracman-org/Android/issues), really) or [contact me](https://www.keithirwin.us/contact) about getting involved.
 
 ## Changelog
+
+#### v0.7.0
+
+* Complete rebuild of app
 
 #### v0.6.1
 
