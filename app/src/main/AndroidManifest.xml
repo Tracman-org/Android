@@ -2,12 +2,19 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="us.keithirwin.tracman">
 
+    <!-- To access the internet -->
     <uses-permission android:name="android.permission.INTERNET" />
-
+    <!-- To determine precise location -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <!-- To start on boot -->
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <!-- To stop trying if disconnected -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <!-- To auto-complete the email text field in the login form with the user's emails -->
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.READ_PROFILE" />
-    <uses-permission android:name="android.permission.READ_CONTACTS" />
+
+    <uses-feature android:name="android.hardware.location.gps"/>
 
     <application
         android:allowBackup="true"
@@ -38,6 +45,7 @@
             android:name=".BootReceiver"
             android:enabled="true"
             android:exported="true"></receiver>
+
     </application>
 
 </manifest>
