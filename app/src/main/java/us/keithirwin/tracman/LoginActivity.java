@@ -73,7 +73,7 @@ public class LoginActivity extends AppCompatActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.v(TAG, "created");
+        Log.d(TAG, "created");
 
         // Configure sign-in to request the user's ID and basic profile, included in DEFAULT_SIGN_IN.
         // https://developers.google.com/identity/sign-in/android/sign-in#configure_google_sign-in_and_the_googlesigninclient_object
@@ -143,7 +143,7 @@ public class LoginActivity extends AppCompatActivity implements
     @Override
     protected void onStart() {
         super.onStart();
-        Log.v(TAG, "onStart() called");
+        Log.d(TAG, "onStart() called");
 
         // Check for existing Google Sign In account, if the user is already signed in
         // the GoogleSignInAccount will be non-null.
@@ -192,6 +192,7 @@ public class LoginActivity extends AppCompatActivity implements
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
+        Log.d(TAG, "onRequestPermissionsResult() called");
         if (requestCode == REQUEST_READ_CONTACTS) {
             if (grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 populateAutoComplete();
@@ -205,6 +206,7 @@ public class LoginActivity extends AppCompatActivity implements
      * errors are presented and no actual login attempt is made.
      */
     private void attemptEmailLogin() {
+        Log.d(TAG, "attemptEmailLogin() called");
         if (mEmailAuthTask != null) {
             return;
         }
@@ -249,6 +251,7 @@ public class LoginActivity extends AppCompatActivity implements
 
     }
     private boolean isValidEmail(String email) {
+        Log.d(TAG, "isValidEmail() called");
         // TODO: Better email validation
         return email.contains("@");
     }
@@ -258,6 +261,7 @@ public class LoginActivity extends AppCompatActivity implements
      * google account
      */
     private void attemptGoogleLogin() {
+        Log.d(TAG, "attemptGoogleLogin() called");
         if (mGoogleAuthTask != null) {
             return;
         }
