@@ -37,6 +37,7 @@ captures/
 
 # Intellij
 *.iml
+app/*.iml
 .idea/
 projectFilesBackup/
 
