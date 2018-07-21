@@ -99,10 +99,10 @@ public class LoginActivity extends AppCompatActivity implements
         //forgotPassword.setMovementMethod(LinkMovementMethod.getInstance());
 
         // Set up form
-        mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
+        mEmailView = (AutoCompleteTextView) findViewById(R.id.login_email);
         populateAutoComplete();
 
-        mPasswordView = (EditText) findViewById(R.id.password);
+        mPasswordView = (EditText) findViewById(R.id.login_password);
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
@@ -115,11 +115,11 @@ public class LoginActivity extends AppCompatActivity implements
         });
 
         // Set up Google sign-in button
-        SignInButton googleSignInButton = (SignInButton) findViewById(R.id.sign_in_button_google);
+        SignInButton googleSignInButton = (SignInButton) findViewById(R.id.login_button_google);
         googleSignInButton.setStyle(SignInButton.SIZE_WIDE, SignInButton.COLOR_AUTO);
 
         // Button listeners
-        Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
+        Button mEmailSignInButton = (Button) findViewById(R.id.login_button);
         mEmailSignInButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {

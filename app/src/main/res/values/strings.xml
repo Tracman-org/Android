@@ -1,89 +1,187 @@
 <resources>
-    <string name="app_name">Tracman</string>
+	<string name="app_name" translatable="false">Tracman</string>
+	<string name="app_address" translatable="false">us.keithirwin.tracman</string>
+	<string name="version_code" translatable="false">13</string>
+	<string name="version" translatable="false">0.6.1</string>
 
-    <!-- Strings related to Settings -->
+	<string name="loading">Loading…</string>
+	<string name="logo_description" translatable="false">[T]</string>
+	<string name="google_connection_error">ERROR: Unable to connect to Google API server.  </string>
+	<string name="login_no_user_error">ERROR: User not found.  </string>
 
-    <!-- Example General settings -->
-    <string name="pref_header_general">General</string>
+	<!-- Strings related to login -->
+	<string name="login_name">Login</string>
+	<string name="logout_name">Logout</string>
+	<string name="login_description">Log in or <a href="https://www.tracman.org/login#join">create an account</a>. </string>
+	<string name="server_connection_error">ERROR: Unable to connect to Tracman server.  </string>
 
-    <string name="pref_title_social_recommendations">Enable social recommendations</string>
-    <string name="pref_description_social_recommendations">Recommendations for people to contact
+	<!-- Strings related to notifications -->
+	<string name="disconnected">Disconnected</string>
+	<string name="realtime_updates">Sending realtime updates</string>
+	<string name="occasional_updates">Sending occasional updates</string>
+	<string name="broadcast_disabled">Broadcast disabled</string>
+
+	<!-- Strings related to Settings -->
+	<string name="settings_name">Settings</string>
+
+	<!-- General settings -->
+	<string name="pref_header_general">General Settings</string>
+	<string name="pref_start_boot">Start service on boot</string>
+	<string name="pref_app_category_title">App settings</string>
+	<string name="pref_broadcast_category_title">Location Updates</string>
+	<string name="pref_title_gps_broadcast">Enable updates</string>
+
+	<!-- FROM blank -->
+	<string name="pref_title_social_recommendations">Enable social recommendations</string>
+	<string name="pref_description_social_recommendations">Recommendations for people to contact
         based on your message history
     </string>
 
-    <string name="pref_title_display_name">Display name</string>
-    <string name="pref_default_display_name">John Smith</string>
+	<string name="pref_title_broadcast_frequency">Update interval</string>
+	<string-array name="pref_broadcast_frequency_list_titles">
+		<item>1 second</item>
+		<item>2 seconds</item>
+		<item>3 seconds</item>
+		<item>5 seconds</item>
+		<item>10 seconds</item>
+		<item>20 seconds</item>
+		<item>30 seconds</item>
+		<item>1 minute</item>
+		<item>5 minutes</item>
+		<item>10 minutes</item>
+		<item>15 minutes</item>
+		<item>20 minutes</item>
+		<item>30 minutes</item>
+		<item>1 hour</item>
+	</string-array>
+	<string name="pref_default_broadcast_frequency" translatable="false">1</string>
+	<string-array name="pref_broadcast_frequency_list_values" translatable="false">
+		<item>1</item>
+		<item>2</item>
+		<item>3</item>
+		<item>5</item>
+		<item>10</item>
+		<item>20</item>
+		<item>30</item>
+		<item>60</item>
+		<item>300</item>
+		<item>600</item>
+		<item>900</item>
+		<item>1200</item>
+		<item>1800</item>
+		<item>3600</item>
+	</string-array>
 
-    <string name="pref_title_add_friends_to_messages">Add friends to messages</string>
-    <string-array name="pref_example_list_titles">
-        <item>Always</item>
-        <item>When possible</item>
-        <item>Never</item>
-    </string-array>
-    <string-array name="pref_example_list_values">
-        <item>1</item>
-        <item>0</item>
-        <item>-1</item>
-    </string-array>
+	<string name="pref_title_broadcast_priority">Update priority</string>
+	<string-array name="pref_broadcast_priority_list_titles">
+		<item>Pinpoint</item>
+		<item>Block</item>
+		<item>City</item>
+		<item>No power</item>
+	</string-array>
+	<string-array name="pref_broadcast_priority_list_values" translatable="false">
+		<item>100</item>
+		<item>102</item>
+		<item>104</item>
+		<item>105</item>
+	</string-array>
 
-    <!-- Example settings for Data & Sync -->
-    <string name="pref_header_data_sync">Data &amp; sync</string>
+	<!--Strings related to main-->
+	<string name="main_name">Main screen</string>
 
-    <string name="pref_title_sync_frequency">Sync frequency</string>
-    <string-array name="pref_sync_frequency_titles">
-        <item>15 minutes</item>
-        <item>30 minutes</item>
-        <item>1 hour</item>
-        <item>3 hours</item>
-        <item>6 hours</item>
-        <item>Never</item>
-    </string-array>
-    <string-array name="pref_sync_frequency_values">
-        <item>15</item>
-        <item>30</item>
-        <item>60</item>
-        <item>180</item>
-        <item>360</item>
-        <item>-1</item>
-    </string-array>
+	<!--Strings related to help-->
+	<string name="help_name">Help</string>
 
-    <string-array name="list_preference_entries">
-        <item>Entry 1</item>
-        <item>Entry 2</item>
-        <item>Entry 3</item>
-    </string-array>
+	<!--Strings related to about-->
+	<string name="about_name">About</string>
+	<string name="about_back_button">Back</string>
 
-    <string-array name="list_preference_entry_values">
-        <item>1</item>
-        <item>2</item>
-        <item>3</item>
-    </string-array>
+	<!--Strings related to suggestions-->
+	<string name="suggestions_name">Suggestions</string>
 
-    <string-array name="multi_select_list_preference_default_value" />
+	<!--Strings related to bugs-->
+	<string name="bugs_name">Bug report</string>
+	<string name="login_forgot_password"><a href="https://www.tracman.org/login/forgot">Forgot your password?</a></string>
+	<string name="login_button_text">Login</string>
+	<string name="prompt_email">email</string>
+	<string name="prompt_password">password</string>
+	<string name="notify_disabled">Not sending updates</string>
+	<string name="notify_connecting">"Connecting… "</string>
+	<string name="notify_connected">Connection established</string>
 
-    <string name="pref_title_system_sync_settings">System sync settings</string>
+	<!-- FROM blank -->
+	<string name="pref_title_display_name">Display name</string>
+	<string name="pref_default_display_name">John Smith</string>
 
-    <!-- Example settings for Notifications -->
-    <string name="pref_header_notifications">Notifications</string>
+	<string name="pref_title_add_friends_to_messages">Add friends to messages</string>
+	<string-array name="pref_example_list_titles">
+		<item>Always</item>
+		<item>When possible</item>
+		<item>Never</item>
+	</string-array>
+	<string-array name="pref_example_list_values">
+		<item>1</item>
+		<item>0</item>
+		<item>-1</item>
+	</string-array>
 
-    <string name="pref_title_new_message_notifications">New message notifications</string>
+	<!-- Example settings for Data & Sync -->
+	<string name="pref_header_data_sync">Data &amp; sync</string>
 
-    <string name="pref_title_ringtone">Ringtone</string>
-    <string name="pref_ringtone_silent">Silent</string>
+	<string name="pref_title_sync_frequency">Sync frequency</string>
+	<string-array name="pref_sync_frequency_titles">
+		<item>15 minutes</item>
+		<item>30 minutes</item>
+		<item>1 hour</item>
+		<item>3 hours</item>
+		<item>6 hours</item>
+		<item>Never</item>
+	</string-array>
+	<string-array name="pref_sync_frequency_values">
+		<item>15</item>
+		<item>30</item>
+		<item>60</item>
+		<item>180</item>
+		<item>360</item>
+		<item>-1</item>
+	</string-array>
 
-    <string name="pref_title_vibrate">Vibrate</string>
-    <string name="title_activity_login">Sign in</string>
+	<string-array name="list_preference_entries">
+		<item>Entry 1</item>
+		<item>Entry 2</item>
+		<item>Entry 3</item>
+	</string-array>
 
-    <!-- Strings related to login -->
-    <string name="prompt_email">Email</string>
-    <string name="prompt_password">Password (optional)</string>
-    <string name="action_sign_in">Sign in or register</string>
-    <string name="action_sign_in_short">Sign in</string>
-    <string name="error_invalid_email">This email address is invalid</string>
-    <string name="error_invalid_password">This password is too short</string>
-    <string name="error_incorrect_password">This password is incorrect</string>
-    <string name="error_field_required">This field is required</string>
-    <string name="permission_rationale">"Contacts permissions are needed for providing email
+	<string-array name="list_preference_entry_values">
+		<item>1</item>
+		<item>2</item>
+		<item>3</item>
+	</string-array>
+
+	<string-array name="multi_select_list_preference_default_value" />
+
+	<string name="pref_title_system_sync_settings">System sync settings</string>
+
+	<!-- Example settings for Notifications -->
+	<string name="pref_header_notifications">Notifications</string>
+
+	<string name="pref_title_new_message_notifications">New message notifications</string>
+
+	<string name="pref_title_ringtone">Ringtone</string>
+	<string name="pref_ringtone_silent">Silent</string>
+
+	<string name="pref_title_vibrate">Vibrate</string>
+	<string name="title_activity_login">Sign in</string>
+
+	<!-- Strings related to login -->
+	<string name="action_sign_in">Sign in or register</string>
+	<string name="action_sign_in_short">Sign in</string>
+	<string name="error_invalid_email">This email address is invalid</string>
+	<string name="error_invalid_password">This password is too short</string>
+	<string name="error_incorrect_password">This password is incorrect</string>
+	<string name="error_field_required">This field is required</string>
+	<string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
+
 </resources>
