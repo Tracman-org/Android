@@ -157,7 +157,19 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+        Log.d(TAG, "onCreate called");
 		setupActionBar();
+
+        // Restart LocationService when any related preference is changed
+//		findPreference("gps_switch").setOnPreferenceChangeListener(sRestartLocationServiceOnChangeListener);
+
+        // Get User ID
+        // FROM old
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        String mUserID = sharedPref.getString("loggedInUserId", null);
+        if (mUserID == null) {
+            startActivity(new Intent(this, LoginActivity.class).setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP));
+        }
 	}
 
 	/**
@@ -170,6 +182,50 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 			actionBar.setDisplayHomeAsUpEnabled(true);
 		}
 	}
+
+	// FROM old
+//    @Override
+//    protected void onStop() {
+//        Log.d(TAG, "onStop called");
+//        super.onStop();
+//        // Get updated preferences
+//        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+//
+//        // Save updated preferences
+//        SharedPreferences.Editor editor = sharedPref.edit();
+////		editor.putBoolean("pref_start_boot", );
+//        editor.apply();
+//
+//        // Restart service so settings can take effect
+//        stopService(new Intent(this, LocationService.class));
+//        if (sharedPref.getBoolean("gps_switch", false)) {
+//
+//            // Ask for location permissions (can't be done in service, only activity)
+//            if (!LocationService.checkLocationPermission(this)) {
+//                ActivityCompat.requestPermissions(
+//                        this,
+//                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+//                        MY_FINE_LOCATION_PERMISSION);
+//            }
+//
+//            // Start location tracking service
+//            Log.d(TAG, "Starting LocationService");
+//            startService(new Intent(this, LocationService.class));
+//
+//        }
+//
+//    }
+
+//    FROM old
+//    @Override
+//    public void onBackPressed() {
+//        Log.v(TAG,"onBackPressed() called");
+//
+//        // Return to LoginActivity and don't sign back in again
+//        setResult(SIGN_OUT, new Intent());
+//
+//        super.onBackPressed();
+//    }
 
 	/**
 	 * {@inheritDoc}
@@ -194,9 +250,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 	 */
 	protected boolean isValidFragment(String fragmentName) {
 		return PreferenceFragment.class.getName().equals(fragmentName)
-				|| GeneralPreferenceFragment.class.getName().equals(fragmentName)
-				|| DataSyncPreferenceFragment.class.getName().equals(fragmentName)
-				|| NotificationPreferenceFragment.class.getName().equals(fragmentName);
+				|| GeneralPreferenceFragment.class.getName().equals(fragmentName);
 	}
 
 	/**
@@ -234,59 +288,59 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 	 * This fragment shows notification preferences only. It is used when the
 	 * activity is showing a two-pane settings UI.
 	 */
-	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
-	public static class NotificationPreferenceFragment extends PreferenceFragment {
-		@Override
-		public void onCreate(Bundle savedInstanceState) {
-			super.onCreate(savedInstanceState);
-			addPreferencesFromResource(R.xml.pref_notification);
-			setHasOptionsMenu(true);
-
-			// Bind the summaries of EditText/List/Dialog/Ringtone preferences
-			// to their values. When their values change, their summaries are
-			// updated to reflect the new value, per the Android Design
-			// guidelines.
-			bindPreferenceSummaryToValue(findPreference("notifications_new_message_ringtone"));
-		}
-
-		@Override
-		public boolean onOptionsItemSelected(MenuItem item) {
-			int id = item.getItemId();
-			if (id == android.R.id.home) {
-				startActivity(new Intent(getActivity(), SettingsActivity.class));
-				return true;
-			}
-			return super.onOptionsItemSelected(item);
-		}
-	}
+//	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
+//	public static class NotificationPreferenceFragment extends PreferenceFragment {
+//		@Override
+//		public void onCreate(Bundle savedInstanceState) {
+//			super.onCreate(savedInstanceState);
+//			addPreferencesFromResource(R.xml.pref_notification);
+//			setHasOptionsMenu(true);
+//
+//			// Bind the summaries of EditText/List/Dialog/Ringtone preferences
+//			// to their values. When their values change, their summaries are
+//			// updated to reflect the new value, per the Android Design
+//			// guidelines.
+//			bindPreferenceSummaryToValue(findPreference("notifications_new_message_ringtone"));
+//		}
+//
+//		@Override
+//		public boolean onOptionsItemSelected(MenuItem item) {
+//			int id = item.getItemId();
+//			if (id == android.R.id.home) {
+//				startActivity(new Intent(getActivity(), SettingsActivity.class));
+//				return true;
+//			}
+//			return super.onOptionsItemSelected(item);
+//		}
+//	}
 
 	/**
 	 * This fragment shows data and sync preferences only. It is used when the
 	 * activity is showing a two-pane settings UI.
 	 */
-	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
-	public static class DataSyncPreferenceFragment extends PreferenceFragment {
-		@Override
-		public void onCreate(Bundle savedInstanceState) {
-			super.onCreate(savedInstanceState);
-			addPreferencesFromResource(R.xml.pref_data_sync);
-			setHasOptionsMenu(true);
-
-			// Bind the summaries of EditText/List/Dialog/Ringtone preferences
-			// to their values. When their values change, their summaries are
-			// updated to reflect the new value, per the Android Design
-			// guidelines.
-			bindPreferenceSummaryToValue(findPreference("sync_frequency"));
-		}
-
-		@Override
-		public boolean onOptionsItemSelected(MenuItem item) {
-			int id = item.getItemId();
-			if (id == android.R.id.home) {
-				startActivity(new Intent(getActivity(), SettingsActivity.class));
-				return true;
-			}
-			return super.onOptionsItemSelected(item);
-		}
-	}
+//	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
+//	public static class DataSyncPreferenceFragment extends PreferenceFragment {
+//		@Override
+//		public void onCreate(Bundle savedInstanceState) {
+//			super.onCreate(savedInstanceState);
+//			addPreferencesFromResource(R.xml.pref_data_sync);
+//			setHasOptionsMenu(true);
+//
+//			// Bind the summaries of EditText/List/Dialog/Ringtone preferences
+//			// to their values. When their values change, their summaries are
+//			// updated to reflect the new value, per the Android Design
+//			// guidelines.
+//			bindPreferenceSummaryToValue(findPreference("sync_frequency"));
+//		}
+//
+//		@Override
+//		public boolean onOptionsItemSelected(MenuItem item) {
+//			int id = item.getItemId();
+//			if (id == android.R.id.home) {
+//				startActivity(new Intent(getActivity(), SettingsActivity.class));
+//				return true;
+//			}
+//			return super.onOptionsItemSelected(item);
+//		}
+//	}
 }
