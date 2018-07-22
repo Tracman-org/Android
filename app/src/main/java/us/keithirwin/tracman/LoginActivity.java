@@ -3,7 +3,10 @@ package us.keithirwin.tracman;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -35,9 +38,22 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.SignInButton;
+import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 import static android.Manifest.permission.READ_CONTACTS;
 
@@ -47,6 +63,7 @@ import static android.Manifest.permission.READ_CONTACTS;
 public class LoginActivity extends AppCompatActivity implements
         LoaderCallbacks<Cursor> {
     private static final String TAG = "LoginActivity";
+    private static final int RC_SIGN_IN = 9001;
 
     // Id to identity READ_CONTACTS permission request
     private static final int REQUEST_READ_CONTACTS = 0;
@@ -62,7 +79,7 @@ public class LoginActivity extends AppCompatActivity implements
 
     // Keep track of the login tasks to ensure we can cancel it if requested.
     private EmailLoginTask mEmailAuthTask = null;
-    private GoogleLoginTask mGoogleAuthTask = null;
+//    private GoogleLoginTask mGoogleAuthTask = null;
 
     // UI references.
     private AutoCompleteTextView mEmailView;
@@ -78,11 +95,11 @@ public class LoginActivity extends AppCompatActivity implements
         // Configure sign-in to request the user's ID and basic profile, included in DEFAULT_SIGN_IN.
         // https://developers.google.com/identity/sign-in/android/sign-in#configure_google_sign-in_and_the_googlesigninclient_object
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                //.requestIdToken(GOOGLE_WEB_CLIENT_ID)
+                .requestIdToken(GOOGLE_WEB_CLIENT_ID)
                 .requestEmail()
                 .build();
         // Build a GoogleSignInClient with the options specified by gso.
-        GoogleSignInClient mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+        final GoogleSignInClient mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
         // From backup version:
         //mGoogleApiClient = new GoogleApiClient.Builder(this)
@@ -115,8 +132,10 @@ public class LoginActivity extends AppCompatActivity implements
         });
 
         // Set up Google sign-in button
+        // https://developers.google.com/identity/sign-in/android/sign-in#add_the_google_sign-in_button_to_your_app
         SignInButton googleSignInButton = (SignInButton) findViewById(R.id.login_button_google);
         googleSignInButton.setStyle(SignInButton.SIZE_WIDE, SignInButton.COLOR_AUTO);
+//        findViewById(R.id.login_button_google).setOnClickListener(this);
 
         // Button listeners
         Button mEmailSignInButton = (Button) findViewById(R.id.login_button);
@@ -129,8 +148,11 @@ public class LoginActivity extends AppCompatActivity implements
         googleSignInButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                attemptGoogleLogin();
+                // https://developers.google.com/identity/sign-in/android/sign-in#start_the_sign-in_flow
+                Intent signInIntent = mGoogleSignInClient.getSignInIntent();
+                startActivityForResult(signInIntent, RC_SIGN_IN);
             }
+
         });
         //// TODO: Add fb, twitter logins
 		////findViewById(R.id.login_button_facebook).setOnClickListener(this);
@@ -149,9 +171,114 @@ public class LoginActivity extends AppCompatActivity implements
         // the GoogleSignInAccount will be non-null.
         // https://developers.google.com/identity/sign-in/android/sign-in#check_for_an_existing_signed-in_user
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
-        // TODO: create updateUI()
         // updateUI(account);
 
+//        GoogleSignIn.silentSignIn()
+//            .addOnCompleteListener(this, new OnCompleteListener<GoogleSignInAccount>() {
+//                @Override
+//                public void onComplete(@NonNull Task<GoogleSignInAccount> task) {
+//                    handleSignInResult(task);
+//                }
+//            });
+
+    }
+
+    // https://developers.google.com/identity/sign-in/android/sign-in#start_the_sign-in_flow
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        // Result returned from launching the Intent from GoogleSignInClient.getSignInIntent(...);
+        if (requestCode == RC_SIGN_IN) {
+            // The Task returned from this call is always completed, no need to attach
+            // a listener.
+            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+            handleSignInResult(task);
+        }
+
+    }
+
+    private void authenticateWithTracmanServer(final Request request) throws Exception {
+
+        OkHttpClient client = new OkHttpClient.Builder()
+//				.sslSocketFactory(new TLSSocketFactory(), trustManager)
+                .build();
+
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Log.e(TAG, "Failed to connect to Tracman server!");
+                //showError(R.string.server_connection_error);
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onResponse(Call call, Response res) throws IOException {
+                if (!res.isSuccessful()) {
+                    //showError(R.string.login_no_user_error);
+                    res.body().close();
+                    throw new IOException("Unexpected code: " + res);
+                } else {
+                    Log.d(TAG, "Response code: " + res.code());
+                    String userString = res.body().string();
+                    System.out.println("Full response: " + userString);
+
+                    String userID, userSK;
+                    try {
+                        JSONObject user = new JSONObject(userString);
+                        userID = user.getString("_id");
+                        userSK = user.getString("sk32");
+                        Log.v(TAG, "User retrieved with ID: " + userID);
+                    } catch (JSONException e) {
+                        Log.e(TAG, "Unable to parse user JSON: ", e);
+                        Log.e(TAG, "JSON String used: " + userString);
+                        userID = null;
+                        userSK = null;
+                    }
+
+                    // Save user as loggedInUser
+                    SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                    SharedPreferences.Editor editor = sharedPref.edit();
+                    editor.putString("loggedInUser", userString);
+                    editor.putString("loggedInUserId", userID);
+                    editor.putString("loggedInUserSk", userSK);
+                    editor.commit();
+
+                    startActivityForResult(new Intent(LoginActivity.this, SettingsActivity.class), 1);
+                }
+
+
+            }
+
+        });
+    }
+
+    private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
+        try {
+            GoogleSignInAccount account = completedTask.getResult(ApiException.class);
+
+            try {
+
+                // Build request
+                Request request = new Request.Builder()
+                        .url(SERVER_ADDRESS+"login/app/google?id_token="+account.getIdToken())
+                        .build();
+
+                // Send to server
+                authenticateWithTracmanServer(request);
+
+            } catch (Exception e) {
+                Log.e(TAG, "Error sending ID token to backend.", e);
+            }
+
+            // Signed in successfully, show authenticated UI.
+            updateUI(account);
+        } catch (ApiException e) {
+            // The ApiException status code indicates the detailed failure reason.
+            // Please refer to the GoogleSignInStatusCodes class reference for more information.
+            Log.w(TAG, "signInResult:failed error: " + e);
+            updateUI(null);
+        }
     }
 
     private void populateAutoComplete() {
@@ -260,28 +387,28 @@ public class LoginActivity extends AppCompatActivity implements
      * Attempts to sign in or register using the current android
      * google account
      */
-    private void attemptGoogleLogin() {
-        Log.d(TAG, "attemptGoogleLogin() called");
-        if (mGoogleAuthTask != null) {
-            return;
-        }
-
-        boolean cancel = false;
-        View focusView = null;
-
-        if (cancel) {
-            // There was an error; don't attempt login and focus the first
-            // form field with an error.
-            focusView.requestFocus();
-        } else {
-            // Show a progress spinner, and kick off a background task to
-            // perform the user login attempt.
-            showProgress(true);
-            mGoogleAuthTask = new GoogleLoginTask();
-            mGoogleAuthTask.execute((Void) null);
-        }
-
-    }
+//    private void attemptGoogleLogin() {
+//        Log.d(TAG, "attemptGoogleLogin() called");
+//        if (mGoogleAuthTask != null) {
+//            return;
+//        }
+//
+//        boolean cancel = false;
+//        View focusView = null;
+//
+//        if (cancel) {
+//            // There was an error; don't attempt login and focus the first
+//            // form field with an error.
+//            focusView.requestFocus();
+//        } else {
+//            // Show a progress spinner, and kick off a background task to
+//            // perform the user login attempt.
+//            showProgress(true);
+//            mGoogleAuthTask = new GoogleLoginTask();
+//            mGoogleAuthTask.execute((Void) null);
+//        }
+//
+//    }
 
 
     /**
@@ -423,33 +550,47 @@ public class LoginActivity extends AppCompatActivity implements
      * Represents an asynchronous login/registration task used to authenticate
      * the user.
      */
-    public class GoogleLoginTask extends AsyncTask<Void, Void, Boolean> {
+//    public class GoogleLoginTask extends AsyncTask<Void, Void, Boolean> {
+//
+//        @Override
+//        protected Boolean doInBackground(Void... params) {
+//
+//            // TODO: attempt authentication against a google servers servers.
+//
+//            // TODO: register the new account
+//
+//            return true;
+//        }
+//
+//        @Override
+//        protected void onPostExecute(final Boolean success) {
+//            mGoogleAuthTask = null;
+//            showProgress(false);
+//
+//            if (success) {
+//                finish();
+//            }
+//        }
+//
+//        @Override
+//        protected void onCancelled() {
+//            mGoogleAuthTask = null;
+//            showProgress(false);
+//        }
+//    }
 
-        @Override
-        protected Boolean doInBackground(Void... params) {
+    void updateUI (GoogleSignInAccount account) {
+        if  (account!=null) {
+            Log.i(TAG, "updateUI() called with account");
+            // TODO: Go to Settings activity
 
-            // TODO: attempt authentication against a google servers servers.
-
-            // TODO: register the new account
-
-            return true;
         }
-
-        @Override
-        protected void onPostExecute(final Boolean success) {
-            mGoogleAuthTask = null;
-            showProgress(false);
-
-            if (success) {
-                finish();
-            }
-        }
-
-        @Override
-        protected void onCancelled() {
-            mGoogleAuthTask = null;
-            showProgress(false);
+        else {
+            Log.i(TAG, "updateUI() called with no account");
+            // TODO: Tell the user something didn't work
+            ////showError(R.string.name_of_error_string);
         }
     }
+
 }
 
