@@ -144,7 +144,6 @@
                 android:inputType="textPassword"
                 android:hint="@string/prompt_password"
                 android:imeActionId="6"
-                android:imeActionLabel="@string/action_sign_in_short"
                 android:imeOptions="actionUnspecified"
                 android:maxLines="1"
                 android:singleLine="true"

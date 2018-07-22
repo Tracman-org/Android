@@ -5,10 +5,7 @@ import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.preference.PreferenceManager;
-import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.app.LoaderManager.LoaderCallbacks;
 
@@ -20,7 +17,7 @@ import android.os.AsyncTask;
 
 import android.os.Build;
 import android.os.Bundle;
-import android.provider.ContactsContract;
+//import android.provider.ContactsContract;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -39,7 +36,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
 import org.json.JSONException;
@@ -51,22 +47,22 @@ import java.util.List;
 
 import okhttp3.Call;
 import okhttp3.Callback;
+import okhttp3.FormBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.RequestBody;
 import okhttp3.Response;
-
-import static android.Manifest.permission.READ_CONTACTS;
 
 /**
  * A login screen that offers login via email/password.
  */
-public class LoginActivity extends AppCompatActivity implements
-        LoaderCallbacks<Cursor> {
+public class LoginActivity extends AppCompatActivity {//} implements
+//        LoaderCallbacks<Cursor> {
     private static final String TAG = "LoginActivity";
     private static final int RC_SIGN_IN = 9001;
 
     // Id to identity READ_CONTACTS permission request
-    private static final int REQUEST_READ_CONTACTS = 0;
+    //private static final int REQUEST_READ_CONTACTS = 0;
 
     /// Addresses, client IDs
     // Development
@@ -87,10 +83,16 @@ public class LoginActivity extends AppCompatActivity implements
     private View mProgressView;
     private View mLoginFormView;
 
+    // OKHTTP client
+    private OkHttpClient httpClient;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d(TAG, "created");
+
+        // Build HTTP client
+        httpClient = new OkHttpClient.Builder().build();
 
         // Configure sign-in to request the user's ID and basic profile, included in DEFAULT_SIGN_IN.
         // https://developers.google.com/identity/sign-in/android/sign-in#configure_google_sign-in_and_the_googlesigninclient_object
@@ -109,15 +111,10 @@ public class LoginActivity extends AppCompatActivity implements
 
         // Set up layout
         setContentView(R.layout.activity_login);
-        //setTitle(R.string.login_name);
-        //TextView loginDescription = (TextView) findViewById(R.id.login_description);
-        //TextView forgotPassword = (TextView) findViewById(R.id.login_forgot_password);
-        //loginDescription.setMovementMethod(LinkMovementMethod.getInstance());
-        //forgotPassword.setMovementMethod(LinkMovementMethod.getInstance());
 
         // Set up form
         mEmailView = (AutoCompleteTextView) findViewById(R.id.login_email);
-        populateAutoComplete();
+//        populateAutoComplete();
 
         mPasswordView = (EditText) findViewById(R.id.login_password);
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -177,7 +174,7 @@ public class LoginActivity extends AppCompatActivity implements
 //            .addOnCompleteListener(this, new OnCompleteListener<GoogleSignInAccount>() {
 //                @Override
 //                public void onComplete(@NonNull Task<GoogleSignInAccount> task) {
-//                    handleSignInResult(task);
+//                    handleGoogleSignInResult(task);
 //                }
 //            });
 
@@ -193,18 +190,14 @@ public class LoginActivity extends AppCompatActivity implements
             // The Task returned from this call is always completed, no need to attach
             // a listener.
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
-            handleSignInResult(task);
+            handleGoogleSignInResult(task);
         }
 
     }
 
     private void authenticateWithTracmanServer(final Request request) throws Exception {
 
-        OkHttpClient client = new OkHttpClient.Builder()
-//				.sslSocketFactory(new TLSSocketFactory(), trustManager)
-                .build();
-
-        client.newCall(request).enqueue(new Callback() {
+        httpClient.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
                 Log.e(TAG, "Failed to connect to Tracman server!");
@@ -253,79 +246,78 @@ public class LoginActivity extends AppCompatActivity implements
         });
     }
 
-    private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
+    private void handleGoogleSignInResult(Task<GoogleSignInAccount> completedTask) {
+        Log.i(TAG, "handleGoogleSignInResult:");
         try {
             GoogleSignInAccount account = completedTask.getResult(ApiException.class);
 
             try {
 
                 // Build request
-                Request request = new Request.Builder()
+                Request tracman_google_request = new Request.Builder()
                         .url(SERVER_ADDRESS+"login/app/google?id_token="+account.getIdToken())
                         .build();
 
                 // Send to server
-                authenticateWithTracmanServer(request);
+                authenticateWithTracmanServer(tracman_google_request);
 
             } catch (Exception e) {
                 Log.e(TAG, "Error sending ID token to backend.", e);
             }
 
-            // Signed in successfully, show authenticated UI.
-            updateUI(account);
         } catch (ApiException e) {
             // The ApiException status code indicates the detailed failure reason.
             // Please refer to the GoogleSignInStatusCodes class reference for more information.
             Log.w(TAG, "signInResult:failed error: " + e);
-            updateUI(null);
+            // TODO: Notify user
         }
     }
 
-    private void populateAutoComplete() {
-        if (!mayRequestLocation()) {
-            return;
-        }
+//    private void populateAutoComplete() {
+//        if (!mayRequestLocation()) {
+//            return;
+//        }
 
-        getLoaderManager().initLoader(0, null, this);
-    }
+//        getLoaderManager().initLoader(0, null, this);
+//    }
 
     // TODO: Location services here instead
-    private boolean mayRequestLocation() {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-            return true;
-        }
-        if (checkSelfPermission(READ_CONTACTS) == PackageManager.PERMISSION_GRANTED) {
-            return true;
-        }
-        if (shouldShowRequestPermissionRationale(READ_CONTACTS)) {
-            Snackbar.make(mEmailView, R.string.permission_rationale, Snackbar.LENGTH_INDEFINITE)
-                    .setAction(android.R.string.ok, new View.OnClickListener() {
-                        @Override
-                        @TargetApi(Build.VERSION_CODES.M)
-                        public void onClick(View v) {
-                            requestPermissions(new String[]{READ_CONTACTS}, REQUEST_READ_CONTACTS);
-                        }
-                    });
-        } else {
-            requestPermissions(new String[]{READ_CONTACTS}, REQUEST_READ_CONTACTS);
-        }
-        return false;
-    }
+//    private boolean mayRequestLocation() {
+//        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+//            return true;
+//        }
+//        if (checkSelfPermission(READ_CONTACTS) == PackageManager.PERMISSION_GRANTED) {
+//            return true;
+//        }
+//        if (shouldShowRequestPermissionRationale(READ_CONTACTS)) {
+//            Snackbar.make(mEmailView, R.string.permission_rationale, Snackbar.LENGTH_INDEFINITE)
+//                    .setAction(android.R.string.ok, new View.OnClickListener() {
+//                        @Override
+//                        @TargetApi(Build.VERSION_CODES.M)
+//                        public void onClick(View v) {
+//                            requestPermissions(new String[]{READ_CONTACTS}, REQUEST_READ_CONTACTS);
+//                        }
+//                    });
+//        } else {
+//            requestPermissions(new String[]{READ_CONTACTS}, REQUEST_READ_CONTACTS);
+//        }
+//        return false;
+//    }
 
     /**
      * Callback received when a permissions request has been completed.
      */
     // TODO: Location services here instead
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
-                                           @NonNull int[] grantResults) {
-        Log.d(TAG, "onRequestPermissionsResult() called");
-        if (requestCode == REQUEST_READ_CONTACTS) {
-            if (grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                populateAutoComplete();
-            }
-        }
-    }
+//    @Override
+//    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+//                                           @NonNull int[] grantResults) {
+//        Log.d(TAG, "onRequestPermissionsResult() called");
+//        if (requestCode == REQUEST_READ_CONTACTS) {
+//            if (grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+//                populateAutoComplete();
+//            }
+//        }
+//    }
 
     /**
      * Attempts to sign in or register the account specified by the login form.
@@ -350,7 +342,7 @@ public class LoginActivity extends AppCompatActivity implements
         View focusView = null;
 
         // Check if the user entered a valid email and password.
-        if (!TextUtils.isEmpty(email)) {
+        if (TextUtils.isEmpty(email)) {
             mEmailView.setError(getString(R.string.error_field_required));
             focusView = mEmailView;
             cancel = true;
@@ -358,7 +350,7 @@ public class LoginActivity extends AppCompatActivity implements
             mEmailView.setError(getString(R.string.error_invalid_email));
             focusView = mEmailView;
             cancel = true;
-        } else if (!TextUtils.isEmpty(password)) {
+        } else if (TextUtils.isEmpty(password)) {
             mPasswordView.setError(getString(R.string.error_field_required));
             focusView = mPasswordView;
             cancel = true;
@@ -447,39 +439,39 @@ public class LoginActivity extends AppCompatActivity implements
         }
     }
 
-    @Override
-    public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
-        return new CursorLoader(this,
-                // Retrieve data rows for the device user's 'profile' contact.
-                Uri.withAppendedPath(ContactsContract.Profile.CONTENT_URI,
-                        ContactsContract.Contacts.Data.CONTENT_DIRECTORY), ProfileQuery.PROJECTION,
+//    @Override
+//    public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
+//        return new CursorLoader(this,
+//                // Retrieve data rows for the device user's 'profile' contact.
+//                Uri.withAppendedPath(ContactsContract.Profile.CONTENT_URI,
+//                        ContactsContract.Contacts.Data.CONTENT_DIRECTORY), ProfileQuery.PROJECTION,
+//
+//                // Select only email addresses.
+//                ContactsContract.Contacts.Data.MIMETYPE +
+//                        " = ?", new String[]{ContactsContract.CommonDataKinds.Email
+//                .CONTENT_ITEM_TYPE},
+//
+//                // Show primary email addresses first. Note that there won't be
+//                // a primary email address if the user hasn't specified one.
+//                ContactsContract.Contacts.Data.IS_PRIMARY + " DESC");
+//    }
 
-                // Select only email addresses.
-                ContactsContract.Contacts.Data.MIMETYPE +
-                        " = ?", new String[]{ContactsContract.CommonDataKinds.Email
-                .CONTENT_ITEM_TYPE},
+//    @Override
+//    public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
+//        List<String> emails = new ArrayList<>();
+//        cursor.moveToFirst();
+//        while (!cursor.isAfterLast()) {
+//            emails.add(cursor.getString(ProfileQuery.ADDRESS));
+//            cursor.moveToNext();
+//        }
+//
+//        addEmailsToAutoComplete(emails);
+//    }
 
-                // Show primary email addresses first. Note that there won't be
-                // a primary email address if the user hasn't specified one.
-                ContactsContract.Contacts.Data.IS_PRIMARY + " DESC");
-    }
-
-    @Override
-    public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
-        List<String> emails = new ArrayList<>();
-        cursor.moveToFirst();
-        while (!cursor.isAfterLast()) {
-            emails.add(cursor.getString(ProfileQuery.ADDRESS));
-            cursor.moveToNext();
-        }
-
-        addEmailsToAutoComplete(emails);
-    }
-
-    @Override
-    public void onLoaderReset(Loader<Cursor> cursorLoader) {
-
-    }
+//    @Override
+//    public void onLoaderReset(Loader<Cursor> cursorLoader) {
+//
+//    }
 
     private void addEmailsToAutoComplete(List<String> emailAddressCollection) {
         //Create adapter to tell the AutoCompleteTextView what to show in its dropdown list.
@@ -491,15 +483,15 @@ public class LoginActivity extends AppCompatActivity implements
     }
 
 
-    private interface ProfileQuery {
-        String[] PROJECTION = {
-                ContactsContract.CommonDataKinds.Email.ADDRESS,
-                ContactsContract.CommonDataKinds.Email.IS_PRIMARY,
-        };
-
-        int ADDRESS = 0;
-        int IS_PRIMARY = 1;
-    }
+//    private interface ProfileQuery {
+//        String[] PROJECTION = {
+//                ContactsContract.CommonDataKinds.Email.ADDRESS,
+//                ContactsContract.CommonDataKinds.Email.IS_PRIMARY,
+//        };
+//
+//        int ADDRESS = 0;
+//        int IS_PRIMARY = 1;
+//    }
 
     /**
      * Represents an asynchronous login/registration task used to authenticate
@@ -518,12 +510,27 @@ public class LoginActivity extends AppCompatActivity implements
         @Override
         protected Boolean doInBackground(Void... params) {
 
-            // TODO: attempt API authentication
+            // Build formdata
+            RequestBody formData = new FormBody.Builder()
+                    .add("email", mEmail)
+                    .add("password", mPassword)
+                    .build();
 
-            // TODO: Interpret response
+            // Build request
+            Request tracman_email_request = new Request.Builder()
+                    .url(SERVER_ADDRESS+"login/app")
+                    .post(formData)
+                    .build();
 
-            // TODO: register the new account here.
-            return true;
+            // Send formdata to endpoint
+            try {
+                Log.v(TAG, "Sending local login POST to server...");
+                authenticateWithTracmanServer(tracman_email_request);
+                return true;
+            } catch (Exception e) {
+                Log.e(TAG, "Error sending local login to backend:",e);
+                return false;
+            }
         }
 
         @Override
@@ -578,19 +585,19 @@ public class LoginActivity extends AppCompatActivity implements
 //            showProgress(false);
 //        }
 //    }
-
-    void updateUI (GoogleSignInAccount account) {
-        if  (account!=null) {
-            Log.i(TAG, "updateUI() called with account");
-            // TODO: Go to Settings activity
-
-        }
-        else {
-            Log.i(TAG, "updateUI() called with no account");
-            // TODO: Tell the user something didn't work
-            ////showError(R.string.name_of_error_string);
-        }
-    }
+//
+//    void updateUI (GoogleSignInAccount account) {
+//        if  (account!=null) {
+//            Log.i(TAG, "updateUI() called with account");
+//            // TODO: Go to Settings activity
+//
+//        }
+//        else {
+//            Log.i(TAG, "updateUI() called with no account");
+//            // TODO: Tell the user something didn't work
+//            ////showError(R.string.name_of_error_string);
+//        }
+//    }
 
 }
 
