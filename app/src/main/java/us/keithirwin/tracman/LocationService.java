@@ -11,7 +11,6 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
-//import android.location.LocationListener;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
@@ -25,8 +24,6 @@ import com.github.nkzawa.engineio.client.Transport;
 import com.github.nkzawa.socketio.client.IO;
 import com.github.nkzawa.socketio.client.Manager;
 import com.github.nkzawa.socketio.client.Socket;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
@@ -35,11 +32,8 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.location.LocationSettingsResponse;
 import com.google.android.gms.location.SettingsClient;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.net.URISyntaxException;
 
@@ -84,6 +78,7 @@ public class LocationService extends Service {
 //                .build();
 //    }
 
+	// Setup notifications
 	@Nullable
 	private NotificationManager mNotificationManager;
 	private final NotificationCompat.Builder mNotificationBuilder = new NotificationCompat.Builder(this);
@@ -127,11 +122,12 @@ public class LocationService extends Service {
 		}
 	}
 
+	// Switch to NO_POWER on low battery
 	private final BroadcastReceiver LowPowerReceiver = new BroadcastReceiver() {
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			connectLocationUpdates(300, LocationRequest.PRIORITY_NO_POWER);
-			Log.d(TAG, "Priority and interval lowered due to low power");
+			Log.d(TAG, "Priority and interval lowered due to low battery");
 		}
 	};
 
@@ -146,19 +142,24 @@ public class LocationService extends Service {
 		// Set up location service
 		mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
-        mLocationRequest.setInterval(10000);
-        mLocationRequest.setFastestInterval(5000);
-        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        mLocationRequest.setInterval(getIntervalSetting());
+        mLocationRequest.setFastestInterval(getIntervalSetting()); // TODO: What's this?
+        mLocationRequest.setPriority(getPrioritySetting());
 
+        // Get location
         mLocationCallback = new LocationCallback() {
             @Override
             public void onLocationResult(LocationResult locationResult) {
                 if (locationResult == null) {
+                	Log.i(TAG, "mLocationCallback called with locationResult of null");
                     return;
                 }
                 for (Location location : locationResult.getLocations()) {
                     // Update UI with location data
-                    // ...
+                    Log.d(TAG, "Got location:\n" +
+							Double.toString( location.getLatitude() ) +
+							Double.toString( location.getLongitude() )
+					);
                 }
             };
         };
@@ -235,7 +236,7 @@ public class LocationService extends Service {
                     null /* Looper */);
         } catch (SecurityException e) {
 	        Log.e(TAG,"Location Permission needed");
-	        // TODO: Reopen settings with intent to request permission
+	        // TODO: Reopen SettingsActivity with intent to request permission
         }
     }
 

@@ -93,47 +93,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 	};
 
 	/**
-	 * A preference value change listener that restarts the location service
-	 * after something relevant is changed.
-	 */
-	// FROM old
-//    private Preference.OnPreferenceChangeListener sRestartLocationServiceOnChangeListener = new Preference.OnPreferenceChangeListener() {
-//
-//        @Override
-//        public boolean onPreferenceChange(Preference preference, Object obj) {
-//            SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(SettingsActivity.this);
-//
-//            stopService(new Intent(SettingsActivity.this, LocationService.class));
-//
-//            if (sharedPref.getBoolean("gps_switch", false)) {
-//
-//                // Ask for location permissions (can't be done in service, only activity)
-//                if (!LocationService.checkLocationPermission(SettingsActivity.this)) {
-//                    ActivityCompat.requestPermissions(
-//                            SettingsActivity.this,
-//                            new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-//                            MY_FINE_LOCATION_PERMISSION);
-//                }
-//
-//                Log.d(TAG, "Starting LocationService");
-//                startService(new Intent(SettingsActivity.this, LocationService.class));
-//
-//            }
-//
-//            return true;
-//        }
-//    };
-
-	/**
-	 * Helper method to determine if the device has an extra-large screen. For
-	 * example, 10" tablets are extra-large.
-	 */
-	private static boolean isXLargeTablet(Context context) {
-		return (context.getResources().getConfiguration().screenLayout
-				& Configuration.SCREENLAYOUT_SIZE_MASK) >= Configuration.SCREENLAYOUT_SIZE_XLARGE;
-	}
-
-	/**
 	 * Binds a preference's summary to its value. More specifically, when the
 	 * preference's value is changed, its summary (line of text below the
 	 * preference title) is updated to reflect the value. The summary is also
@@ -154,6 +113,63 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 						.getString(preference.getKey(), ""));
 	}
 
+	// Ask for location permissions (can't be done in service, only activity)
+	private void getLocationPermission() {
+		if(!LocationService.checkLocationPermission(SettingsActivity.this)) {
+			ActivityCompat.requestPermissions(
+				SettingsActivity.this,
+				new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+				MY_FINE_LOCATION_PERMISSION
+			);
+		}
+	};
+
+	/**
+	 * A preference value change listener that restarts the location service
+	 * after something relevant is changed.
+	 */
+    private Preference.OnPreferenceChangeListener sRestartLocationServiceOnChangeListener = new Preference.OnPreferenceChangeListener() {
+
+    	// Restart LocationService when preferences change
+        @Override
+        public boolean onPreferenceChange(Preference preference, Object obj) {
+
+			restartLocationService();
+
+            return true;
+
+        }
+    };
+
+    private void restartLocationService(){
+		// Get preferences
+		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(SettingsActivity.this);
+
+		// Stop LocationService, if running
+		stopService(new Intent(SettingsActivity.this, LocationService.class));
+
+		// Check if it should be reactivated
+		if (sharedPref.getBoolean("gps_switch", false)) {
+
+			getLocationPermission();
+
+			// Start LocationService
+			Log.d(TAG, "Starting LocationService");
+			startService(new Intent(SettingsActivity.this, LocationService.class));
+
+		}
+	};
+
+	/**
+	 * Helper method to determine if the device has an extra-large screen. For
+	 * example, 10" tablets are extra-large.
+	 */
+	private static boolean isXLargeTablet(Context context) {
+		return (context.getResources().getConfiguration().screenLayout
+				& Configuration.SCREENLAYOUT_SIZE_MASK) >= Configuration.SCREENLAYOUT_SIZE_XLARGE;
+	}
+
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -161,7 +177,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 		setupActionBar();
 
         // Restart LocationService when any related preference is changed
-//		findPreference("gps_switch").setOnPreferenceChangeListener(sRestartLocationServiceOnChangeListener);
+		//findPreference("gps_switch").setOnPreferenceChangeListener(sRestartLocationServiceOnChangeListener);
 
         // Get User ID
         // FROM old
@@ -170,6 +186,10 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         if (mUserID == null) {
             startActivity(new Intent(this, LoginActivity.class).setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP));
         }
+
+        // Start location service, if needed
+		restartLocationService();
+
 	}
 
 	/**
@@ -265,23 +285,27 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 			addPreferencesFromResource(R.xml.pref_general);
 			setHasOptionsMenu(true);
 
-			// Bind the summaries of EditText/List/Dialog/Ringtone preferences
-			// to their values. When their values change, their summaries are
-			// updated to reflect the new value, per the Android Design
-			// guidelines.
-			bindPreferenceSummaryToValue(findPreference("example_text"));
-			bindPreferenceSummaryToValue(findPreference("example_list"));
+			// Restart LocationService when any related preference is changed
+//			findPreference("gps_switch").setOnPreferenceChangeListener(sRestartLocationServiceOnChangeListener);
+
+			// Bind the summary of preferences to their value
+			bindPreferenceSummaryToValue(findPreference("broadcast_frequency"));
+			bindPreferenceSummaryToValue(findPreference("broadcast_priority"));
+
+
+
 		}
 
-		@Override
-		public boolean onOptionsItemSelected(MenuItem item) {
-			int id = item.getItemId();
-			if (id == android.R.id.home) {
-				startActivity(new Intent(getActivity(), SettingsActivity.class));
-				return true;
-			}
-			return super.onOptionsItemSelected(item);
-		}
+		// FROM blank
+//		@Override
+//		public boolean onOptionsItemSelected(MenuItem item) {
+//			int id = item.getItemId();
+//			if (id == android.R.id.home) {
+//				startActivity(new Intent(getActivity(), SettingsActivity.class));
+//				return true;
+//			}
+//			return super.onOptionsItemSelected(item);
+//		}
 	}
 
 	/**
