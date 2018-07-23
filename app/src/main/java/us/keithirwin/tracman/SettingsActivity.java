@@ -128,18 +128,19 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 	 * A preference value change listener that restarts the location service
 	 * after something relevant is changed.
 	 */
-    private Preference.OnPreferenceChangeListener sRestartLocationServiceOnChangeListener = new Preference.OnPreferenceChangeListener() {
-
-    	// Restart LocationService when preferences change
-        @Override
-        public boolean onPreferenceChange(Preference preference, Object obj) {
-
-			restartLocationService();
-
-            return true;
-
-        }
-    };
+	// FIXME
+//    private Preference.OnPreferenceChangeListener sRestartLocationServiceOnChangeListener = new Preference.OnPreferenceChangeListener() {
+//
+//    	// Restart LocationService when preferences change
+//        @Override
+//        public boolean onPreferenceChange(Preference preference, Object obj) {
+//
+//			restartLocationService();
+//
+//            return true;
+//
+//        }
+//    };
 
     private void restartLocationService(){
 		// Get preferences
@@ -158,7 +159,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 			startService(new Intent(SettingsActivity.this, LocationService.class));
 
 		}
-	};
+	}
 
 	/**
 	 * Helper method to determine if the device has an extra-large screen. For
@@ -188,7 +189,15 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         }
 
         // Start location service, if needed
-		restartLocationService();
+		if (sharedPref.getBoolean("gps_switch", false)) {
+
+			getLocationPermission();
+
+			// Start LocationService
+			Log.d(TAG, "Starting LocationService");
+			startService(new Intent(SettingsActivity.this, LocationService.class));
+
+		}
 
 	}
 
@@ -291,8 +300,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 			// Bind the summary of preferences to their value
 			bindPreferenceSummaryToValue(findPreference("broadcast_frequency"));
 			bindPreferenceSummaryToValue(findPreference("broadcast_priority"));
-
-
 
 		}
 

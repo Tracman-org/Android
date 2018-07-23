@@ -34,6 +34,8 @@ import com.google.android.gms.location.LocationSettingsResponse;
 import com.google.android.gms.location.SettingsClient;
 import com.google.android.gms.tasks.Task;
 
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.net.URISyntaxException;
 
@@ -61,12 +63,29 @@ public class LocationService extends Service {
 			showNotification(getText(R.string.server_connection_error), ICON_OFF);
 		}
 	}
-	private String mUserID, mUserSK, mUserVeh;
+	private String mUserID, mUserSK;
 	private SharedPreferences sharedPref;
 //    private Location mLastLocation;
 	private FusedLocationProviderClient mFusedLocationClient;
-    private LocationCallback mLocationCallback;
-    private LocationRequest mLocationRequest = new LocationRequest();
+	private LocationRequest mLocationRequest = new LocationRequest();
+    private LocationCallback mLocationCallback = new LocationCallback() {
+		@Override
+		public void onLocationResult(LocationResult locationResult) {
+			if (locationResult == null) {
+				Log.i(TAG, "mLocationCallback called with locationResult of null");
+				return;
+			}
+			for (Location location : locationResult.getLocations()) {
+				// Update UI with location data
+				Log.d(TAG, "Got location: " +
+						Double.toString( location.getLatitude() ) + ", " +
+						Double.toString( location.getLongitude() )
+				);
+
+				setLocation(location);
+			}
+		}
+	};
 //    private GoogleApiClient mGoogleApiClient;
 //    private LocationRequest mLocationRequest;
 
@@ -147,22 +166,7 @@ public class LocationService extends Service {
         mLocationRequest.setPriority(getPrioritySetting());
 
         // Get location
-        mLocationCallback = new LocationCallback() {
-            @Override
-            public void onLocationResult(LocationResult locationResult) {
-                if (locationResult == null) {
-                	Log.i(TAG, "mLocationCallback called with locationResult of null");
-                    return;
-                }
-                for (Location location : locationResult.getLocations()) {
-                    // Update UI with location data
-                    Log.d(TAG, "Got location:\n" +
-							Double.toString( location.getLatitude() ) +
-							Double.toString( location.getLongitude() )
-					);
-                }
-            };
-        };
+
 
         LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder()
                 .addLocationRequest(mLocationRequest);
@@ -232,8 +236,7 @@ public class LocationService extends Service {
     private void startLocationUpdates() {
 	    try {
             mFusedLocationClient.requestLocationUpdates(mLocationRequest,
-                    mLocationCallback,
-                    null /* Looper */);
+                    mLocationCallback,null);
         } catch (SecurityException e) {
 	        Log.e(TAG,"Location Permission needed");
 	        // TODO: Reopen SettingsActivity with intent to request permission
@@ -326,6 +329,34 @@ public class LocationService extends Service {
 			}
 		}
 	};
+
+	private void setLocation(Location location) {
+		Log.i(TAG, "setLocation() called");
+		Log.v(TAG, "mUserID: "+mUserID);
+		Log.v(TAG, "mUserSK: "+mUserSK);
+
+		// Make sure we're logged in...
+        if (mUserID!=null && mUserSK!=null) {
+            JSONObject mLocationView = new JSONObject();
+            try {
+                mLocationView.put("ts", String.valueOf(System.currentTimeMillis()));
+                mLocationView.put("lat", String.valueOf(location.getLatitude()));
+                mLocationView.put("lon", String.valueOf(location.getLongitude()));
+                mLocationView.put("dir", String.valueOf(location.getBearing()));
+                mLocationView.put("spd", String.valueOf(location.getSpeed()));
+            } catch (JSONException e) {
+                Log.e(TAG, "Failed to put JSON data");
+            }
+            mSocket.emit("set", mLocationView);
+            Log.v(TAG, "Location set: " + mLocationView.toString());
+        }
+        else {
+            Log.e(TAG, "Can't set location because user isn't logged in.");
+            stopSelf();
+			// TODO: Return user to LoginActivity
+        }
+
+	}
 
 //    @Override
 //    public void onLocationChanged(Location location) {

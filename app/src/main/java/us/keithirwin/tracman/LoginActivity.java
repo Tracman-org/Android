@@ -195,7 +195,7 @@ public class LoginActivity extends AppCompatActivity {//} implements
 
 	}
 
-	private void authenticateWithTracmanServer(final Request request) throws Exception {
+	private void authenticateWithTracmanServer(final Request request) {
 
 		httpClient.newCall(request).enqueue(new Callback() {
 			@Override
