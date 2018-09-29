@@ -54,4 +54,7 @@
 	<string name="notify_connecting">verbindet…</string>
 	<string name="notify_disabled">Aktualisiert nicht</string>
 	<string name="notify_connected">Verbindung festgestellt</string>
+    <string name="error_invalid_email">"Dieses Email ist ungültig"</string>
+	<string name="error_invalid_password">"Dieses Passwort ist zu kurz"</string>
+	<string name="error_incorrect_password">"Dieses Passwort ist falsch"</string>
 </resources>
