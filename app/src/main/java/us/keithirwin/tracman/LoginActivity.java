@@ -180,6 +180,16 @@ public class LoginActivity extends AppCompatActivity {//} implements
 
 	}
 
+	private void showError(final int errorText) {
+		final TextView errorTextView = (TextView)findViewById(R.id.login_error);
+		runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				errorTextView.setText(getText(errorText).toString());
+			}
+		});
+	}
+
 	// https://developers.google.com/identity/sign-in/android/sign-in#start_the_sign-in_flow
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -201,14 +211,14 @@ public class LoginActivity extends AppCompatActivity {//} implements
 			@Override
 			public void onFailure(Call call, IOException e) {
 				Log.e(TAG, "Failed to connect to Tracman server!");
-				//showError(R.string.server_connection_error);
+				showError(R.string.server_connection_error);
 				e.printStackTrace();
 			}
 
 			@Override
 			public void onResponse(Call call, Response res) throws IOException {
 				if (!res.isSuccessful()) {
-					//showError(R.string.login_no_user_error);
+					showError(R.string.login_no_user_error);
 					res.body().close();
 					throw new IOException("Unexpected code: " + res);
 				} else {
@@ -270,7 +280,9 @@ public class LoginActivity extends AppCompatActivity {//} implements
 			// The ApiException status code indicates the detailed failure reason.
 			// Please refer to the GoogleSignInStatusCodes class reference for more information.
 			Log.w(TAG, "signInResult:failed error: " + e);
-			// TODO: Notify user
+			// Notify user
+			showError(R.string.google_connection_error);
+
 		}
 	}
 
