@@ -19,7 +19,7 @@ android {
 	defaultConfig {
 		applicationId "us.keithirwin.tracman"
 		minSdkVersion 15
-		targetSdkVersion 23
+		targetSdkVersion 26
 		versionCode 13
 		versionName "0.6.1"
 	}
