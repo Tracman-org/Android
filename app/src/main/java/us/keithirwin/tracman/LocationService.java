@@ -238,8 +238,10 @@ public class LocationService extends Service {
             mFusedLocationClient.requestLocationUpdates(mLocationRequest,
                     mLocationCallback,null);
         } catch (SecurityException e) {
-	        Log.e(TAG,"Location Permission needed");
-	        // TODO: Reopen SettingsActivity with intent to request permission
+	        Log.e(TAG,"Can't startLocationUpdates: missing location permission");
+	        // Show notification
+			// TODO: Tap to request permission?
+			showNotification(getText(R.string.need_location_permission), ICON_OFF);
         }
     }
 
