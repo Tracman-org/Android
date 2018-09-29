@@ -161,4 +161,28 @@
 
     </LinearLayout>
 
+    <!-- Extra text -->
+    <LinearLayout android:layout_height="31dp"
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_marginTop="20px" >
+
+        <!-- Forgot password link -->
+        <TextView android:id="@+id/login_forgot_password"
+            android:text="@string/login_forgot_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="20sp" />
+
+        <!-- Errors -->
+        <TextView
+            android:id="@+id/login_error"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textColor="@color/Red"
+            android:textSize="22sp" />
+
+    </LinearLayout>
+
 </LinearLayout>
