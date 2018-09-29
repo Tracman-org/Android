@@ -164,6 +164,8 @@ public class LoginActivity extends AppCompatActivity {//} implements
 		super.onStart();
 		Log.d(TAG, "onStart() called");
 
+		// TODO: Remove errors
+
 		// Check for existing Google Sign In account, if the user is already signed in
 		// the GoogleSignInAccount will be non-null.
 		// https://developers.google.com/identity/sign-in/android/sign-in#check_for_an_existing_signed-in_user

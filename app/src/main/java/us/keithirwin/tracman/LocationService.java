@@ -210,6 +210,7 @@ public class LocationService extends Service {
 					public void call(Object... args) {
 						Exception e = (Exception) args[0];
 						Log.e(TAG, "Transport error: " + e);
+						// TODO: Execute disconnection
 						e.printStackTrace();
 						e.getCause().printStackTrace();
 					}
