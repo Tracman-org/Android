@@ -130,7 +130,7 @@
                 android:inputType="textEmailAddress"
                 android:maxLines="1"
                 android:singleLine="true"
-                android:textSize="24sp"/>
+                android:textSize="22sp"/>
         </android.support.design.widget.TextInputLayout>
 
         <!-- Password -->
@@ -147,7 +147,7 @@
                 android:imeOptions="actionUnspecified"
                 android:maxLines="1"
                 android:singleLine="true"
-                android:textSize="24sp"/>
+                android:textSize="22sp"/>
         </android.support.design.widget.TextInputLayout>
 
         <!-- Submit -->
@@ -162,10 +162,10 @@
     </LinearLayout>
 
     <!-- Extra text -->
-    <LinearLayout android:layout_height="31dp"
+    <LinearLayout
+        android:layout_height="wrap_content"
         android:layout_width="match_parent"
-        android:orientation="vertical"
-        android:layout_marginTop="20px" >
+        android:orientation="vertical" >
 
         <!-- Forgot password link -->
         <TextView android:id="@+id/login_forgot_password"
