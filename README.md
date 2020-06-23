@@ -3,6 +3,9 @@
 
 Android app to upload a user's GPS location to the [tracman server](https://github.com/tracman-org/Server). 
 
+## This project is deprecated.  
+##### Since Google increased the cost of their maps API, it no longer made financial sense to keep it running.  I might revive or remix the project in the future.  
+
 ## Installation
 
 Install from the [Google Play Store](https://play.google.com/store/apps/details?id=us.keithirwin.tracman) or with `adb`/Android Studio. 
